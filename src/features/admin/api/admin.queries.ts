@@ -92,13 +92,41 @@ export function useUpdateUserRole() {
       );
       return res.data;
     },
+    onMutate: async ({ id, role }) => {
+      await queryClient.cancelQueries({ queryKey: adminKeys.users() });
+      const previousQueries = queryClient.getQueriesData<AdminUsersApiResponse>(
+        {
+          queryKey: adminKeys.users(),
+        },
+      );
+
+      queryClient.setQueriesData<AdminUsersApiResponse>(
+        { queryKey: adminKeys.users() },
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            users: old.users.map((u) => (u.id === id ? { ...u, role } : u)),
+          };
+        },
+      );
+
+      return { previousQueries };
+    },
+    onError: (error, _vars, context) => {
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([key, data]) => {
+          queryClient.setQueryData(key, data);
+        });
+      }
+      toast.error(error.message || "Failed to update user role.");
+    },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: adminKeys.users() });
       toast.success(`User ${data.name} role changed to ${data.role}`);
       return data;
     },
-    onError: (error) => {
-      toast.error(error.message || "Failed to update user role.");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: adminKeys.users() });
     },
   });
 }
@@ -126,15 +154,43 @@ export function useToggleUserStatus() {
       );
       return res.data;
     },
+    onMutate: async ({ id, isActive }) => {
+      await queryClient.cancelQueries({ queryKey: adminKeys.users() });
+      const previousQueries = queryClient.getQueriesData<AdminUsersApiResponse>(
+        {
+          queryKey: adminKeys.users(),
+        },
+      );
+
+      queryClient.setQueriesData<AdminUsersApiResponse>(
+        { queryKey: adminKeys.users() },
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            users: old.users.map((u) => (u.id === id ? { ...u, isActive } : u)),
+          };
+        },
+      );
+
+      return { previousQueries };
+    },
+    onError: (error, _vars, context) => {
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([key, data]) => {
+          queryClient.setQueryData(key, data);
+        });
+      }
+      toast.error(error.message || "Failed to change user account status.");
+    },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: adminKeys.users() });
       toast.success(
         `User ${data.name} ${data.isActive ? "activated" : "deactivated"} successfully.`,
       );
       return data;
     },
-    onError: (error) => {
-      toast.error(error.message || "Failed to change user account status.");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: adminKeys.users() });
     },
   });
 }

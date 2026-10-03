@@ -130,13 +130,52 @@ export function useUpdateDispatchStatus() {
       );
       return res.data;
     },
+    onMutate: async ({ id, input }) => {
+      await queryClient.cancelQueries({ queryKey: dispatchKeys.all });
+
+      const previousActive = queryClient.getQueryData<Dispatch>(
+        dispatchKeys.activeDriver(),
+      );
+      const previousDetail = queryClient.getQueryData<Dispatch>(
+        dispatchKeys.detail(id),
+      );
+
+      if (previousActive) {
+        queryClient.setQueryData<Dispatch>(dispatchKeys.activeDriver(), {
+          ...previousActive,
+          status: input.status,
+        });
+      }
+      if (previousDetail) {
+        queryClient.setQueryData<Dispatch>(dispatchKeys.detail(id), {
+          ...previousDetail,
+          status: input.status,
+        });
+      }
+
+      return { previousActive, previousDetail };
+    },
+    onError: (error, { id }, context) => {
+      if (context?.previousActive) {
+        queryClient.setQueryData(
+          dispatchKeys.activeDriver(),
+          context.previousActive,
+        );
+      }
+      if (context?.previousDetail) {
+        queryClient.setQueryData(
+          dispatchKeys.detail(id),
+          context.previousDetail,
+        );
+      }
+      toast.error(error.message || "Failed to update trip status.");
+    },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: dispatchKeys.all });
       toast.success(`Trip status updated to: ${data.status}`);
       return data;
     },
-    onError: (error) => {
-      toast.error(error.message || "Failed to update trip status.");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: dispatchKeys.all });
     },
   });
 }

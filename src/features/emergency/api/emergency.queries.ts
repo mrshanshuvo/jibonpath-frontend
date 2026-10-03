@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/api-client";
 import { useAuthStore } from "@/stores/auth.store";
 import type { ApiResponse } from "@/types/api.types";
-import type { EmergencyRequest } from "@/types/entities.types";
+import { RequestStatus, type EmergencyRequest } from "@/types/entities.types";
 import type {
   CreateEmergencyRequestInput,
   RequestQueryParams,
@@ -145,12 +145,61 @@ export function useCancelRequest() {
       );
       return res.data;
     },
+    onMutate: async (id: string) => {
+      await queryClient.cancelQueries({ queryKey: emergencyKeys.all });
+
+      const previousPatientRequests =
+        queryClient.getQueryData<RequestsApiResponse>(
+          emergencyKeys.myRequests(),
+        );
+      const previousDetail = queryClient.getQueryData<EmergencyRequest>(
+        emergencyKeys.detail(id),
+      );
+
+      // Optimistically update patient requests list
+      queryClient.setQueryData<RequestsApiResponse>(
+        emergencyKeys.myRequests(),
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            requests: old.requests.map((req) =>
+              req.id === id ? { ...req, status: RequestStatus.CANCELLED } : req,
+            ),
+          };
+        },
+      );
+
+      // Optimistically update request detail
+      if (previousDetail) {
+        queryClient.setQueryData<EmergencyRequest>(emergencyKeys.detail(id), {
+          ...previousDetail,
+          status: RequestStatus.CANCELLED,
+        });
+      }
+
+      return { previousPatientRequests, previousDetail };
+    },
+    onError: (error, id, context) => {
+      if (context?.previousPatientRequests) {
+        queryClient.setQueryData(
+          emergencyKeys.myRequests(),
+          context.previousPatientRequests,
+        );
+      }
+      if (context?.previousDetail) {
+        queryClient.setQueryData(
+          emergencyKeys.detail(id),
+          context.previousDetail,
+        );
+      }
+      toast.error(error.message || "Failed to cancel request.");
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: emergencyKeys.all });
       toast.info("Emergency request has been cancelled.");
     },
-    onError: (error) => {
-      toast.error(error.message || "Failed to cancel request.");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: emergencyKeys.all });
     },
   });
 }

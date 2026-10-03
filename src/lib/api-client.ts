@@ -1,9 +1,7 @@
-import {
-  ApiError,
-  type ApiResponse,
-  type ApiErrorResponse,
-} from "@/types/api.types";
+import { ApiError, type ApiResponse, type ApiErrorResponse } from "@/types/api.types";
 import { useAuthStore } from "@/stores/auth.store";
+import { ROUTES } from "@/config/routes";
+import { getAllowedRolesForPath } from "@/config/roles";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -21,7 +19,7 @@ let refreshPromise: Promise<string | null> | null = null;
  * Cleanly handles logout per STANDARDS.md Section 11 Law 2:
  * 1. Clears in-memory client state
  * 2. Clears server-set HTTP-only cookies via DELETE /api/auth/session
- * 3. Redirects unauthenticated user to login with return path
+ * 3. Redirects to login with preserved return path ONLY if on a protected route
  */
 async function handleLogout(): Promise<void> {
   useAuthStore.getState().clearAuth();
@@ -37,11 +35,12 @@ async function handleLogout(): Promise<void> {
     }
 
     const currentPath = window.location.pathname;
-    const isAuthRoute =
-      currentPath.startsWith("/login") || currentPath.startsWith("/register");
+    const fullPath = window.location.pathname + window.location.search;
+    const isProtected = getAllowedRolesForPath(currentPath) !== null;
 
-    if (!isAuthRoute) {
-      window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+    // Only force redirect if currently browsing a protected dashboard route
+    if (isProtected) {
+      window.location.href = `${ROUTES.AUTH.LOGIN}?redirect=${encodeURIComponent(fullPath)}`;
     }
   }
 }
@@ -111,9 +110,16 @@ async function request<T>(
 ): Promise<T> {
   const { params, skipAuth, headers: customHeaders, ...fetchOptions } = options;
 
-  let url = endpoint.startsWith("http")
-    ? endpoint
-    : `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+  let url: string;
+  if (endpoint.startsWith("http")) {
+    url = endpoint;
+  } else if (endpoint.startsWith("/api/")) {
+    // Next.js local internal route handler
+    url = endpoint;
+  } else {
+    // Backend API endpoint
+    url = `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+  }
 
   if (params) {
     const searchParams = new URLSearchParams();
@@ -191,9 +197,7 @@ async function request<T>(
       throw error;
     }
     const message =
-      error instanceof Error
-        ? error.message
-        : "An unexpected network error occurred";
+      error instanceof Error ? error.message : "An unexpected network error occurred";
     throw new ApiError(message, 500);
   }
 }

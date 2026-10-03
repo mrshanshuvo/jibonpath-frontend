@@ -9,8 +9,8 @@ import {
 import { ROLE_DEFAULT_REDIRECT } from "@/config/roles";
 import { ROUTES } from "@/config/routes";
 import { getInitials } from "@/lib/utils";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/shared/Badge";
+import { Button } from "@/components/shared/Button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -56,8 +56,8 @@ export function UserMenu() {
           </Button>
         </Link>
         <Link href={ROUTES.AUTH.REGISTER}>
-          <Button variant="emergency" size="sm">
-            Emergency Call
+          <Button variant="primary" size="sm">
+            Book Ambulance
           </Button>
         </Link>
       </div>
@@ -69,7 +69,7 @@ export function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="flex items-center gap-2.5 p-1.5 pl-2.5 rounded-full border border-border bg-surface-raised hover:border-slate-600 transition-all select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="flex items-center gap-2.5 p-1.5 pl-2.5 rounded-full border border-border bg-surface-raised hover:border-border-hover transition-all select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label="User navigation menu"
       >
         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
@@ -98,7 +98,7 @@ export function UserMenu() {
             <Badge
               variant={
                 user.role === "ADMIN"
-                  ? "emergency"
+                  ? "info"
                   : user.role === "DRIVER"
                     ? "warning"
                     : "default"

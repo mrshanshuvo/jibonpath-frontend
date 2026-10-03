@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, FileText, ArrowRight, ShieldCheck } from "lucide-react";
-import { Button, Card, Skeleton } from "@/components/ui";
+import { Button, Card, Skeleton } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 
 function PaymentSuccessContent() {
@@ -14,16 +14,16 @@ function PaymentSuccessContent() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <Card className="max-w-md w-full p-8 text-center space-y-6 border-emerald-500/40 shadow-2xl relative overflow-hidden">
+      <Card className="max-w-md w-full p-8 text-center space-y-6 border-success/40 shadow-2xl relative overflow-hidden">
         {/* Glow backdrop */}
-        <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-40 w-40 rounded-full bg-emerald-500/20 blur-2xl" />
+        <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-40 w-40 rounded-full bg-success/15 blur-2xl" />
 
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-success mx-auto shadow-lg shadow-emerald-500/20 animate-in zoom-in-50 duration-300">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-success-tint text-success-ink dark:text-success mx-auto shadow-lg shadow-success/20 border border-success/30 animate-in zoom-in-50 duration-300">
           <CheckCircle2 className="h-10 w-10" />
         </div>
 
         <div className="space-y-1.5">
-          <span className="text-3xs font-bold uppercase tracking-wider text-success">
+          <span className="text-3xs font-bold uppercase tracking-wider text-success-ink dark:text-success">
             Payment Completed
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
@@ -47,7 +47,7 @@ function PaymentSuccessContent() {
         )}
 
         <div className="flex items-center gap-1.5 justify-center text-3xs text-muted-foreground">
-          <ShieldCheck className="h-3.5 w-3.5 text-success" />
+          <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
           <span>SSL 256-Bit Encrypted Settlement</span>
         </div>
 

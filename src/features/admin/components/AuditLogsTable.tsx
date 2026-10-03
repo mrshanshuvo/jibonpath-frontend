@@ -8,7 +8,7 @@ import {
   Skeleton,
   Pagination,
   EmptyState,
-} from "@/components/ui";
+} from "@/components/shared";
 import { useAuditLogs } from "../api/admin.queries";
 import { formatDateTime } from "@/lib/utils";
 
@@ -35,9 +35,14 @@ export function AuditLogsTable() {
   const getActionBadge = (action: string) => {
     switch (action) {
       case "DISPATCH":
-      case "CREATE":
         return (
           <Badge variant="emergency" size="sm">
+            {action}
+          </Badge>
+        );
+      case "CREATE":
+        return (
+          <Badge variant="info" size="sm">
             {action}
           </Badge>
         );
@@ -51,7 +56,7 @@ export function AuditLogsTable() {
       case "DELETE":
       case "CANCEL":
         return (
-          <Badge variant="outline" size="sm">
+          <Badge variant="danger" size="sm">
             {action}
           </Badge>
         );
@@ -77,7 +82,7 @@ export function AuditLogsTable() {
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
               selectedAction === act
-                ? "bg-primary text-white font-semibold shadow-xs"
+                ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
             }`}
           >

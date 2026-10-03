@@ -8,7 +8,7 @@ import {
   Receipt,
   ArrowRight,
 } from "lucide-react";
-import { Modal, Button } from "@/components/ui";
+import { Modal, Button } from "@/components/shared";
 import { PaymentGateway, type EmergencyRequest } from "@/types/entities.types";
 import { useFareEstimate, useInitiatePayment } from "../api/payment.queries";
 import { formatCurrency } from "@/lib/utils";
@@ -27,9 +27,6 @@ const GATEWAYS = [
     badge: "Most Popular in BD",
     desc: "Instant payment via bKash mobile balance, OTP, and PIN confirmation",
     icon: Smartphone,
-    border: "border-pink-500/40 hover:border-pink-500 hover:bg-pink-950/20",
-    activeRing: "ring-2 ring-pink-500 bg-pink-500/10",
-    badgeStyle: "bg-pink-500/15 text-pink-400 border-pink-500/30",
   },
   {
     id: PaymentGateway.SSLCOMMERZ,
@@ -37,9 +34,6 @@ const GATEWAYS = [
     badge: "Cards, Nagad, Rocket",
     desc: "Visa, MasterCard, American Express, Nagad, Rocket, Upay, and 30+ BD banks",
     icon: CreditCard,
-    border: "border-amber-500/40 hover:border-amber-500 hover:bg-amber-950/20",
-    activeRing: "ring-2 ring-amber-500 bg-amber-500/10",
-    badgeStyle: "bg-amber-500/15 text-amber-400 border-amber-500/30",
   },
   {
     id: PaymentGateway.STRIPE,
@@ -47,10 +41,6 @@ const GATEWAYS = [
     badge: "International Cards",
     desc: "Seamless 256-bit encrypted card checkout supporting all international debit and credit cards",
     icon: ShieldCheck,
-    border:
-      "border-indigo-500/40 hover:border-indigo-500 hover:bg-indigo-950/20",
-    activeRing: "ring-2 ring-indigo-500 bg-indigo-500/10",
-    badgeStyle: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
   },
 ];
 
@@ -153,8 +143,9 @@ export function PaymentGatewayModal({
                   onClick={() => setSelectedGateway(gw.id)}
                   className={cn(
                     "w-full flex items-start gap-3.5 rounded-xl border p-3.5 text-left transition-all duration-150 cursor-pointer bg-card/60",
-                    gw.border,
-                    isSelected ? gw.activeRing : "opacity-85 hover:opacity-100",
+                    isSelected
+                      ? "border-primary ring-2 ring-primary/40 bg-primary-soft/30 shadow-xs"
+                      : "border-border hover:border-primary/40 hover:bg-surface-raised/60 opacity-85 hover:opacity-100",
                   )}
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-background/80 shadow-xs border border-border/50 text-foreground">
@@ -166,12 +157,7 @@ export function PaymentGatewayModal({
                       <span className="font-bold text-xs sm:text-sm text-foreground">
                         {gw.name}
                       </span>
-                      <span
-                        className={cn(
-                          "text-3xs font-medium px-2 py-0.5 rounded-full border",
-                          gw.badgeStyle,
-                        )}
-                      >
+                      <span className="text-3xs font-medium px-2 py-0.5 rounded-full border border-border bg-surface-raised text-muted-foreground">
                         {gw.badge}
                       </span>
                     </div>

@@ -1,20 +1,20 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/shared/Button";
 import { ROUTES } from "@/config/routes";
 import { Ambulance, ArrowLeft, PhoneCall } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
-      <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-emergency/15 text-emergency mb-6 shadow-xl shadow-emergency/20">
+      <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-6 shadow-xl shadow-primary/20">
         <Ambulance className="h-10 w-10" />
       </div>
 
-      <p className="text-xs uppercase tracking-widest font-semibold text-emergency mb-2">
+      <p className="text-xs uppercase tracking-widest font-semibold text-primary mb-2">
         404 — Coordinates Not Located
       </p>
       <h1 className="text-3xl sm:text-5xl font-extrabold text-foreground tracking-tight mb-4">
-        Emergency Route Not Found
+        Dispatch Route Not Found
       </h1>
       <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
         The requested medical dispatch coordinates or portal page could not be

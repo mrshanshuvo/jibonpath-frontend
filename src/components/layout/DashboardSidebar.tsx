@@ -77,7 +77,7 @@ export function DashboardSidebar() {
     <aside className="w-64 h-full border-r border-border bg-surface shrink-0 flex flex-col">
       {/* Brand Header */}
       <div className="h-16 flex items-center gap-2.5 px-6 border-b border-border/80">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emergency text-white">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Ambulance className="h-4 w-4" />
         </div>
         <div className="flex flex-col">
@@ -103,14 +103,14 @@ export function DashboardSidebar() {
               className={cn(
                 "flex items-center gap-3 px-3.5 py-2.5 rounded-md text-xs font-medium transition-all duration-150",
                 isActive
-                  ? "bg-primary text-white font-semibold shadow-sm shadow-primary/30"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-sm shadow-primary/30"
                   : "text-muted-foreground hover:text-foreground hover:bg-surface-raised",
               )}
             >
               <Icon
                 className={cn(
                   "h-4 w-4 shrink-0",
-                  isActive ? "text-white" : "text-muted-foreground",
+                  isActive ? "text-primary-foreground" : "text-muted-foreground",
                 )}
               />
               <span>{item.label}</span>

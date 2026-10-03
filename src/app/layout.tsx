@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -58,26 +59,33 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body
         suppressHydrationWarning
-        className="min-h-full flex flex-col bg-background text-foreground selection:bg-emergency selection:text-white"
+        className="min-h-full flex flex-col bg-background text-foreground selection:bg-emergency selection:text-emergency-foreground"
       >
-        <QueryProvider>
-          <AuthProvider>
-            {children}
-            <Toaster
-              position="top-right"
-              richColors
-              theme="dark"
-              toastOptions={{
-                duration: 4000,
-                className: "glass-card border-border text-foreground",
-              }}
-            />
-          </AuthProvider>
-        </QueryProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryProvider>
+            <AuthProvider>
+              {children}
+              <Toaster
+                position="top-right"
+                richColors
+                toastOptions={{
+                  duration: 4000,
+                  className: "glass-card border-border text-foreground",
+                }}
+              />
+            </AuthProvider>
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -105,15 +105,15 @@ export function DispatchStepper({
                   className={cn(
                     "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 shadow-sm",
                     isCompleted &&
-                      "bg-emerald-500/20 border-emerald-500/50 text-success",
+                      "bg-success/20 border-success-ink/40 text-success-ink",
                     isCurrent &&
-                      "bg-emergency text-white border-emergency ring-4 ring-emergency/25 shadow-lg shadow-emergency/40",
+                      "bg-emergency text-emergency-foreground border-emergency ring-4 ring-emergency/25 shadow-lg shadow-emergency/40",
                     isUpcoming &&
                       "bg-surface border-border text-muted-foreground opacity-60",
                   )}
                 >
                   {isCompleted ? (
-                    <Check className="h-5 w-5 stroke-3 text-success" />
+                    <Check className="h-5 w-5 stroke-3 text-success-ink" />
                   ) : isCurrent ? (
                     <Icon className="h-5 w-5" />
                   ) : (

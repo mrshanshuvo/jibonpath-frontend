@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 import {
   Button,
-  Badge,
   Skeleton,
   Pagination,
   EmptyState,
-} from "@/components/ui";
+  StatusBadge,
+} from "@/components/shared";
 import { AmbulanceFormModal } from "./AmbulanceFormModal";
 import {
   AmbulanceStatus,
@@ -71,51 +71,33 @@ export function FleetTable() {
   };
 
   const getStatusBadge = (status: AmbulanceStatus) => {
-    switch (status) {
-      case AmbulanceStatus.AVAILABLE:
-        return (
-          <Badge variant="success" size="sm" dot>
-            AVAILABLE
-          </Badge>
-        );
-      case AmbulanceStatus.DISPATCHED:
-        return (
-          <Badge variant="emergency" size="sm" pulse>
-            DISPATCHED
-          </Badge>
-        );
-      case AmbulanceStatus.MAINTENANCE:
-        return (
-          <Badge variant="warning" size="sm">
-            MAINTENANCE
-          </Badge>
-        );
-      case AmbulanceStatus.RETIRED:
-        return (
-          <Badge variant="outline" size="sm">
-            RETIRED
-          </Badge>
-        );
-    }
+    return (
+      <StatusBadge
+        domain="ambulance"
+        value={status}
+        size="sm"
+        pulse={status === AmbulanceStatus.DISPATCHED}
+      />
+    );
   };
 
   const getTypeBadge = (type: AmbulanceType) => {
     switch (type) {
       case AmbulanceType.BASIC:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20">
             BLS (Basic)
           </span>
         );
       case AmbulanceType.ADVANCED_LIFE_SUPPORT:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
             ACLS (Cardiac)
           </span>
         );
       case AmbulanceType.INTENSIVE_CARE:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-rose-500/10 text-destructive/80 border border-rose-500/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20">
             ICU (Ventilator)
           </span>
         );
@@ -144,7 +126,7 @@ export function FleetTable() {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                 statusFilter === status
-                  ? "bg-primary text-white font-semibold shadow-xs"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                   : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
               }`}
             >
@@ -301,7 +283,7 @@ export function FleetTable() {
                                 AmbulanceStatus.MAINTENANCE,
                               )
                             }
-                            className="p-1.5 rounded-md text-muted-foreground hover:text-amber-400 hover:bg-amber-400/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-warning-ink hover:bg-warning/10 transition-colors cursor-pointer"
                           >
                             <Wrench className="h-3.5 w-3.5" />
                           </button>
@@ -316,7 +298,7 @@ export function FleetTable() {
                                 AmbulanceStatus.AVAILABLE,
                               )
                             }
-                            className="p-1.5 rounded-md text-muted-foreground hover:text-success hover:bg-emerald-400/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-success-ink hover:bg-success/10 transition-colors cursor-pointer"
                           >
                             <CheckCircle className="h-3.5 w-3.5" />
                           </button>
@@ -335,7 +317,7 @@ export function FleetTable() {
                           onClick={() =>
                             handleDelete(amb.id, amb.vehicleNumber)
                           }
-                          className="p-1.5 rounded-md text-muted-foreground hover:text-destructive/80 hover:bg-rose-400/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-md text-muted-foreground hover:text-danger-ink hover:bg-danger/10 transition-colors cursor-pointer"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>

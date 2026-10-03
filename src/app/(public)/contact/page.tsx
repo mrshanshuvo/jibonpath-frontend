@@ -10,7 +10,7 @@ import {
   CheckCircle2,
   ShieldAlert,
 } from "lucide-react";
-import { Button, Input } from "@/components/ui";
+import { Button, Input } from "@/components/shared";
 import { toast } from "sonner";
 
 export default function ContactPage() {
@@ -35,7 +35,7 @@ export default function ContactPage() {
       {/* Hero Header */}
       <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emergency/30 bg-emergency/10 px-3.5 py-1 text-2xs font-semibold text-emergency mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-4">
             <ShieldAlert className="h-3.5 w-3.5" />
             <span>24/7 Central Command & Control</span>
           </div>
@@ -68,10 +68,10 @@ export default function ContactPage() {
               {/* Emergency Highlight Card */}
               <div className="rounded-2xl border border-emergency/40 bg-emergency/10 p-6 sm:p-8 backdrop-blur-sm shadow-lg shadow-emergency/10 space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-white">
-                    <PhoneCall className="h-6 w-6 animate-bounce" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-emergency-foreground">
+                    <PhoneCall className="h-6 w-6" />
                   </div>
-                  <span className="text-3xs font-mono font-bold uppercase rounded-full bg-emergency text-white px-3 py-1">
+                  <span className="text-3xs font-mono font-bold uppercase rounded-full bg-emergency text-emergency-foreground px-3 py-1">
                     Zero Delay
                   </span>
                 </div>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 </div>
                 <a
                   href="tel:999"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emergency py-3 text-sm font-bold text-white hover:bg-emergency/90 transition-all shadow-md shadow-emergency/30"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emergency py-3 text-sm font-bold text-emergency-foreground hover:bg-emergency/90 transition-all shadow-md shadow-emergency/30"
                 >
                   <PhoneCall className="h-4 w-4" />
                   <span>Call 999 Hotline Now</span>
@@ -143,7 +143,7 @@ export default function ContactPage() {
                     1212, Bangladesh
                   </p>
                   <div className="flex items-center gap-2 mt-2 text-3xs text-muted-foreground">
-                    <Clock className="h-3 w-3 text-success" />
+                    <Clock className="h-3 w-3 text-success-ink dark:text-success" />
                     <span>
                       Control Room: 24 Hours / 7 Days / 365 Days continuous
                       operations
@@ -164,8 +164,8 @@ export default function ContactPage() {
               </p>
 
               {submitted ? (
-                <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-8 text-center space-y-3">
-                  <CheckCircle2 className="h-12 w-12 text-success mx-auto" />
+                <div className="rounded-xl bg-success-tint border border-success/30 p-8 text-center space-y-3">
+                  <CheckCircle2 className="h-12 w-12 text-success-ink dark:text-success mx-auto" />
                   <h4 className="text-base font-bold text-foreground">
                     Message Dispatched Successfully
                   </h4>

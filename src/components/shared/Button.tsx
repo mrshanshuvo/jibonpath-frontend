@@ -16,7 +16,7 @@ const buttonVariants = cva(
         outline:
           "border-border bg-background hover:bg-surface-raised hover:text-foreground aria-expanded:bg-surface-raised aria-expanded:text-foreground dark:border-border dark:bg-card/40 dark:hover:bg-card/70",
         secondary:
-          "bg-surface-raised text-foreground border border-border hover:bg-surface-raised/80 hover:border-border focus-visible:ring-ring",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/90 focus-visible:ring-ring shadow-sm",
         ghost:
           "hover:bg-surface-raised hover:text-foreground aria-expanded:bg-surface-raised aria-expanded:text-foreground dark:hover:bg-surface-raised/60",
         emergency:
@@ -25,6 +25,10 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive shadow-sm",
         danger:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive shadow-sm",
+        warning:
+          "bg-warning text-warning-foreground hover:bg-warning/90 focus-visible:ring-warning shadow-sm font-semibold",
+        info:
+          "bg-info text-info-foreground hover:bg-info/90 focus-visible:ring-info shadow-sm",
         success:
           "bg-success text-success-foreground hover:bg-success/90 focus-visible:ring-success shadow-sm",
         link: "text-primary underline-offset-4 hover:underline",

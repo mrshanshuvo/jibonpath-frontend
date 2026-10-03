@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Ambulance, ShieldCheck, PhoneCall } from "lucide-react";
 import { ROUTES } from "@/config/routes";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 export const metadata: Metadata = {
   title: "Authentication | PulsePoint Dispatch",
@@ -15,9 +16,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-emergency selection:text-white">
+    <div className="relative min-h-screen flex flex-col bg-background text-foreground overflow-hidden selection:bg-emergency selection:text-emergency-foreground">
       {/* Dynamic ambient background glow */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-full max-w-3xl rounded-full bg-emergency/10 blur-3xl" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-full max-w-3xl rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 right-10 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
 
       {/* Top minimal bar */}
@@ -27,13 +28,12 @@ export default function AuthLayout({
             href={ROUTES.PUBLIC.HOME}
             className="flex items-center gap-2.5 group"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emergency text-white shadow-md shadow-emergency/30 group-hover:scale-105 transition-transform duration-150">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-150">
               <Ambulance className="h-5 w-5" />
             </div>
             <div className="flex flex-col">
               <span className="text-base font-bold tracking-tight text-foreground flex items-center gap-1.5">
                 PulsePoint
-                
               </span>
               <span className="text-3xs uppercase tracking-widest text-muted-foreground font-medium -mt-1">
                 Emergency Dispatch Portal
@@ -43,15 +43,17 @@ export default function AuthLayout({
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground font-medium border border-border/60 bg-surface/50 rounded-full px-3 py-1">
-              <ShieldCheck className="h-3.5 w-3.5 text-success" />
+              <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
               <span>TLS 256-Bit Encrypted</span>
             </div>
+
+            <ThemeToggle />
 
             <a
               href="tel:999"
               className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/30 bg-emergency/10 text-emergency hover:bg-emergency/20 text-xs font-bold transition-all shadow-xs"
             >
-              <PhoneCall className="h-3.5 w-3.5 animate-bounce" />
+              <PhoneCall className="h-3.5 w-3.5" />
               <span>999 Hotline</span>
             </a>
           </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { DashboardSidebar, UserMenu } from "@/components/layout";
-import { Button } from "@/components/ui";
+import { Button, ThemeToggle } from "@/components/shared";
 import { Menu, X, PhoneCall, Radio } from "lucide-react";
 
 export default function DashboardLayout({
@@ -83,7 +83,7 @@ export default function DashboardLayout({
           {/* Right Header Badges & Actions */}
           <div className="flex items-center gap-3">
             {/* Real-time telemetry status indicator */}
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
+            <div className="hidden sm:flex items-center gap-2 rounded-full border border-success/25 bg-success-tint px-3 py-1 text-3xs font-medium text-success-ink dark:text-success">
               <Radio className="h-3 w-3" />
               <span>DISPATCH TELEMETRY ONLINE</span>
             </div>
@@ -92,10 +92,11 @@ export default function DashboardLayout({
               href="tel:999"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/30 bg-emergency/10 text-emergency hover:bg-emergency/20 text-xs font-bold transition-all shadow-xs"
             >
-              <PhoneCall className="h-3.5 w-3.5 animate-bounce" />
+              <PhoneCall className="h-3.5 w-3.5" />
               <span>999 Hotline</span>
             </a>
 
+            <ThemeToggle />
             <UserMenu />
           </div>
         </header>

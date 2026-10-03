@@ -1,46 +1,4 @@
-export {
-  Button,
-  buttonVariants,
-  type ButtonProps,
-  type ButtonVariant,
-  type ButtonSize,
-} from "./Button";
-export { Input, type InputProps } from "./Input";
-export {
-  Select,
-  SelectRoot,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-  type SelectProps,
-} from "./Select";
-export { Textarea, type TextareaProps } from "./Textarea";
-export {
-  Badge,
-  badgeVariants,
-  type BadgeProps,
-  type BadgeVariant,
-  type BadgeSize,
-} from "./Badge";
-export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  CardAction,
-  type CardProps,
-  type CardTitleProps,
-} from "./Card";
-export { Skeleton } from "./Skeleton";
-export { Modal, type ModalProps } from "./Modal";
+// Official shadcn/ui CLI Primitives
 export {
   Dialog,
   DialogClose,
@@ -91,6 +49,56 @@ export {
   type ChartConfig,
 } from "./chart";
 export { Toaster } from "./sonner";
-export { Pagination, type PaginationProps } from "./Pagination";
-export { EmptyState, type EmptyStateProps } from "./EmptyState";
-export { DataTable, type DataTableProps, type Column } from "./DataTable";
+
+// Re-exports from @/components/shared for backward compatibility
+export {
+  Button,
+  buttonVariants,
+  type ButtonProps,
+  type ButtonVariant,
+  type ButtonSize,
+  Badge,
+  badgeVariants,
+  type BadgeProps,
+  type BadgeVariant,
+  type BadgeSize,
+  type BadgeAppearance,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  CardAction,
+  type CardProps,
+  type CardTitleProps,
+  Input,
+  type InputProps,
+  Select,
+  SelectRoot,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  type SelectProps,
+  Textarea,
+  type TextareaProps,
+  Skeleton,
+  ThemeToggle,
+  Modal,
+  type ModalProps,
+  Pagination,
+  type PaginationProps,
+  EmptyState,
+  type EmptyStateProps,
+  DataTable,
+  type DataTableProps,
+  type Column,
+  StatusBadge,
+  type StatusBadgeProps,
+} from "@/components/shared";

@@ -9,7 +9,7 @@ import {
   Building2,
   ArrowRight,
 } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
@@ -85,7 +85,7 @@ export default function AboutPage() {
       <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border/60 bg-surface">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emergency/30 bg-emergency/10 px-3.5 py-1 text-2xs font-semibold text-emergency mb-6 shadow-xs">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-6 shadow-xs">
               <ShieldAlert className="h-3.5 w-3.5" />
               <span>Dhaka Emergency Medical Operations</span>
             </div>
@@ -101,7 +101,7 @@ export default function AboutPage() {
             <div className="mt-8 flex flex-wrap gap-4">
               <Link href={ROUTES.PATIENT.BOOK}>
                 <Button
-                  variant="emergency"
+                  variant="primary"
                   size="lg"
                   leftIcon={<HeartPulse className="h-4 w-4" />}
                 >
@@ -110,7 +110,7 @@ export default function AboutPage() {
               </Link>
               <Link href={ROUTES.PUBLIC.HOSPITALS}>
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   size="lg"
                   leftIcon={<Building2 className="h-4 w-4" />}
                 >
@@ -240,13 +240,13 @@ export default function AboutPage() {
           <div className="mt-6 flex flex-wrap justify-center items-center gap-4">
             <a
               href="tel:999"
-              className="inline-flex items-center gap-2 rounded-lg bg-emergency px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emergency/30 hover:bg-emergency/90 transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-emergency px-6 py-3 text-sm font-bold text-emergency-foreground shadow-lg shadow-emergency/30 hover:bg-emergency/90 transition-all"
             >
               <span>Call 999 Hotline</span>
             </a>
             <Link href={ROUTES.PATIENT.BOOK}>
               <Button
-                variant="secondary"
+                variant="primary"
                 size="lg"
                 rightIcon={<ArrowRight className="h-4 w-4" />}
               >

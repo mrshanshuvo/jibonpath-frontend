@@ -3,10 +3,10 @@
 import { useSyncExternalStore } from "react";
 import { useDispatches } from "@/features/dispatch";
 import { useUrlParams } from "@/hooks/useUrlParams";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { EmptyState } from "@/components/ui/EmptyState";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/shared/Card";
+import { Badge } from "@/components/shared/Badge";
+import { Button } from "@/components/shared/Button";
+import { EmptyState } from "@/components/shared";
 import {
   TrendingUp,
   Award,
@@ -107,7 +107,7 @@ export default function DriverEarningsPage() {
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Total Earnings
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-success">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success-tint text-success-ink dark:text-success">
               <DollarSign className="h-4 w-4" />
             </div>
           </div>
@@ -115,7 +115,7 @@ export default function DriverEarningsPage() {
             <span className="font-mono text-2xl font-black text-foreground">
               {formatCurrency(totalEarned)}
             </span>
-            <p className="text-3xs text-success font-medium flex items-center gap-1 mt-1">
+            <p className="text-3xs text-success-ink dark:text-success font-medium flex items-center gap-1 mt-1">
               <TrendingUp className="h-3 w-3" />
               +14% from last period
             </p>
@@ -146,7 +146,7 @@ export default function DriverEarningsPage() {
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Avg Trip Payout
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning-tint text-warning-ink dark:text-warning">
               <Activity className="h-4 w-4" />
             </div>
           </div>
@@ -165,7 +165,7 @@ export default function DriverEarningsPage() {
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Driver Rating
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Award className="h-4 w-4" />
             </div>
           </div>

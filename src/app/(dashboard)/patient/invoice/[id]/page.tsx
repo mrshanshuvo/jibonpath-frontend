@@ -3,7 +3,7 @@
 import { use } from "react";
 import Link from "next/link";
 import { ArrowLeft, Printer } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/shared/Button";
 import { InvoicePaper } from "@/features/payment/components/InvoiceReceipt";
 import { usePaymentDetail } from "@/features/payment/api/payment.queries";
 import { TableSkeleton } from "@/components/skeletons";

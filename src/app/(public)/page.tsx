@@ -1,20 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/shared/Button";
+import { Badge } from "@/components/shared/Badge";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/Card";
+} from "@/components/shared/Card";
 import { ROUTES } from "@/config/routes";
 import {
   Ambulance,
   PhoneCall,
-  ShieldAlert,
   Clock,
   MapPin,
   HeartPulse,
@@ -22,34 +21,29 @@ import {
   Building2,
   CheckCircle2,
   ArrowRight,
-  Activity,
 } from "lucide-react";
 import { usePublicAmbulances } from "@/features/fleet/api/public-fleet.queries";
 
 export default function HomePage() {
   const { data: fleetData, isLoading: fleetLoading } = usePublicAmbulances();
 
-  const available = fleetData?.ambulances?.filter(
-    (a) => a.status === "AVAILABLE"
-  ) ?? [];
+  const available =
+    fleetData?.ambulances?.filter((a) => a.status === "AVAILABLE") ?? [];
   const bls = available.filter((a) => a.type === "BASIC").length;
-  const acls = available.filter((a) => a.type === "ADVANCED_LIFE_SUPPORT").length;
+  const acls = available.filter(
+    (a) => a.type === "ADVANCED_LIFE_SUPPORT",
+  ).length;
   const icu = available.filter((a) => a.type === "INTENSIVE_CARE").length;
 
   return (
     <div className="flex-1 flex flex-col">
       {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 border-b border-border/60">
-        {/* Subtle background glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 left-1/3 w-72 h-72 bg-emergency/10 rounded-full blur-3xl pointer-events-none" />
-
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           {/* Live Status Indicator */}
           <div className="inline-flex items-center gap-3 mb-6 flex-wrap justify-center">
-            <Badge variant="emergency" size="md">
+            <Badge variant="info" size="md">
               <span className="flex items-center gap-1.5">
-                <Activity className="h-3.5 w-3.5" />
                 <span>Live Dispatch Network</span>
               </span>
             </Badge>
@@ -59,16 +53,31 @@ export default function HomePage() {
               </span>
               <span>ambulances active</span>
               <span className="w-px h-3 bg-border" />
-              <span>BLS: <span className="font-medium text-foreground">{fleetLoading ? "..." : bls}</span></span>
-              <span>ACLS: <span className="font-medium text-foreground">{fleetLoading ? "..." : acls}</span></span>
-              <span>ICU: <span className="font-medium text-foreground">{fleetLoading ? "..." : icu}</span></span>
+              <span>
+                BLS:{" "}
+                <span className="font-medium text-foreground">
+                  {fleetLoading ? "..." : bls}
+                </span>
+              </span>
+              <span>
+                ACLS:{" "}
+                <span className="font-medium text-foreground">
+                  {fleetLoading ? "..." : acls}
+                </span>
+              </span>
+              <span>
+                ICU:{" "}
+                <span className="font-medium text-foreground">
+                  {fleetLoading ? "..." : icu}
+                </span>
+              </span>
             </div>
           </div>
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight">
             Every Second Counts.{" "}
-            <span className="text-emergency">
+            <span className="text-primary">
               Instant Emergency Ambulance Dispatch.
             </span>
           </h1>
@@ -83,10 +92,10 @@ export default function HomePage() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href={ROUTES.patient.book} className="w-full sm:w-auto">
               <Button
-                variant="emergency"
+                variant="primary"
                 size="lg"
-                className="w-full sm:w-auto shadow-xl"
-                leftIcon={<ShieldAlert className="h-5 w-5" />}
+                className="w-full sm:w-auto shadow-xl shadow-primary/20"
+                leftIcon={<Ambulance className="h-5 w-5" />}
               >
                 Book Emergency Ambulance Now
               </Button>
@@ -94,7 +103,7 @@ export default function HomePage() {
 
             <Link href={ROUTES.login} className="w-full sm:w-auto">
               <Button
-                variant="secondary"
+                variant="outline"
                 size="lg"
                 className="w-full sm:w-auto"
                 rightIcon={<ArrowRight className="h-4 w-4" />}
@@ -108,7 +117,7 @@ export default function HomePage() {
                 variant="outline"
                 size="lg"
                 className="w-full sm:w-auto border-emergency/40 text-emergency hover:bg-emergency/10"
-                leftIcon={<PhoneCall className="h-4 w-4 animate-bounce" />}
+                leftIcon={<PhoneCall className="h-4 w-4" />}
               >
                 Direct 999 Hotline
               </Button>
@@ -118,15 +127,15 @@ export default function HomePage() {
           {/* Key Service Badges */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-success" />
+              <CheckCircle2 className="h-4 w-4 text-success-ink dark:text-success" />
               <span>Basic, ALS & ICU Ambulances</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-success" />
+              <CheckCircle2 className="h-4 w-4 text-success-ink dark:text-success" />
               <span>Live GPS Tracking</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-success" />
+              <CheckCircle2 className="h-4 w-4 text-success-ink dark:text-success" />
               <span>Instant bKash, SSLCommerz & Stripe</span>
             </div>
           </div>
@@ -187,10 +196,10 @@ export default function HomePage() {
             {/* Card 1 */}
             <Card
               glass
-              className="hover:border-slate-600 transition-all duration-200"
+              className="hover:border-border-hover transition-all duration-200"
             >
               <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emergency/15 text-emergency mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
                   <Ambulance className="h-6 w-6" />
                 </div>
                 <CardTitle>Rapid Smart Dispatch</CardTitle>
@@ -217,10 +226,10 @@ export default function HomePage() {
             {/* Card 2 */}
             <Card
               glass
-              className="hover:border-slate-600 transition-all duration-200"
+              className="hover:border-border-hover transition-all duration-200"
             >
               <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/15 text-success mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-success-tint text-success-ink dark:text-success mb-4">
                   <Building2 className="h-6 w-6" />
                 </div>
                 <CardTitle>Hospital Telemetry Handshake</CardTitle>
@@ -232,11 +241,11 @@ export default function HomePage() {
               <CardContent>
                 <ul className="space-y-2 text-xs text-muted-foreground">
                   <li className="flex items-center gap-2">
-                    <HeartPulse className="h-3.5 w-3.5 text-success" />
+                    <HeartPulse className="h-3.5 w-3.5 text-success-ink dark:text-success" />
                     <span>Pre-arrival trauma bed preparation</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-success" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-success-ink dark:text-success" />
                     <span>Direct capacity status verification</span>
                   </li>
                 </ul>
@@ -246,10 +255,10 @@ export default function HomePage() {
             {/* Card 3 */}
             <Card
               glass
-              className="hover:border-slate-600 transition-all duration-200"
+              className="hover:border-border-hover transition-all duration-200"
             >
               <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400 mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
                   <CreditCard className="h-6 w-6" />
                 </div>
                 <CardTitle>Transparent Healthcare Billing</CardTitle>
@@ -261,11 +270,11 @@ export default function HomePage() {
               <CardContent>
                 <ul className="space-y-2 text-xs text-muted-foreground">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-blue-400" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                     <span>No surprise surge fees or hidden costs</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-blue-400" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                     <span>Automated digital payment confirmation</span>
                   </li>
                 </ul>

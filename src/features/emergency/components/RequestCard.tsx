@@ -10,11 +10,10 @@ import {
   Ban,
   Radio,
 } from "lucide-react";
-import { Button, Badge, type BadgeVariant } from "@/components/ui";
+import { Button, Badge, StatusBadge } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 import {
   RequestStatus,
-  Priority,
   type EmergencyRequest,
 } from "@/types/entities.types";
 import { formatRelativeTime } from "@/lib/utils";
@@ -23,32 +22,6 @@ import { useCancelRequest } from "../api/emergency.queries";
 interface RequestCardProps {
   request: EmergencyRequest;
   onPay?: (request: EmergencyRequest) => void;
-}
-
-function getPriorityBadgeVariant(priority: Priority): BadgeVariant {
-  switch (priority) {
-    case Priority.CRITICAL:
-      return "emergency";
-    case Priority.HIGH:
-      return "warning";
-    case Priority.MEDIUM:
-      return "default";
-    case Priority.LOW:
-      return "secondary";
-  }
-}
-
-function getStatusBadgeVariant(status: RequestStatus): BadgeVariant {
-  switch (status) {
-    case RequestStatus.PENDING:
-      return "warning";
-    case RequestStatus.DISPATCHED:
-      return "emergency";
-    case RequestStatus.COMPLETED:
-      return "success";
-    case RequestStatus.CANCELLED:
-      return "outline";
-  }
 }
 
 export function RequestCard({ request, onPay }: RequestCardProps) {
@@ -64,19 +37,13 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
       <div>
         <header className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center gap-2">
-            <Badge
-              variant={getPriorityBadgeVariant(request.priority)}
-              size="sm"
-            >
-              {request.priority}
-            </Badge>
-            <Badge
-              variant={getStatusBadgeVariant(request.status)}
+            <StatusBadge domain="priority" value={request.priority} size="sm" />
+            <StatusBadge
+              domain="request"
+              value={request.status}
               size="sm"
               pulse={isDispatched}
-            >
-              {request.status}
-            </Badge>
+            />
           </div>
 
           <div className="flex items-center gap-1 text-3xs font-mono text-muted-foreground">

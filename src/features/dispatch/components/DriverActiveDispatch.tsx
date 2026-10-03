@@ -89,9 +89,15 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
   };
 
   return (
-    <div className="space-y-6" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div
+      className="space-y-6"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <div aria-live="polite" aria-atomic="true" className="sr-only">
-        {dispatch ? `Status: ${dispatch.status}. Next action: ${nextStep?.actionText || "Complete"}` : "No active dispatch"}
+        {dispatch
+          ? `Status: ${dispatch.status}. Next action: ${nextStep?.actionText || "Complete"}`
+          : "No active dispatch"}
       </div>
 
       {/* Live Telemetry Panel */}
@@ -99,30 +105,57 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
         <Card className="p-4 bg-surface border-border">
           <div className="flex items-center gap-2 mb-3">
             <Navigation className="h-4 w-4 text-info" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Live GPS</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+              Live GPS
+            </h3>
           </div>
-          <div className="text-2xl font-extrabold text-foreground">23.8103° N</div>
-          <div className="text-sm text-muted-foreground">90.4125° E · Dhaka</div>
-          <div className="mt-2 text-xs text-success font-medium">Moving · 42 km/h</div>
+          <div className="text-2xl font-extrabold text-foreground">
+            23.8103° N
+          </div>
+          <div className="text-sm text-muted-foreground">
+            90.4125° E · Dhaka
+          </div>
+          <div className="mt-2 text-xs text-success font-medium">
+            Moving · 42 km/h
+          </div>
         </Card>
         <Card className="p-4 bg-surface border-border">
           <div className="flex items-center gap-2 mb-3">
             <Activity className="h-4 w-4 text-emergency" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Turn-by-Turn</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+              Turn-by-Turn
+            </h3>
           </div>
-          <div className="text-sm font-medium text-foreground">Turn left onto Dhanmondi Rd</div>
-          <div className="text-xs text-muted-foreground mt-1">0.8 km · 2 min</div>
-          <div className="mt-2 text-xs text-info">Next: Hospital Emergency Bay</div>
+          <div className="text-sm font-medium text-foreground">
+            Turn left onto Dhanmondi Rd
+          </div>
+          <div className="text-xs text-muted-foreground mt-1">
+            0.8 km · 2 min
+          </div>
+          <div className="mt-2 text-xs text-info">
+            Next: Hospital Emergency Bay
+          </div>
         </Card>
         <Card className="p-4 bg-surface border-border">
           <div className="flex items-center gap-2 mb-3">
             <HeartPulse className="h-4 w-4 text-success" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Patient Vitals</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+              Patient Vitals
+            </h3>
           </div>
           <div className="grid grid-cols-3 gap-2 text-center">
-            <div><div className="text-lg font-bold text-foreground">72</div><div className="text-3xs text-muted-foreground">HR</div></div>
-            <div><div className="text-lg font-bold text-foreground">120/80</div><div className="text-3xs text-muted-foreground">BP</div></div>
-            <div><div className="text-lg font-bold text-foreground">98%</div><div className="text-3xs text-muted-foreground">SpO2</div></div>
+            <div>
+              <div className="text-lg font-bold text-foreground">72</div>
+              <div className="text-3xs text-muted-foreground">HR</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-foreground">120/80</div>
+              <div className="text-3xs text-muted-foreground">BP</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-foreground">98%</div>
+              <div className="text-3xs text-muted-foreground">SpO2</div>
+            </div>
           </div>
         </Card>
       </div>
@@ -130,8 +163,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
       {/* Top Cockpit Header */}
       <div className="rounded-2xl border border-emergency/40 bg-emergency/10 p-5 sm:p-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-white shadow-lg shadow-emergency/30">
-            <Ambulance className="h-6 w-6 animate-bounce" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-emergency-foreground shadow-lg shadow-emergency/30">
+            <Ambulance className="h-6 w-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -296,8 +329,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
           </div>
         </Card>
       ) : (
-        <Card className="p-6 bg-emerald-500/10 border-emerald-500/30 text-center space-y-2">
-          <CheckCircle className="h-10 w-10 text-success mx-auto" />
+        <Card className="p-6 bg-success-tint border-success/30 text-center space-y-2">
+          <CheckCircle className="h-10 w-10 text-success-ink dark:text-success mx-auto" />
           <h4 className="text-lg font-bold text-foreground">
             Trip Completed Successfully
           </h4>

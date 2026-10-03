@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { UserMenu } from "./UserMenu";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/shared/Button";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { Ambulance, PhoneCall, Menu, X, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,13 +31,12 @@ export function Navbar() {
           href={ROUTES.PUBLIC.HOME}
           className="flex items-center gap-2.5 group"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emergency text-white shadow-md shadow-emergency/30 group-hover:scale-105 transition-transform duration-150">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-150">
             <Ambulance className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <span className="text-base font-bold tracking-tight text-foreground flex items-center gap-1.5">
               PulsePoint
-              
             </span>
             <span className="text-3xs uppercase tracking-widest text-muted-foreground font-medium -mt-1">
               Ambulance Dispatch
@@ -67,11 +67,13 @@ export function Navbar() {
 
         {/* Right CTA + UserMenu */}
         <div className="hidden sm:flex items-center gap-3">
+          <ThemeToggle />
+
           <a
             href="tel:999"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emergency/30 bg-emergency/10 text-emergency hover:bg-emergency/20 text-xs font-bold transition-all shadow-sm shadow-emergency/20"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emergency/30 bg-emergency/10 text-emergency hover:bg-emergency/20 text-xs font-bold transition-all"
           >
-            <PhoneCall className="h-3.5 w-3.5 animate-bounce" />
+            <PhoneCall className="h-3.5 w-3.5" />
             <span>999 Hotline</span>
           </a>
 
@@ -80,6 +82,7 @@ export function Navbar() {
 
         {/* Mobile Hamburger Button */}
         <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
           <UserMenu />
           <Button
             variant="ghost"
@@ -123,7 +126,7 @@ export function Navbar() {
           <div className="pt-2 border-t border-border">
             <a
               href="tel:999"
-              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-emergency text-white text-sm font-bold shadow-md shadow-emergency/30"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-emergency text-emergency-foreground text-sm font-bold shadow-md shadow-emergency/30"
             >
               <ShieldAlert className="h-4 w-4" />
               <span>Call 999 Hotline Now</span>

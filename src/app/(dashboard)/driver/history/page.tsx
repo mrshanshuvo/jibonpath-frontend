@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useDispatches } from "@/features/dispatch";
-import { Skeleton, EmptyState, Pagination, Badge } from "@/components/ui";
+import { Skeleton, EmptyState, Pagination, Badge } from "@/components/shared";
 import { Ambulance, MapPin, Building2, Clock, AlertCircle } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 
@@ -39,8 +39,8 @@ export default function DriverHistoryPage() {
           ))}
         </div>
       ) : isError ? (
-        <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10">
-          <AlertCircle className="h-10 w-10 text-destructive mx-auto mb-2" />
+        <div className="p-8 text-center rounded-2xl border border-danger/30 bg-danger-tint">
+          <AlertCircle className="h-10 w-10 text-danger-ink dark:text-danger mx-auto mb-2" />
           <p className="text-sm font-bold text-foreground">
             Failed to load trip history
           </p>

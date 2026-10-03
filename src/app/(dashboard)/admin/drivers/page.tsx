@@ -15,7 +15,7 @@ import {
   Skeleton,
   EmptyState,
   Pagination,
-} from "@/components/ui";
+} from "@/components/shared";
 import { DriverOnboardingModal, useAdminUsers } from "@/features/admin";
 import { Role } from "@/types/entities.types";
 import { formatDateTime } from "@/lib/utils";
@@ -108,7 +108,7 @@ export default function AdminDriversPage() {
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-success border border-emerald-500/20">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-success-tint text-success-ink dark:text-success border border-success/20">
                           <Ambulance className="h-4.5 w-4.5" />
                         </div>
                         <div>
@@ -129,7 +129,7 @@ export default function AdminDriversPage() {
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold bg-emerald-500/10 text-success border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold bg-success-tint text-success-ink dark:text-success border border-success/20">
                         <CheckCircle className="h-3 w-3" />
                         Active on Patrol
                       </span>

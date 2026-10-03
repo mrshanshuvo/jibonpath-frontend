@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useDispatches } from "@/features/dispatch";
 import { DispatchStepper } from "@/features/dispatch";
-import { Skeleton, EmptyState, Pagination, Badge } from "@/components/ui";
+import { Skeleton, EmptyState, Pagination, StatusBadge } from "@/components/shared";
 import {
   Radio,
   Ambulance,
@@ -53,7 +53,7 @@ export default function AdminDispatchesPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
+        <div className="flex items-center gap-2 rounded-full border border-success-ink/20 bg-success/10 px-3 py-1 text-3xs font-medium text-success-ink">
           <Radio className="h-3 w-3" />
           <span>RADAR TELEMETRY POLLING ACTIVE</span>
         </div>
@@ -70,7 +70,7 @@ export default function AdminDispatchesPage() {
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
               statusFilter === status
-                ? "bg-primary text-white font-semibold shadow-xs"
+                ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
             }`}
           >
@@ -93,7 +93,7 @@ export default function AdminDispatchesPage() {
           ))}
         </div>
       ) : isError ? (
-        <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10">
+        <div className="p-8 text-center rounded-2xl border border-danger-ink/30 bg-danger/10">
           <AlertCircle className="h-10 w-10 text-destructive mx-auto mb-2" />
           <p className="text-sm font-bold text-foreground">
             Failed to connect to dispatch stream
@@ -116,7 +116,7 @@ export default function AdminDispatchesPage() {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emergency text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emergency text-emergency-foreground">
                     <Ambulance className="h-5 w-5" />
                   </div>
                   <div>
@@ -124,9 +124,15 @@ export default function AdminDispatchesPage() {
                       <span className="font-bold text-sm text-foreground">
                         Mission #{d.id.slice(0, 8)}
                       </span>
-                      <Badge variant="emergency" size="sm" pulse>
-                        {d.status}
-                      </Badge>
+                      <StatusBadge
+                        domain="dispatch"
+                        value={d.status}
+                        size="sm"
+                        pulse={
+                          d.status === DispatchStatus.DISPATCHED ||
+                          d.status === DispatchStatus.EN_ROUTE
+                        }
+                      />
                     </div>
                     <span className="text-3xs text-muted-foreground font-mono">
                       Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-102"} •

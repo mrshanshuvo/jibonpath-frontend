@@ -8,7 +8,7 @@ import {
   ArrowRight,
   ShieldCheck,
 } from "lucide-react";
-import { Button, Badge } from "@/components/ui";
+import { Button, Badge } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 import { AmbulanceType } from "@/types/entities.types";
 
@@ -240,7 +240,7 @@ export default function ServicesPage() {
       <section className="py-12 border-t border-border/60 bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emergency text-white shadow-lg shadow-emergency/30">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25">
               <Clock className="h-6 w-6" />
             </div>
             <div>
@@ -260,7 +260,7 @@ export default function ServicesPage() {
               </Button>
             </a>
             <Link href={ROUTES.PATIENT.BOOK}>
-              <Button variant="secondary" size="lg">
+              <Button variant="primary" size="lg">
                 Online Dispatch
               </Button>
             </Link>

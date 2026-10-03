@@ -68,11 +68,11 @@ export function AdminAnalyticsOverview() {
     totalFleet > 0 ? Math.round((dispatchedFleet / totalFleet) * 100) : 0;
 
   const chartData = [
-    { name: "Available", count: availableFleet, color: "#10b981" },
-    { name: "Dispatched", count: dispatchedFleet, color: "#ef4444" },
-    { name: "Maintenance", count: maintenanceFleet, color: "#f59e0b" },
-    { name: "Delivered", count: completedRequests, color: "#06b6d4" },
-    { name: "Pending", count: pendingRequests, color: "#8b5cf6" },
+    { name: "Available", count: availableFleet, color: "var(--color-chart-2)" },
+    { name: "Dispatched", count: dispatchedFleet, color: "var(--color-chart-5)" },
+    { name: "Maintenance", count: maintenanceFleet, color: "var(--color-chart-3)" },
+    { name: "Delivered", count: completedRequests, color: "var(--color-chart-2)" },
+    { name: "Pending", count: pendingRequests, color: "var(--color-chart-1)" },
   ];
 
   return (
@@ -85,7 +85,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
               Total Revenue Settled
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-success">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10 text-success-ink">
               <CircleDollarSign className="h-5 w-5" />
             </div>
           </div>
@@ -94,7 +94,7 @@ export function AdminAnalyticsOverview() {
               {formatCurrency(revenue)}
             </span>
             <p className="text-3xs text-muted-foreground mt-1 flex items-center gap-1">
-              <span className="text-success font-semibold">100% Digital</span>{" "}
+              <span className="text-success-ink font-semibold">100% Digital</span>{" "}
               via bKash / SSL / Stripe
             </p>
           </div>
@@ -126,7 +126,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
               Available Response Fleet
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-info/10 text-info-ink">
               <Ambulance className="h-5 w-5" />
             </div>
           </div>
@@ -146,7 +146,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
               Registered Accounts
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Users className="h-5 w-5" />
             </div>
           </div>
@@ -189,14 +189,14 @@ export function AdminAnalyticsOverview() {
               title={`Dispatched: ${dispatchedFleet}`}
             />
             <div
-              className="bg-emerald-500 h-full transition-all duration-500"
+              className="bg-success h-full transition-all duration-500"
               style={{
                 width: `${totalFleet > 0 ? (availableFleet / totalFleet) * 100 : 0}%`,
               }}
               title={`Available: ${availableFleet}`}
             />
             <div
-              className="bg-amber-500 h-full transition-all duration-500"
+              className="bg-warning h-full transition-all duration-500"
               style={{
                 width: `${totalFleet > 0 ? (maintenanceFleet / totalFleet) * 100 : 0}%`,
               }}
@@ -207,19 +207,19 @@ export function AdminAnalyticsOverview() {
           {/* Legend */}
           <div className="flex flex-wrap items-center justify-between text-xs pt-2">
             <div className="flex items-center gap-1.5">
-              
+              <span className="h-2.5 w-2.5 rounded-full bg-emergency" />
               <span className="text-muted-foreground">
                 Dispatched ({dispatchedFleet})
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              <span className="h-2.5 w-2.5 rounded-full bg-success" />
               <span className="text-muted-foreground">
                 Available ({availableFleet})
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+              <span className="h-2.5 w-2.5 rounded-full bg-warning" />
               <span className="text-muted-foreground">
                 Maintenance ({maintenanceFleet})
               </span>
@@ -248,20 +248,20 @@ export function AdminAnalyticsOverview() {
               </span>
             </div>
 
-            <div className="rounded-xl bg-amber-500/10 p-4 text-center border border-amber-500/20">
-              <span className="font-mono text-2xl font-bold text-amber-400 block">
+            <div className="rounded-xl bg-warning/10 p-4 text-center border border-warning-ink/20">
+              <span className="font-mono text-2xl font-bold text-warning-ink block">
                 {pendingRequests}
               </span>
-              <span className="text-3xs font-semibold text-amber-400 uppercase tracking-wider mt-1 block">
+              <span className="text-3xs font-semibold text-warning-ink uppercase tracking-wider mt-1 block">
                 Awaiting Dispatch
               </span>
             </div>
 
-            <div className="rounded-xl bg-emerald-500/10 p-4 text-center border border-emerald-500/20">
-              <span className="font-mono text-2xl font-bold text-success block">
+            <div className="rounded-xl bg-success/10 p-4 text-center border border-success-ink/20">
+              <span className="font-mono text-2xl font-bold text-success-ink block">
                 {completedRequests}
               </span>
-              <span className="text-3xs font-semibold text-success uppercase tracking-wider mt-1 block">
+              <span className="text-3xs font-semibold text-success-ink uppercase tracking-wider mt-1 block">
                 Safely Delivered
               </span>
             </div>

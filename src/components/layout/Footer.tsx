@@ -10,7 +10,7 @@ export function Footer() {
           {/* Brand Col */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emergency text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <Ambulance className="h-4 w-4" />
               </div>
               <span className="text-base font-bold text-foreground">
@@ -21,8 +21,8 @@ export function Footer() {
               Critical care emergency ambulance dispatch and hospital telemetry
               tracking network operating 24 hours, 7 days a week.
             </p>
-            <div className="flex items-center gap-2 text-xs text-success font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400" />
+            <div className="flex items-center gap-2 text-xs text-success-ink dark:text-success font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-success" />
               <span>Emergency Network Online</span>
             </div>
           </div>
@@ -126,7 +126,7 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© 2026 PulsePoint Operations. All rights reserved.</p>
           <div className="flex items-center gap-2 text-2xs">
-            <ShieldCheck className="h-3.5 w-3.5 text-success" />
+            <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
             <span>ISO 9001:2015 Emergency Healthcare Certified</span>
           </div>
         </div>

@@ -4,107 +4,227 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==========================================================================
+   Lifeline Design System — Color Tokens & Theme Architecture
+   ========================================================================== */
+
 :root {
-  --color-primary: #2F3E9E;
-  --color-primary-soft: #E6E9F8;
-  --color-secondary: #64748B;
-  --color-success: #177A4E;
-  --color-danger: #D92D3A;
-  --color-warning: #F5A524;
-  --color-info: #0B73A8;
+  color-scheme: light;
 
-  --bg: #F4F6FA;
-  --surface: #FFFFFF;
-  --border: #D8DDE6;
-  --text: #1E2A36;
-  --text-muted: #4C6272;
+  /* Lifeline Raw Palette (Light Mode) */
+  --ll-primary: #2F3E9E;
+  --ll-primary-foreground: #FFFFFF;
+  --ll-primary-soft: #E6E9F8;
 
-  --priority-critical: var(--color-danger);
-  --priority-urgent: var(--color-warning);
-  --priority-routine: var(--color-info);
-  --unit-available: var(--color-success);
-  --unit-enroute: var(--color-info);
-  --unit-busy: var(--color-warning);
-  --unit-offline: var(--color-secondary);
+  --ll-secondary: #64748B;
+  --ll-secondary-foreground: #FFFFFF;
 
-  /* Domain tokens */
-  --priority-critical: var(--color-danger);
-  --priority-urgent: var(--color-warning);
-  --priority-routine: var(--color-info);
-  --unit-available: var(--color-success);
-  --unit-enroute: var(--color-info);
-  --unit-busy: var(--color-warning);
-  --unit-offline: var(--color-secondary);
+  --ll-success: #177A4E;
+  --ll-success-foreground: #FFFFFF;
+  --ll-success-ink: #177A4E;
 
-  /* Text-on-color pairs (from palette spec) */
-  --primary-text: #FFFFFF;
-  --primary-soft-text: #2F3E9E;
-  --secondary-text: #FFFFFF;
-  --success-text: #FFFFFF;
-  --danger-text: #FFFFFF;
-  --warning-text: #1E2A36;
-  --info-text: #FFFFFF;
-  --bg-text: #1E2A36;
-  --surface-text: #1E2A36;
-  --muted-text: #4C6272;
-  --border-text: #1E2A36;
+  --ll-danger: #D92D3A;
+  --ll-danger-foreground: #FFFFFF;
+  --ll-danger-ink: #B42330;
 
-  /* Legacy mapping for shadcn/ui compatibility */
-  --background: var(--bg);
-  --foreground: var(--text);
-  --surface-raised: #FFFFFF;
-  --card: var(--surface);
-  --card-foreground: var(--text);
-  --border: var(--border);
-  --input: var(--border);
-  --ring: var(--color-primary);
+  --ll-warning: #F5A524;
+  --ll-warning-foreground: #1E2A36;
+  --ll-warning-ink: #B45309;
 
-  --primary: var(--color-primary);
-  --primary-foreground: #FFFFFF;
+  --ll-info: #0B73A8;
+  --ll-info-foreground: #FFFFFF;
+  --ll-info-ink: #0A6491;
 
-  --emergency: var(--color-danger);
-  --emergency-foreground: #FFFFFF;
+  --ll-bg: #F4F6FA;
+  --ll-surface: #FFFFFF;
+  --ll-surface-raised: #FFFFFF;
+  --ll-border: #D8DDE6;
+  --ll-text: #1E2A36;
+  --ll-text-muted: #4C6272;
 
-  --destructive: var(--color-danger);
-  --destructive-foreground: #FFFFFF;
+  /* Domain Tokens */
+  --priority-critical: var(--ll-danger);
+  --priority-urgent: var(--ll-warning);
+  --priority-routine: var(--ll-info);
+  --unit-available: var(--ll-success);
+  --unit-enroute: var(--ll-info);
+  --unit-busy: var(--ll-warning);
+  --unit-offline: var(--ll-secondary);
 
-  --info: var(--color-info);
-  --info-foreground: #FFFFFF;
+  /* Semantic UI Tokens */
+  --background: var(--ll-bg);
+  --foreground: var(--ll-text);
+  --surface: var(--ll-surface);
+  --surface-raised: var(--ll-surface-raised);
+  --card: var(--ll-surface);
+  --card-foreground: var(--ll-text);
+  --border: var(--ll-border);
+  --input: var(--ll-border);
+  --ring: var(--ll-primary);
 
-  --success: var(--color-success);
-  --success-foreground: #FFFFFF;
+  --primary: var(--ll-primary);
+  --primary-foreground: var(--ll-primary-foreground);
+  --primary-soft: var(--ll-primary-soft);
 
-  --warning: var(--color-warning);
-  --warning-foreground: #1E2A36;
+  --secondary: var(--ll-secondary);
+  --secondary-foreground: var(--ll-secondary-foreground);
 
-  --muted: #E6E9F8;
-  --muted-foreground: var(--text-muted);
+  --emergency: var(--ll-danger);
+  --emergency-foreground: var(--ll-danger-foreground);
 
-  --popover: var(--surface);
-  --popover-foreground: var(--text);
+  --destructive: var(--ll-danger);
+  --destructive-foreground: var(--ll-danger-foreground);
 
-  --secondary: #F4F6FA;
-  --secondary-foreground: var(--text);
+  --danger: var(--ll-danger);
+  --danger-foreground: var(--ll-danger-foreground);
+  --danger-ink: var(--ll-danger-ink);
 
-  --accent: var(--color-primary-soft);
-  --accent-foreground: var(--color-primary);
+  --success: var(--ll-success);
+  --success-foreground: var(--ll-success-foreground);
+  --success-ink: var(--ll-success-ink);
 
-  --chart-1: var(--color-primary);
-  --chart-2: var(--color-success);
-  --chart-3: var(--color-warning);
-  --chart-4: var(--color-danger);
-  --chart-5: var(--color-info);
+  --warning: var(--ll-warning);
+  --warning-foreground: var(--ll-warning-foreground);
+  --warning-ink: var(--ll-warning-ink);
+
+  --info: var(--ll-info);
+  --info-foreground: var(--ll-info-foreground);
+  --info-ink: var(--ll-info-ink);
+
+  --muted: var(--ll-primary-soft);
+  --muted-foreground: var(--ll-text-muted);
+
+  --popover: var(--ll-surface);
+  --popover-foreground: var(--ll-text);
+
+  --accent: var(--ll-primary-soft);
+  --accent-foreground: var(--ll-primary);
+
+  --chart-1: var(--ll-primary);
+  --chart-2: var(--ll-success);
+  --chart-3: var(--ll-warning);
+  --chart-4: var(--ll-danger);
+  --chart-5: var(--ll-info);
 
   --radius: 0.625rem;
 
-  --sidebar: #F4F6FA;
-  --sidebar-foreground: var(--text);
-  --sidebar-primary: var(--color-primary);
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: var(--color-primary-soft);
-  --sidebar-accent-foreground: var(--color-primary);
-  --sidebar-border: var(--border);
-  --sidebar-ring: var(--color-primary);
+  --sidebar: var(--ll-bg);
+  --sidebar-foreground: var(--ll-text);
+  --sidebar-primary: var(--ll-primary);
+  --sidebar-primary-foreground: var(--ll-primary-foreground);
+  --sidebar-accent: var(--ll-primary-soft);
+  --sidebar-accent-foreground: var(--ll-primary);
+  --sidebar-border: var(--ll-border);
+  --sidebar-ring: var(--ll-primary);
+}
+
+.dark,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Lifeline Raw Palette (Dark Mode - Dispatcher Console & Tablet Night Cockpit) */
+  --ll-primary: #8C9BFF;
+  --ll-primary-foreground: #0E1224;
+  --ll-primary-soft: #232A55;
+
+  --ll-secondary: #94A3B8;
+  --ll-secondary-foreground: #0E1224;
+
+  --ll-success: #3DDC97;
+  --ll-success-foreground: #0E1224;
+  --ll-success-ink: #3DDC97;
+
+  --ll-danger: #FF5A66;
+  --ll-danger-foreground: #0E1224;
+  --ll-danger-ink: #FF5A66;
+
+  --ll-warning: #F5A524;
+  --ll-warning-foreground: #0E1224;
+  --ll-warning-ink: #F5A524;
+
+  --ll-info: #4FC3F7;
+  --ll-info-foreground: #0E1224;
+  --ll-info-ink: #4FC3F7;
+
+  --ll-bg: #0E1224;
+  --ll-surface: #171C36;
+  --ll-surface-raised: #1D2342;
+  --ll-border: #2A3158;
+  --ll-text: #E8EBF5;
+  --ll-text-muted: #9AA3C0;
+
+  /* Domain Tokens */
+  --priority-critical: var(--ll-danger);
+  --priority-urgent: var(--ll-warning);
+  --priority-routine: var(--ll-info);
+  --unit-available: var(--ll-success);
+  --unit-enroute: var(--ll-info);
+  --unit-busy: var(--ll-warning);
+  --unit-offline: var(--ll-secondary);
+
+  /* Semantic UI Tokens */
+  --background: var(--ll-bg);
+  --foreground: var(--ll-text);
+  --surface: var(--ll-surface);
+  --surface-raised: var(--ll-surface-raised);
+  --card: var(--ll-surface);
+  --card-foreground: var(--ll-text);
+  --border: var(--ll-border);
+  --input: var(--ll-border);
+  --ring: var(--ll-primary);
+
+  --primary: var(--ll-primary);
+  --primary-foreground: var(--ll-primary-foreground);
+  --primary-soft: var(--ll-primary-soft);
+
+  --secondary: var(--ll-secondary);
+  --secondary-foreground: var(--ll-secondary-foreground);
+
+  --emergency: var(--ll-danger);
+  --emergency-foreground: var(--ll-danger-foreground);
+
+  --destructive: var(--ll-danger);
+  --destructive-foreground: var(--ll-danger-foreground);
+
+  --danger: var(--ll-danger);
+  --danger-foreground: var(--ll-danger-foreground);
+  --danger-ink: var(--ll-danger-ink);
+
+  --success: var(--ll-success);
+  --success-foreground: var(--ll-success-foreground);
+  --success-ink: var(--ll-success-ink);
+
+  --warning: var(--ll-warning);
+  --warning-foreground: var(--ll-warning-foreground);
+  --warning-ink: var(--ll-warning-ink);
+
+  --info: var(--ll-info);
+  --info-foreground: var(--ll-info-foreground);
+  --info-ink: var(--ll-info-ink);
+
+  --muted: #232A55;
+  --muted-foreground: var(--ll-text-muted);
+
+  --popover: var(--ll-surface);
+  --popover-foreground: var(--ll-text);
+
+  --accent: var(--ll-primary-soft);
+  --accent-foreground: var(--ll-text);
+
+  --chart-1: var(--ll-primary);
+  --chart-2: var(--ll-success);
+  --chart-3: var(--ll-warning);
+  --chart-4: var(--ll-danger);
+  --chart-5: var(--ll-info);
+
+  --sidebar: var(--ll-bg);
+  --sidebar-foreground: var(--ll-text);
+  --sidebar-primary: var(--ll-primary);
+  --sidebar-primary-foreground: var(--ll-primary-foreground);
+  --sidebar-accent: var(--ll-primary-soft);
+  --sidebar-accent-foreground: var(--ll-text);
+  --sidebar-border: var(--ll-border);
+  --sidebar-ring: var(--ll-primary);
 }
 
 @theme inline {
@@ -120,6 +240,10 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
   --color-emergency: var(--emergency);
   --color-emergency-foreground: var(--emergency-foreground);
@@ -127,21 +251,27 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
 
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-ink: var(--danger-ink);
+
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
+  --color-info-ink: var(--info-ink);
 
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-success-ink: var(--success-ink);
+
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-warning-ink: var(--warning-ink);
 
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
 
@@ -202,7 +332,7 @@ body {
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(222 47% 32%);
+  background: var(--muted-foreground);
 }
 
 /* Glassmorphism helpers */
@@ -240,63 +370,4 @@ body {
   .animate-siren {
     animation: emergency-pulse 2s infinite ease-in-out;
   }
-}
-
-/* Dark theme (dispatcher dashboard) */
-:root[data-theme="dark"] {
-  --color-primary: #8C9BFF;
-  --color-danger: #FF5A66;
-  --bg: #0E1224;
-  --surface: #171C36;
-  --border: #2A3158;
-  --text: #E8EBF5;
-  --text-muted: #9AA3C0;
-
-  --background: var(--bg);
-  --foreground: var(--text);
-  --surface-raised: #171C36;
-  --card: #171C36;
-  --card-foreground: var(--text);
-  --border: var(--border);
-  --input: #2A3158;
-  --ring: #8C9BFF;
-
-  --primary: #8C9BFF;
-  --primary-foreground: #0E1224;
-
-  --emergency: #FF5A66;
-  --emergency-foreground: #FFFFFF;
-
-  --destructive: #FF5A66;
-  --destructive-foreground: #FFFFFF;
-
-  --info: #0B73A8;
-  --info-foreground: #FFFFFF;
-
-  --success: #177A4E;
-  --success-foreground: #FFFFFF;
-
-  --warning: #F5A524;
-  --warning-foreground: #1E2A36;
-
-  --muted: #2A3158;
-  --muted-foreground: #9AA3C0;
-
-  --popover: #171C36;
-  --popover-foreground: var(--text);
-
-  --secondary: #2A3158;
-  --secondary-foreground: var(--text);
-
-  --accent: #2A3158;
-  --accent-foreground: #E8EBF5;
-
-  --sidebar: #0E1224;
-  --sidebar-foreground: var(--text);
-  --sidebar-primary: #8C9BFF;
-  --sidebar-primary-foreground: #0E1224;
-  --sidebar-accent: #2A3158;
-  --sidebar-accent-foreground: var(--text);
-  --sidebar-border: #2A3158;
-  --sidebar-ring: #8C9BFF;
 }

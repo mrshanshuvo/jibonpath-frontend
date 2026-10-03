@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
 import type { ApiResponse } from "@/types/api.types";
-import type { Ambulance, AmbulanceStatus, AmbulanceType } from "@/types/entities.types";
+import type { Ambulance } from "@/types/entities.types";
 
 export interface PublicFleetResponse {
   ambulances: Ambulance[];

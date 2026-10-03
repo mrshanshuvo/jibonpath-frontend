@@ -59,7 +59,7 @@ proxy.ts      <- Network-level RBAC guard (Next.js 16+ proxy convention)
 | Business logic for a domain     | `features/<domain>/`                     |
 | API query hooks for a domain    | `features/<domain>/api/`                 |
 | Components used by ONE feature  | `features/<domain>/components/`          |
-| Components used by 2+ features  | `components/ui/` or `components/layout/` |
+| Components used by 2+ features  | `components/shared/` (custom) or `components/ui/` (shadcn CLI) |
 | Custom hook used by ONE feature | `features/<domain>/hooks/`               |
 | Custom hook used by 2+ features | `hooks/`                                 |
 | Zustand store                   | `stores/`                                |
@@ -505,25 +505,35 @@ const colorMap = { red: "bg-red-500", green: "bg-green-500" };
 <div className={colorMap[color]} />              // CORRECT
 ```
 
-### Design Token Rules (Tailwind CSS v4 @theme)
+### Design Token Rules (Lifeline System & Tailwind CSS v4 @theme)
 
 Define ALL design tokens in `src/app/globals.css`. Never use raw color hex values in components.
 
-- **Design token discipline**: Components must reference tokens via Tailwind utility classes (`text-destructive`, `bg-emergency`). Raw hex values, `rgb()`, and `rgba()` literals are only permitted inside `globals.css` keyframes and glass helpers — never inside `.tsx` files. Non-token color usage (e.g. `text-blue-400`) is banned in favor of the closest semantic token.
+- **Design token discipline**: Components must reference tokens via Tailwind utility classes (`text-primary`, `bg-emergency`, `text-success-ink`). Raw hex values, `rgb()`, and `rgba()` literals are only permitted inside `globals.css` — never inside `.tsx` files. Non-token color usage (e.g. `text-blue-400`, `text-white`, `bg-emerald-500`) is strictly banned.
+- **Accessible Ink/Tint Triples**: For light backgrounds and badges, always use `-ink` color tokens (`text-warning-ink`, `text-success-ink`, `text-danger-ink`, `text-info-ink`) on top of `-tint` backgrounds (`bg-warning-tint`, etc.) to guarantee WCAG 2.1 AA 4.5:1 contrast compliance.
+- **Emergency Red Reservation**: `emergency` / `danger` red (`#DC2626` / `#FF5A66`) is STRICTLY reserved for P1/Critical SOS emergencies and life-threatening alerts. It must never be used for generic marketing, administrative badges, or decorative styling.
+- **Component Architecture Separation**:
+  - `src/components/ui/`: STRICTLY official shadcn CLI primitives in lowercase (`dialog.tsx`, `dropdown-menu.tsx`, `table.tsx`, `tabs.tsx`, `chart.tsx`, `sonner.tsx`, `label.tsx`).
+  - `src/components/shared/`: Hand-crafted custom reusable components (`Badge.tsx`, `Button.tsx`, `Card.tsx`, `Input.tsx`, `Select.tsx`, `Skeleton.tsx`, `Textarea.tsx`, `ThemeToggle.tsx`, `Modal.tsx`, `DataTable.tsx`, `EmptyState.tsx`, `Pagination.tsx`, `StatusBadge.tsx`).
+- **Contrast & Token Verification**: Run `npm run check:contrast` to execute the automated WCAG 2.1 AA mathematical verification and codebase raw-utility scanner.
 - **Reduced motion**: All non-essential animation (`ping`, `pulse`, transform-on-hover, custom keyframes) MUST be gated behind `motion-safe:` or `@media (prefers-reduced-motion: no-preference)`. Loading indicators (`animate-spin`) are essential and exempt.
 
 ```css
 @theme inline {
-  --color-primary: hsl(221 83% 53%);
-  --color-primary-foreground: hsl(0 0% 98%);
-  --color-emergency: hsl(0 84% 55%);
-  --color-emergency-foreground: hsl(0 0% 98%);
-  --color-success: hsl(142 71% 45%);
-  --color-warning: hsl(38 92% 50%);
-  --color-surface: hsl(222 47% 11%);
-  --color-card: hsl(222 47% 16%);
-  --color-border: hsl(222 47% 22%);
-  --radius-DEFAULT: 0.5rem;
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-emergency: var(--emergency);
+  --color-emergency-foreground: var(--emergency-foreground);
+  --color-success: var(--success);
+  --color-success-ink: var(--success-ink);
+  --color-warning: var(--warning);
+  --color-warning-ink: var(--warning-ink);
+  --color-danger: var(--danger);
+  --color-danger-ink: var(--danger-ink);
+  --color-info: var(--info);
+  --color-info-ink: var(--info-ink);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
 }
 ```
 

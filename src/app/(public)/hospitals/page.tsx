@@ -12,7 +12,7 @@ import {
   ShieldCheck,
   Ambulance,
 } from "lucide-react";
-import { Input, Button, Badge } from "@/components/ui";
+import { Input, Button, Badge } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 
 interface HospitalItem {
@@ -182,7 +182,7 @@ export default function HospitalsPage() {
                   onClick={() => setSelectedZone(zone)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
                     selectedZone === zone
-                      ? "bg-primary text-white font-semibold shadow-xs"
+                      ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                       : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
                   }`}
                 >
@@ -231,14 +231,14 @@ export default function HospitalsPage() {
                     </div>
 
                     {hospital.hasCathLab && (
-                      <div className="flex items-center gap-1 rounded-md bg-rose-500/10 text-destructive/80 px-2.5 py-1 text-3xs font-medium border border-rose-500/20">
+                      <div className="flex items-center gap-1 rounded-md bg-danger-tint text-danger-ink dark:text-danger px-2.5 py-1 text-3xs font-medium border border-danger/20">
                         <CheckCircle className="h-3 w-3" />
                         <span>24/7 Cath Lab (Cardiac)</span>
                       </div>
                     )}
 
                     {hospital.hasBurnUnit && (
-                      <div className="flex items-center gap-1 rounded-md bg-amber-500/10 text-amber-400 px-2.5 py-1 text-3xs font-medium border border-amber-500/20">
+                      <div className="flex items-center gap-1 rounded-md bg-warning-tint text-warning-ink dark:text-warning px-2.5 py-1 text-3xs font-medium border border-warning/20">
                         <CheckCircle className="h-3 w-3" />
                         <span>Burn & Plastic Trauma Unit</span>
                       </div>
@@ -251,7 +251,7 @@ export default function HospitalsPage() {
                     href={`tel:${hospital.phone}`}
                     className="inline-flex items-center gap-2 text-xs font-semibold text-foreground hover:text-primary transition-colors"
                   >
-                    <PhoneCall className="h-3.5 w-3.5 text-success" />
+                    <PhoneCall className="h-3.5 w-3.5 text-success-ink dark:text-success" />
                     <span>ER Line: {hospital.phone}</span>
                   </a>
 

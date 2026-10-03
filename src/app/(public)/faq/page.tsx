@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, HelpCircle, PhoneCall, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 import { cn } from "@/lib/utils";
 
@@ -118,7 +118,7 @@ export default function FaqPage() {
               className={cn(
                 "px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors",
                 selectedCategory === cat
-                  ? "bg-primary text-white font-semibold shadow-xs"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                   : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised",
               )}
             >

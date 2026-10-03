@@ -1,13 +1,16 @@
-import { isValidElement, type ElementType, type ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import {
+  type ReactNode,
+  type ElementType,
+  isValidElement,
+} from "react";
 import { Inbox } from "lucide-react";
 import { Button } from "./Button";
+import { cn } from "@/lib/utils";
 
 export interface EmptyStateProps {
-  /** Either a rendered ReactNode (e.g. `<Inbox />`) or a component type. */
-  icon?: ReactNode | ElementType;
   title: string;
   description: string;
+  icon?: ElementType | ReactNode;
   action?: ReactNode;
   actionLabel?: string;
   onAction?: () => void;
@@ -15,9 +18,9 @@ export interface EmptyStateProps {
 }
 
 export function EmptyState({
-  icon,
   title,
   description,
+  icon,
   action,
   actionLabel,
   onAction,

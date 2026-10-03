@@ -66,21 +66,21 @@ export function UserManagementTable() {
     switch (role) {
       case Role.ADMIN:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-2 py-0.5 text-3xs font-bold text-indigo-400 border border-indigo-500/20">
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-3xs font-bold text-primary border border-primary/20">
             <Shield className="h-3 w-3" />
             ADMIN
           </span>
         );
       case Role.DRIVER:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-3xs font-bold text-success border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-3xs font-bold text-success-ink border border-success-ink/20">
             <Ambulance className="h-3 w-3" />
             DRIVER
           </span>
         );
       case Role.PATIENT:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 text-3xs font-bold text-blue-400 border border-blue-500/20">
+          <span className="inline-flex items-center gap-1 rounded-full bg-info/10 px-2 py-0.5 text-3xs font-bold text-info-ink border border-info-ink/20">
             <HeartPulse className="h-3 w-3" />
             PATIENT
           </span>
@@ -102,7 +102,7 @@ export function UserManagementTable() {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                 roleFilter === r
-                  ? "bg-primary text-white font-semibold shadow-xs"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                   : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
               }`}
             >
@@ -214,8 +214,8 @@ export function UserManagementTable() {
                         onClick={() => handleToggleStatus(u.id, u.isActive)}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold cursor-pointer border transition-colors ${
                           u.isActive
-                            ? "bg-emerald-500/10 text-success border-emerald-500/20 hover:bg-emerald-500/20"
-                            : "bg-rose-500/10 text-destructive/80 border-rose-500/20 hover:bg-rose-500/20"
+                            ? "bg-success/10 text-success-ink border-success-ink/20 hover:bg-success/20"
+                            : "bg-danger/10 text-danger-ink border-danger-ink/20 hover:bg-danger/20"
                         }`}
                       >
                         {u.isActive ? (
@@ -240,7 +240,7 @@ export function UserManagementTable() {
                       <button
                         title="Delete user"
                         onClick={() => handleDelete(u.id, u.name)}
-                        className="p-1.5 rounded-md text-muted-foreground hover:text-destructive/80 hover:bg-rose-400/10 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-md text-muted-foreground hover:text-danger-ink dark:hover:text-danger hover:bg-danger-tint transition-colors cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>

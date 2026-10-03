@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/Skeleton";
+import { Skeleton } from "@/components/shared/Skeleton";
 
 export default function RootLoading() {
   return (

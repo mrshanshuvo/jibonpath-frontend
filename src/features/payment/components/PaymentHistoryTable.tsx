@@ -5,11 +5,11 @@ import Link from "next/link";
 import { CreditCard, FileText, AlertCircle, ExternalLink } from "lucide-react";
 import {
   Button,
-  Badge,
   Skeleton,
   Pagination,
   EmptyState,
-} from "@/components/ui";
+  StatusBadge,
+} from "@/components/shared";
 import { InvoiceReceipt } from "./InvoiceReceipt";
 import { PaymentStatus, type Payment } from "@/types/entities.types";
 import { useMyPayments } from "../api/payment.queries";
@@ -35,57 +35,15 @@ export function PaymentHistoryTable() {
   };
 
   const getStatusBadge = (status: PaymentStatus) => {
-    switch (status) {
-      case PaymentStatus.SUCCESS:
-        return (
-          <Badge variant="success" size="sm">
-            SUCCESS
-          </Badge>
-        );
-      case PaymentStatus.PENDING:
-        return (
-          <Badge variant="warning" size="sm">
-            PENDING
-          </Badge>
-        );
-      case PaymentStatus.FAILED:
-        return (
-          <Badge variant="emergency" size="sm">
-            FAILED
-          </Badge>
-        );
-      case PaymentStatus.REFUNDED:
-        return (
-          <Badge variant="outline" size="sm">
-            REFUNDED
-          </Badge>
-        );
-    }
+    return <StatusBadge domain="payment" value={status} size="sm" />;
   };
 
   const getGatewayBadge = (gateway: string) => {
-    switch (gateway) {
-      case "BKASH":
-        return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/20">
-            bKash
-          </span>
-        );
-      case "SSLCOMMERZ":
-        return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-            SSLCommerz
-          </span>
-        );
-      case "STRIPE":
-        return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-            Stripe
-          </span>
-        );
-      default:
-        return <span className="text-3xs font-medium">{gateway}</span>;
-    }
+    return (
+      <span className="text-3xs font-medium px-2 py-0.5 rounded-full border border-border bg-surface-raised text-foreground">
+        {gateway}
+      </span>
+    );
   };
 
   return (
@@ -106,7 +64,7 @@ export function PaymentHistoryTable() {
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
               statusFilter === status
-                ? "bg-primary text-white font-semibold shadow-xs"
+                ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
             }`}
           >

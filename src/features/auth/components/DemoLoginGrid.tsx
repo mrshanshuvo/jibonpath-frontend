@@ -35,9 +35,9 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
   const getRoleIcon = (role: Role) => {
     switch (role) {
       case Role.ADMIN:
-        return <Shield className="h-5 w-5 text-indigo-400" />;
+        return <Shield className="h-5 w-5 text-primary" />;
       case Role.DRIVER:
-        return <Ambulance className="h-5 w-5 text-success" />;
+        return <Ambulance className="h-5 w-5 text-success-ink dark:text-success" />;
       case Role.PATIENT:
         return <HeartPulse className="h-5 w-5 text-emergency" />;
     }
@@ -46,22 +46,22 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
   const getRoleAccent = (role: Role) => {
     switch (role) {
       case Role.ADMIN:
-        return "border-indigo-500/30 hover:border-indigo-500/60 hover:bg-indigo-950/20";
+        return "border-primary/25 hover:border-primary/50 hover:bg-primary/5";
       case Role.DRIVER:
-        return "border-emerald-500/30 hover:border-emerald-500/60 hover:bg-emerald-950/20";
+        return "border-success/25 hover:border-success/50 hover:bg-success/5";
       case Role.PATIENT:
-        return "border-emergency/30 hover:border-emergency/60 hover:bg-emergency/10";
+        return "border-emergency/25 hover:border-emergency/50 hover:bg-emergency/5";
     }
   };
 
   const getBadgeStyle = (role: Role) => {
     switch (role) {
       case Role.ADMIN:
-        return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
+        return "bg-primary/10 text-primary border-primary/20";
       case Role.DRIVER:
-        return "bg-emerald-500/10 text-success border-emerald-500/20";
+        return "bg-success-tint text-success-ink dark:text-success border-success/20";
       case Role.PATIENT:
-        return "bg-emergency/10 text-emergency border-emergency/20";
+        return "bg-danger-tint text-danger-ink dark:text-emergency border-emergency/20";
     }
   };
 

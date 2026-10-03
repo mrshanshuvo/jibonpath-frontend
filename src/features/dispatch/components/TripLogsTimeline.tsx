@@ -30,8 +30,8 @@ export function TripLogsTimeline({ logs }: TripLogsTimelineProps) {
         {sortedLogs.map((log) => (
           <div key={log.id} className="relative group">
             {/* Timeline dot */}
-            <div className="absolute -left-8.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-surface border border-emerald-500/60 shadow-xs">
-              <CheckCircle2 className="h-3 w-3 text-success" />
+            <div className="absolute -left-8.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-surface border border-success-ink/60 shadow-xs">
+              <CheckCircle2 className="h-3 w-3 text-success-ink" />
             </div>
 
             <div>

@@ -3,19 +3,19 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { AlertCircle, ArrowLeft, RefreshCw } from "lucide-react";
-import { Button, Card, Skeleton } from "@/components/ui";
+import { Button, Card, Skeleton } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 
 function PaymentCancelContent() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <Card className="max-w-md w-full p-8 text-center space-y-6 border-amber-500/40 shadow-2xl relative overflow-hidden">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/20 text-amber-400 mx-auto shadow-lg shadow-amber-500/20">
+      <Card className="max-w-md w-full p-8 text-center space-y-6 border-warning/40 shadow-2xl relative overflow-hidden">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-warning-tint text-warning-ink dark:text-warning border border-warning/30 mx-auto shadow-lg shadow-warning/20">
           <AlertCircle className="h-10 w-10" />
         </div>
 
         <div className="space-y-1.5">
-          <span className="text-3xs font-bold uppercase tracking-wider text-amber-400">
+          <span className="text-3xs font-bold uppercase tracking-wider text-warning-ink dark:text-warning">
             Transaction Interrupted
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">

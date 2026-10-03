@@ -159,7 +159,7 @@ export function getPriorityStyles(priority: Priority): {
     case Priority.CRITICAL:
       return {
         badge: "bg-red-500/10 text-red-500 border-red-500/20",
-        dot: "bg-red-500 animate-pulse",
+        dot: "bg-red-500",
         label: "Critical",
       };
     case Priority.HIGH:
@@ -196,7 +196,7 @@ export function getRequestStatusStyles(status: RequestStatus): {
     case RequestStatus.PENDING:
       return {
         badge: "bg-amber-500/10 text-amber-500 border-amber-500/20",
-        dot: "bg-amber-500 animate-pulse",
+        dot: "bg-amber-500",
         label: "Pending Dispatch",
       };
     case RequestStatus.DISPATCHED:

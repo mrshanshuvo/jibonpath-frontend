@@ -115,7 +115,7 @@ export function DispatchStepper({
                   {isCompleted ? (
                     <Check className="h-5 w-5 stroke-3 text-success" />
                   ) : isCurrent ? (
-                    <Icon className="h-5 w-5 animate-pulse" />
+                    <Icon className="h-5 w-5" />
                   ) : (
                     <Icon className="h-4 w-4" />
                   )}

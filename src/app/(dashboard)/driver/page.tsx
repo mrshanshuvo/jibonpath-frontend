@@ -65,7 +65,7 @@ export default function DriverDashboardPage() {
           </div>
 
           <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
-            <Radio className="h-3 w-3 animate-pulse" />
+            <Radio className="h-3 w-3" />
             <span>STANDBY READY ON ROTATION</span>
           </div>
         </div>

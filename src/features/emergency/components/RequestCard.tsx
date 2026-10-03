@@ -109,7 +109,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
             <div className="flex items-center justify-between text-2xs font-semibold text-primary">
               <span className="flex items-center gap-1.5">
                 <Radio
-                  className="h-3.5 w-3.5 motion-safe:animate-pulse text-success"
+                  className="h-3.5 w-3.5 text-success"
                   aria-hidden="true"
                 />
                 Active Dispatch
@@ -178,7 +178,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
                 size="sm"
                 leftIcon={
                   <Radio
-                    className="h-3.5 w-3.5 motion-safe:animate-pulse"
+                    className="h-3.5 w-3.5"
                     aria-hidden="true"
                   />
                 }

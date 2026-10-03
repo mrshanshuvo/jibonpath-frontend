@@ -107,7 +107,7 @@ export function AdminAnalyticsOverview() {
               Active Dispatches
             </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emergency/10 text-emergency">
-              <Radio className="h-5 w-5 animate-pulse" />
+              <Radio className="h-5 w-5" />
             </div>
           </div>
           <div className="mt-3">
@@ -207,7 +207,7 @@ export function AdminAnalyticsOverview() {
           {/* Legend */}
           <div className="flex flex-wrap items-center justify-between text-xs pt-2">
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-emergency" />
+              
               <span className="text-muted-foreground">
                 Dispatched ({dispatchedFleet})
               </span>

@@ -262,7 +262,7 @@ export default function DriverEarningsPage() {
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-12 bg-surface rounded-lg animate-pulse"
+                  className="h-12 bg-surface rounded-lg"
                 />
               ))}
             </div>

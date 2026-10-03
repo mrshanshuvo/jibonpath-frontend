@@ -88,7 +88,7 @@ function Badge({
           {pulse && (
             <span
               className={cn(
-                "absolute inset-0 inline-flex rounded-full opacity-75 motion-safe:animate-ping",
+                "absolute inset-0 inline-flex rounded-full opacity-75",
                 dotColor,
               )}
             />

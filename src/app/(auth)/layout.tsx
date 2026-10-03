@@ -33,7 +33,7 @@ export default function AuthLayout({
             <div className="flex flex-col">
               <span className="text-base font-bold tracking-tight text-foreground flex items-center gap-1.5">
                 PulsePoint
-                <span className="flex h-2 w-2 rounded-full bg-emergency animate-ping" />
+                
               </span>
               <span className="text-3xs uppercase tracking-widest text-muted-foreground font-medium -mt-1">
                 Emergency Dispatch Portal

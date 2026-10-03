@@ -22,7 +22,7 @@ export function Footer() {
               tracking network operating 24 hours, 7 days a week.
             </p>
             <div className="flex items-center gap-2 text-xs text-success font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="flex h-2 w-2 rounded-full bg-emerald-400" />
               <span>Emergency Network Online</span>
             </div>
           </div>

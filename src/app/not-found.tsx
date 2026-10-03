@@ -6,7 +6,7 @@ import { Ambulance, ArrowLeft, PhoneCall } from "lucide-react";
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
-      <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-emergency/15 text-emergency mb-6 shadow-xl shadow-emergency/20 animate-pulse">
+      <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-emergency/15 text-emergency mb-6 shadow-xl shadow-emergency/20">
         <Ambulance className="h-10 w-10" />
       </div>
 

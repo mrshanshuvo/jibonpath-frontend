@@ -20,7 +20,6 @@ export function PatientDashboard() {
             </h1>
             <span
               aria-hidden="true"
-              className="flex h-2.5 w-2.5 rounded-full bg-emergency motion-safe:animate-ping"
             />
           </div>
           <p className="text-xs text-muted-foreground mt-1">

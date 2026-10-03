@@ -39,7 +39,7 @@ export default function DriverProfilePage() {
             </p>
             <div className="flex items-center gap-2 mt-1">
               <span className="inline-flex items-center gap-1 text-3xs text-success font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Active on Dhaka Duty Rotation
               </span>
             </div>

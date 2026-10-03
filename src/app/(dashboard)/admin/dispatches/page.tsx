@@ -45,7 +45,7 @@ export default function AdminDispatchesPage() {
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               Metropolitan Active Dispatches
             </h1>
-            <span className="flex h-2.5 w-2.5 rounded-full bg-emergency animate-ping" />
+            
           </div>
           <p className="text-xs text-muted-foreground mt-1">
             Real-time live telemetry tracking and stage monitoring for all
@@ -54,7 +54,7 @@ export default function AdminDispatchesPage() {
         </div>
 
         <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
-          <Radio className="h-3 w-3 animate-pulse" />
+          <Radio className="h-3 w-3" />
           <span>RADAR TELEMETRY POLLING ACTIVE</span>
         </div>
       </div>

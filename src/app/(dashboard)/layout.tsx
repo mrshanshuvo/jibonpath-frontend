@@ -84,7 +84,7 @@ export default function DashboardLayout({
           <div className="flex items-center gap-3">
             {/* Real-time telemetry status indicator */}
             <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
-              <Radio className="h-3 w-3 animate-pulse" />
+              <Radio className="h-3 w-3" />
               <span>DISPATCH TELEMETRY ONLINE</span>
             </div>
 

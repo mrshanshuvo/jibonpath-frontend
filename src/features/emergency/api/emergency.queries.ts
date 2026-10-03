@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
+import { useAuthStore } from "@/stores/auth.store";
 import type { ApiResponse } from "@/types/api.types";
 import type { EmergencyRequest } from "@/types/entities.types";
 import type {
@@ -25,6 +26,7 @@ export const emergencyKeys = {
  * Fetches the patient's own emergency requests with pagination and filters
  */
 export function useMyRequests(params?: RequestQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -44,6 +46,7 @@ export function useMyRequests(params?: RequestQueryParams) {
       );
       return res.data;
     },
+    enabled: isAuthenticated,
     refetchInterval: 10000, // Poll every 10s for real-time dispatch updates
   });
 }
@@ -53,6 +56,7 @@ export function useMyRequests(params?: RequestQueryParams) {
  * Fetches all requests across the system for administrator dispatch control
  */
 export function useAdminRequests(params?: RequestQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -67,6 +71,7 @@ export function useAdminRequests(params?: RequestQueryParams) {
       });
       return res.data;
     },
+    enabled: isAuthenticated,
     refetchInterval: 10000,
   });
 }

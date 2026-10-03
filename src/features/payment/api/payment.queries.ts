@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
+import { useAuthStore } from "@/stores/auth.store";
 import { PaymentGateway, type Payment } from "@/types/entities.types";
 import type { ApiResponse } from "@/types/api.types";
 import type {
@@ -27,6 +28,7 @@ export const paymentKeys = {
  * Fetches patient payment history or admin payment list
  */
 export function useMyPayments(params?: PaymentQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -44,6 +46,7 @@ export function useMyPayments(params?: PaymentQueryParams) {
       );
       return res.data;
     },
+    enabled: isAuthenticated,
   });
 }
 

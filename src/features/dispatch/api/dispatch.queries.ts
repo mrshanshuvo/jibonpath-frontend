@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
+import { useAuthStore } from "@/stores/auth.store";
 import type { ApiResponse } from "@/types/api.types";
 import type { Dispatch } from "@/types/entities.types";
 import type {
@@ -25,6 +26,7 @@ export const dispatchKeys = {
  * Fetches paginated dispatches (for Admin or Driver history)
  */
 export function useDispatches(params?: DispatchQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -42,6 +44,7 @@ export function useDispatches(params?: DispatchQueryParams) {
       );
       return res.data;
     },
+    enabled: isAuthenticated,
     refetchInterval: 10000,
   });
 }
@@ -51,6 +54,8 @@ export function useDispatches(params?: DispatchQueryParams) {
  * Polled query for a paramedic driver's ongoing emergency assignment
  */
 export function useActiveDriverDispatch() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return useQuery({
     queryKey: dispatchKeys.activeDriver(),
     queryFn: async () => {
@@ -59,6 +64,7 @@ export function useActiveDriverDispatch() {
       );
       return res.data;
     },
+    enabled: isAuthenticated,
     refetchInterval: 5000, // High-frequency polling for driver cockpit
   });
 }

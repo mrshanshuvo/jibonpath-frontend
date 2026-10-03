@@ -147,7 +147,11 @@ async function request<T>(
   }
 
   if (!skipAuth) {
-    const token = useAuthStore.getState().accessToken;
+    let token = useAuthStore.getState().accessToken;
+    // Attempt session rehydration if token not yet loaded into in-memory store
+    if (!token && typeof window !== "undefined") {
+      token = await refreshAccessToken();
+    }
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -164,17 +168,9 @@ async function request<T>(
       endpoint.includes("/auth/register") ||
       endpoint.includes("/auth/refresh-token");
 
-    const hadAuthHeader = headers.has("Authorization");
-
     // Responsibility 2: 401 Unauthorized handling with single refresh retry
-    // Only attempt refresh if an Authorization token was sent, and NOT on auth endpoints
-    if (
-      response.status === 401 &&
-      hadAuthHeader &&
-      !isAuthEndpoint &&
-      !skipAuth &&
-      !isRetry
-    ) {
+    // Refresh access token via HTTP-only cookie and retry once
+    if (response.status === 401 && !isAuthEndpoint && !skipAuth && !isRetry) {
       const newToken = await refreshAccessToken();
       if (newToken) {
         return request<T>(endpoint, options, true);

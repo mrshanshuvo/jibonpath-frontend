@@ -57,8 +57,11 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/patient",
     "/patient/:path*",
+    "/driver",
     "/driver/:path*",
+    "/admin",
     "/admin/:path*",
     "/login",
     "/register",

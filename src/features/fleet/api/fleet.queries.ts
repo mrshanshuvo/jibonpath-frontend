@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
+import { useAuthStore } from "@/stores/auth.store";
 import type { ApiResponse } from "@/types/api.types";
 import type { Ambulance } from "@/types/entities.types";
 import type {
@@ -24,6 +25,7 @@ export const fleetKeys = {
  * Fetches paginated ambulance fleet vehicles with status/type filters
  */
 export function useAmbulances(params?: FleetQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -39,6 +41,7 @@ export function useAmbulances(params?: FleetQueryParams) {
       });
       return res.data;
     },
+    enabled: isAuthenticated,
     refetchInterval: 10000,
   });
 }

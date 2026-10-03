@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
+import { useAuthStore } from "@/stores/auth.store";
 import type { ApiResponse } from "@/types/api.types";
 import type { User, Role } from "@/types/entities.types";
 import type {
@@ -28,12 +29,15 @@ export const adminKeys = {
  * Fetches dashboard summary statistics (cached in Redis, live poll every 10s)
  */
 export function useAdminStats() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return useQuery({
     queryKey: adminKeys.stats(),
     queryFn: async () => {
       const res = await api.get<ApiResponse<AdminStats>>("/admin/stats");
       return res.data;
     },
+    enabled: isAuthenticated,
     refetchInterval: 10000,
   });
 }
@@ -43,6 +47,7 @@ export function useAdminStats() {
  * Fetches paginated user directory with search and role filters
  */
 export function useAdminUsers(params?: AdminUsersQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -60,6 +65,7 @@ export function useAdminUsers(params?: AdminUsersQueryParams) {
       );
       return res.data;
     },
+    enabled: isAuthenticated,
   });
 }
 
@@ -183,6 +189,7 @@ export function useCreateDriver() {
  * Fetches paginated system audit trail
  */
 export function useAuditLogs(params?: AdminAuditLogsQueryParams) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -198,5 +205,6 @@ export function useAuditLogs(params?: AdminAuditLogsQueryParams) {
       );
       return res.data;
     },
+    enabled: isAuthenticated,
   });
 }

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Role, type User } from "@/types/entities.types";
+import type { User } from "@/types/entities.types";
 
 interface AuthState {
   user: User | null;

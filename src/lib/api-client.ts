@@ -1,4 +1,4 @@
-import { ApiError, type ApiResponse, type ApiErrorResponse } from "@/types/api.types";
+import { ApiError, type ApiErrorResponse } from "@/types/api.types";
 import { useAuthStore } from "@/stores/auth.store";
 import { ROUTES } from "@/config/routes";
 import { getAllowedRolesForPath } from "@/config/roles";
@@ -40,7 +40,10 @@ async function handleLogout(): Promise<void> {
 
     // Only force redirect if currently browsing a protected dashboard route
     if (isProtected) {
-      window.location.href = `${ROUTES.AUTH.LOGIN}?redirect=${encodeURIComponent(fullPath)}`;
+      // On session expiration, replace history so back-button cannot re-enter protected view
+      window.location.replace(
+        `${ROUTES.AUTH.LOGIN}?redirect=${encodeURIComponent(fullPath)}`,
+      );
     }
   }
 }
@@ -217,7 +220,9 @@ async function request<T>(
     }
 
     const message =
-      error instanceof Error ? error.message : "An unexpected network error occurred";
+      error instanceof Error
+        ? error.message
+        : "An unexpected network error occurred";
     throw new ApiError(message, 500);
   }
 }

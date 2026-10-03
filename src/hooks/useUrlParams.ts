@@ -3,9 +3,14 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
+export interface UrlParamOptions {
+  replace?: boolean;
+}
+
 /**
  * Hook for URL state syncing as mandated by STANDARDS.md Section 15
  * Keeps all filterable and paginated state synchronized with search params.
+ * Defaults to router.replace to avoid cluttering browser history during filtering.
  */
 export function useUrlParams() {
   const searchParams = useSearchParams();
@@ -17,7 +22,11 @@ export function useUrlParams() {
   }, [searchParams]);
 
   const setParam = useCallback(
-    (key: string, value: string | number | null | undefined) => {
+    (
+      key: string,
+      value: string | number | null | undefined,
+      options: UrlParamOptions = { replace: true },
+    ) => {
       const nextParams = new URLSearchParams(searchParams?.toString() ?? "");
       if (value === null || value === undefined || value === "") {
         nextParams.delete(key);
@@ -25,13 +34,22 @@ export function useUrlParams() {
         nextParams.set(key, String(value));
       }
       const query = nextParams.toString();
-      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+      const target = query ? `${pathname}?${query}` : pathname;
+
+      if (options.replace) {
+        router.replace(target, { scroll: false });
+      } else {
+        router.push(target, { scroll: false });
+      }
     },
     [searchParams, pathname, router],
   );
 
   const setParams = useCallback(
-    (updates: Record<string, string | number | null | undefined>) => {
+    (
+      updates: Record<string, string | number | null | undefined>,
+      options: UrlParamOptions = { replace: true },
+    ) => {
       const nextParams = new URLSearchParams(searchParams?.toString() ?? "");
       Object.entries(updates).forEach(([key, value]) => {
         if (value === null || value === undefined || value === "") {
@@ -41,17 +59,29 @@ export function useUrlParams() {
         }
       });
       const query = nextParams.toString();
-      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+      const target = query ? `${pathname}?${query}` : pathname;
+
+      if (options.replace) {
+        router.replace(target, { scroll: false });
+      } else {
+        router.push(target, { scroll: false });
+      }
     },
     [searchParams, pathname, router],
   );
 
   const removeParam = useCallback(
-    (key: string) => {
+    (key: string, options: UrlParamOptions = { replace: true }) => {
       const nextParams = new URLSearchParams(searchParams?.toString() ?? "");
       nextParams.delete(key);
       const query = nextParams.toString();
-      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+      const target = query ? `${pathname}?${query}` : pathname;
+
+      if (options.replace) {
+        router.replace(target, { scroll: false });
+      } else {
+        router.push(target, { scroll: false });
+      }
     },
     [searchParams, pathname, router],
   );

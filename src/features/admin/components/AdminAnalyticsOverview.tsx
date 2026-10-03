@@ -1,12 +1,38 @@
 "use client";
 
-import { Users, Ambulance, Radio, CircleDollarSign } from "lucide-react";
+import { useSyncExternalStore } from "react";
+import {
+  Users,
+  Ambulance,
+  Radio,
+  CircleDollarSign,
+  TrendingUp,
+  Activity,
+} from "lucide-react";
 import { Card, Skeleton } from "@/components/ui";
 import { useAdminStats } from "../api/admin.queries";
 import { formatCurrency } from "@/lib/utils";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Cell,
+} from "recharts";
+
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export function AdminAnalyticsOverview() {
   const { data: stats, isLoading } = useAdminStats();
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   if (isLoading) {
     return (
@@ -40,6 +66,14 @@ export function AdminAnalyticsOverview() {
 
   const fleetUtilization =
     totalFleet > 0 ? Math.round((dispatchedFleet / totalFleet) * 100) : 0;
+
+  const chartData = [
+    { name: "Available", count: availableFleet, color: "#10b981" },
+    { name: "Dispatched", count: dispatchedFleet, color: "#ef4444" },
+    { name: "Maintenance", count: maintenanceFleet, color: "#f59e0b" },
+    { name: "Delivered", count: completedRequests, color: "#06b6d4" },
+    { name: "Pending", count: pendingRequests, color: "#8b5cf6" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -236,6 +270,82 @@ export function AdminAnalyticsOverview() {
           </div>
         </Card>
       </div>
+
+      {/* Recharts Operational Metrics Distribution */}
+      <Card className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Activity className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-foreground">
+                Fleet & Mission Operations Distribution
+              </h3>
+              <p className="text-3xs text-muted-foreground">
+                Real-time operational distribution across active emergency units
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+            <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+            <span>Redis Telemetry Live</span>
+          </div>
+        </div>
+
+        <div className="h-56 w-full pt-4">
+          {mounted ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+              >
+                <XAxis
+                  dataKey="name"
+                  stroke="currentColor"
+                  className="text-3xs text-muted-foreground"
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="currentColor"
+                  className="text-3xs text-muted-foreground"
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload;
+                      return (
+                        <div className="rounded-lg border border-border bg-card/95 backdrop-blur-md px-3 py-2 shadow-xl">
+                          <p className="text-xs font-semibold text-foreground">
+                            {data.name}
+                          </p>
+                          <p className="text-3xs font-mono font-bold text-primary">
+                            {data.count} units / cases
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-full w-full flex items-center justify-center">
+              <Skeleton className="h-40 w-full" />
+            </div>
+          )}
+        </div>
+      </Card>
     </div>
   );
 }

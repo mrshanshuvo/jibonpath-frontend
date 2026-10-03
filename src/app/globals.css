@@ -36,6 +36,19 @@
   --unit-busy: var(--color-warning);
   --unit-offline: var(--color-secondary);
 
+  /* Text-on-color pairs (from palette spec) */
+  --primary-text: #FFFFFF;
+  --primary-soft-text: #2F3E9E;
+  --secondary-text: #FFFFFF;
+  --success-text: #FFFFFF;
+  --danger-text: #FFFFFF;
+  --warning-text: #1E2A36;
+  --info-text: #FFFFFF;
+  --bg-text: #1E2A36;
+  --surface-text: #1E2A36;
+  --muted-text: #4C6272;
+  --border-text: #1E2A36;
+
   /* Legacy mapping for shadcn/ui compatibility */
   --background: var(--bg);
   --foreground: var(--text);

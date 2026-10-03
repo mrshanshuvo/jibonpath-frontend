@@ -98,7 +98,7 @@ export function InteractiveMap({
     if (pickup && destination) {
       const routeId = "route-layer";
       if (map.getSource(routeId)) {
-        (map.getSource(routeId) as mapboxgl.AnySource).setData({
+        (map.getSource(routeId) as any).setData({
           type: "Feature",
           geometry: {
             type: "LineString",

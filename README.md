@@ -24,11 +24,11 @@ A state-of-the-art emergency medical dispatch and fleet telemetry frontend engin
 
 The `/login` portal includes an automated **1-Click Demo Login Grid** pre-configured with operational credentials:
 
-| Role        | Email                 | Password      | Access Capabilities                                                             |
-| :---------- | :-------------------- | :------------ | :------------------------------------------------------------------------------ |
-| **PATIENT** | `patient@example.com` | `password123` | Emergency booking wizard, triage calls, payment checkout, tax invoices          |
-| **DRIVER**  | `driver@example.com`  | `password123` | Active dispatch telemetry cockpit, 6-stage status advancement, trip logs        |
-| **ADMIN**   | `admin@example.com`   | `password123` | Fleet management, BRTA driver onboarding, user role/status controls, audit logs |
+| Role        | Email                    | Password      | Access Capabilities                                                             |
+| :---------- | :----------------------- | :------------ | :------------------------------------------------------------------------------ |
+| **PATIENT** | `patient1@ambulance.dev` | `Patient@123` | Emergency booking wizard, triage calls, payment checkout, tax invoices          |
+| **DRIVER**  | `driver1@ambulance.dev`  | `Driver@123`  | Active dispatch telemetry cockpit, 6-stage status advancement, trip logs        |
+| **ADMIN**   | `admin@ambulance.dev`    | `Admin@123`   | Fleet management, BRTA driver onboarding, user role/status controls, audit logs |
 
 ---
 
@@ -53,7 +53,7 @@ The `/login` portal includes an automated **1-Click Demo Login Grid** pre-config
 
 ---
 
-## 🗺️ Complete Route Catalog (27 Static & Dynamic Routes)
+## 🗺️ Complete Route Catalog (29 Static & Dynamic Routes)
 
 ### 1. Public Portals
 
@@ -81,6 +81,7 @@ The `/login` portal includes an automated **1-Click Demo Login Grid** pre-config
 
 - `/driver` — Real-time Driver Cockpit with active mission telemetry, route addresses, and 1-click 6-stage status advancement button.
 - `/driver/history` — Completed dispatch run logs with mileage, duration, and patient triage level.
+- `/driver/earnings` — Paramedic earnings analytics, completed trip settlements, and Recharts payout trends bar chart.
 - `/driver/profile` — BRTA professional driver license verification and vehicle assignment.
 
 ### 5. Central Dispatch & Administrative Governance

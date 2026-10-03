@@ -4,10 +4,13 @@ import { Role } from "@/types/entities.types";
 import { getAllowedRolesForPath, ROLE_DEFAULT_REDIRECT } from "@/config/roles";
 import { ROUTES } from "@/config/routes";
 
+const REFRESH_COOKIE_NAME = "ambulance_refresh_token";
+const ROLE_COOKIE_NAME = "ambulance_auth_role";
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("auth_token")?.value;
-  const role = request.cookies.get("auth_role")?.value as Role | undefined;
+  const hasSession = request.cookies.has(REFRESH_COOKIE_NAME);
+  const role = request.cookies.get(ROLE_COOKIE_NAME)?.value as Role | undefined;
 
   const isAuthRoute =
     pathname.startsWith(ROUTES.AUTH.LOGIN) ||
@@ -15,7 +18,7 @@ export function proxy(request: NextRequest) {
 
   // 1. If authenticated user attempts to access /login or /register, redirect to dashboard
   if (isAuthRoute) {
-    if (token && role && ROLE_DEFAULT_REDIRECT[role]) {
+    if (hasSession && role && ROLE_DEFAULT_REDIRECT[role]) {
       return NextResponse.redirect(
         new URL(ROLE_DEFAULT_REDIRECT[role], request.url),
       );
@@ -30,8 +33,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 3. Protected route: verify token
-  if (!token) {
+  // 3. Protected route: verify active session cookie exists
+  if (!hasSession) {
     const loginUrl = new URL(ROUTES.AUTH.LOGIN, request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);

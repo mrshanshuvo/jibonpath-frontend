@@ -13,13 +13,10 @@ interface RequestOptions extends RequestInit {
 let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
-// Read refresh token from document cookies or session
-function getRefreshTokenCookie(): string | null {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie.match(new RegExp("(^| )auth_refresh_token=([^;]+)"));
-  return match ? decodeURIComponent(match[2]) : null;
-}
-
+/**
+ * Refreshes access token via server route handler /api/auth/session
+ * which holds the HTTP-only refresh token cookie.
+ */
 async function refreshAccessToken(): Promise<string | null> {
   if (isRefreshing && refreshPromise) {
     return refreshPromise;
@@ -28,32 +25,22 @@ async function refreshAccessToken(): Promise<string | null> {
   isRefreshing = true;
   refreshPromise = (async () => {
     try {
-      const refreshToken = getRefreshTokenCookie();
-      const { clearAuth, setAccessToken } = useAuthStore.getState();
-
-      if (!refreshToken) {
-        clearAuth();
-        return null;
-      }
-
-      const res = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
+      const res = await fetch("/api/auth/session", {
+        method: "GET",
       });
 
       if (!res.ok) {
-        clearAuth();
+        useAuthStore.getState().clearAuth();
         return null;
       }
 
-      const json = (await res.json()) as ApiResponse<{ accessToken: string }>;
-      if (json.success && json.data?.accessToken) {
-        setAccessToken(json.data.accessToken);
-        return json.data.accessToken;
+      const json = (await res.json()) as { success: boolean; accessToken?: string };
+      if (json.success && json.accessToken) {
+        useAuthStore.getState().setAccessToken(json.accessToken);
+        return json.accessToken;
       }
 
-      clearAuth();
+      useAuthStore.getState().clearAuth();
       return null;
     } catch {
       useAuthStore.getState().clearAuth();

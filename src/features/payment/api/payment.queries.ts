@@ -85,6 +85,24 @@ export function usePaymentStatus(requestId?: string) {
 }
 
 /**
+ * usePaymentDetail:
+ * Fetches single payment record by payment ID
+ */
+export function usePaymentDetail(paymentId?: string) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  return useQuery({
+    queryKey: [...paymentKeys.all, "detail", paymentId || ""],
+    queryFn: async () => {
+      if (!paymentId) throw new Error("Payment ID required");
+      const res = await api.get<ApiResponse<Payment>>(`/payments/${paymentId}`);
+      return res.data;
+    },
+    enabled: Boolean(paymentId) && isAuthenticated,
+  });
+}
+
+/**
  * useInitiatePayment:
  * Dispatches to chosen gateway endpoint:
  * - STRIPE -> POST /payments/stripe/checkout

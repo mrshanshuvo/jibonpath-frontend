@@ -19,6 +19,7 @@ export const ROUTES = {
     root: "/driver",
     active: "/driver",
     history: "/driver/history",
+    earnings: "/driver/earnings",
     profile: "/driver/profile",
   },
   admin: {
@@ -57,6 +58,7 @@ export const ROUTES = {
   DRIVER: {
     DASHBOARD: "/driver",
     HISTORY: "/driver/history",
+    EARNINGS: "/driver/earnings",
     PROFILE: "/driver/profile",
   },
   ADMIN: {

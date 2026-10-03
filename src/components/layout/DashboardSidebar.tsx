@@ -13,6 +13,7 @@ import {
   User as UserIcon,
   Navigation,
   History,
+  TrendingUp,
   Truck,
   Users,
   Radio,
@@ -37,6 +38,7 @@ const PATIENT_NAV: NavItem[] = [
 const DRIVER_NAV: NavItem[] = [
   { href: ROUTES.DRIVER.DASHBOARD, label: "Active Dispatch", icon: Navigation },
   { href: ROUTES.DRIVER.HISTORY, label: "Trip History", icon: History },
+  { href: ROUTES.DRIVER.EARNINGS, label: "Earnings & Stats", icon: TrendingUp },
   { href: ROUTES.DRIVER.PROFILE, label: "Driver Profile", icon: UserIcon },
 ];
 

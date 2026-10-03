@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CreditCard, FileText, AlertCircle } from "lucide-react";
+import Link from "next/link";
+import { CreditCard, FileText, AlertCircle, ExternalLink } from "lucide-react";
 import {
   Button,
   Badge,
@@ -185,16 +186,31 @@ export function PaymentHistoryTable() {
 
                     <td className="px-5 py-4 text-right">
                       {p.status === PaymentStatus.SUCCESS ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleViewReceipt(p)}
-                          leftIcon={
-                            <FileText className="h-3.5 w-3.5 text-primary" />
-                          }
-                        >
-                          Invoice
-                        </Button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleViewReceipt(p)}
+                            leftIcon={
+                              <FileText className="h-3.5 w-3.5 text-primary" />
+                            }
+                          >
+                            Invoice
+                          </Button>
+                          <Link
+                            href={`/patient/invoice/${p.id}`}
+                            title="Open standalone invoice page"
+                          >
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+                              aria-label={`Open invoice ${p.id}`}
+                            >
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </Button>
+                          </Link>
+                        </div>
                       ) : (
                         <span className="text-3xs text-muted-foreground italic">
                           No receipt

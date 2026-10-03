@@ -50,7 +50,7 @@ export function InvoiceReceipt({
             </div>
 
             <div className="text-right">
-              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-0.5 text-2xs font-bold text-emerald-400 border border-emerald-500/20">
+              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-0.5 text-2xs font-bold text-success border border-emerald-500/20">
                 <CheckCircle className="h-3 w-3" />
                 PAID & SETTLED
               </span>
@@ -111,7 +111,7 @@ export function InvoiceReceipt({
             </div>
             <div className="flex justify-between text-muted-foreground">
               <span>Onboard Vital Monitoring & Resuscitation Equipment:</span>
-              <span className="font-mono text-emerald-400">Included</span>
+              <span className="font-mono text-success">Included</span>
             </div>
           </div>
 
@@ -126,7 +126,7 @@ export function InvoiceReceipt({
           </div>
 
           <div className="flex items-center gap-1.5 text-3xs text-muted-foreground justify-center pt-2">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+            <ShieldCheck className="h-3.5 w-3.5 text-success" />
             <span>
               Electronically verified digital tax receipt. Valid for health
               insurance claims.

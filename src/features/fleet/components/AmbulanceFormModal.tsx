@@ -133,7 +133,7 @@ export function AmbulanceFormModal({
               </option>
             </select>
             {errors.type && (
-              <p className="text-xs text-rose-500 font-medium">
+              <p className="text-xs text-destructive font-medium">
                 {errors.type.message}
               </p>
             )}

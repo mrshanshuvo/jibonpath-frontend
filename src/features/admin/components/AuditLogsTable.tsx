@@ -104,7 +104,7 @@ export function AuditLogsTable() {
           </div>
         ) : isError ? (
           <div className="p-8 text-center space-y-3">
-            <AlertCircle className="h-10 w-10 text-rose-500 mx-auto" />
+            <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
             <h3 className="text-base font-bold text-foreground">
               Failed to load audit logs
             </h3>

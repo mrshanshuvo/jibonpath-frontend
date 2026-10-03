@@ -2,20 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  AlertTriangle,
-  HeartPulse,
-  Flame,
-  Activity,
-  MapPin,
-  Crosshair,
-  Building2,
   Clock,
+  Crosshair,
+  HeartPulse,
+  MapPin,
   Send,
+  Building2,
 } from "lucide-react";
-import { Button, Input, Card } from "@/components/ui";
+import { Button, Card, Input, Select, Textarea } from "@/components/ui";
 import { ROUTES } from "@/config/routes";
 import { Priority } from "@/types/entities.types";
 import {
@@ -23,8 +20,11 @@ import {
   type CreateEmergencyRequestInput,
 } from "../types";
 import { useCreateRequest } from "../api/emergency.queries";
-import { cn } from "@/lib/utils";
+import { useReverseGeocode } from "../hooks/useReverseGeocode";
+import { SeveritySelector } from "./SeveritySelector";
+import { ReviewStep } from "./ReviewStep";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const QUICK_LOCATIONS = [
   { name: "Dhanmondi Lake / Rd 27", lat: 23.7461, lng: 90.3742 },
@@ -32,7 +32,7 @@ const QUICK_LOCATIONS = [
   { name: "Uttara Sector 3", lat: 23.8712, lng: 90.3986 },
   { name: "Mirpur 10 Roundabout", lat: 23.8071, lng: 90.3686 },
   { name: "Motijheel C/A", lat: 23.7334, lng: 90.4178 },
-];
+] as const;
 
 const POPULAR_HOSPITALS = [
   "Dhaka Medical College Hospital (DMCH)",
@@ -44,44 +44,7 @@ const POPULAR_HOSPITALS = [
   "Closest Available Emergency Room",
 ];
 
-const SEVERITY_LEVELS = [
-  {
-    priority: Priority.CRITICAL,
-    label: "Critical / Resuscitation",
-    desc: "Unconscious, cardiac arrest, stroke, severe trauma, choking",
-    icon: Flame,
-    color: "text-rose-500",
-    bg: "bg-rose-500/10 border-rose-500/40 hover:border-rose-500",
-    activeRing: "ring-2 ring-rose-500 bg-rose-500/15",
-  },
-  {
-    priority: Priority.HIGH,
-    label: "High Priority / Acute",
-    desc: "Severe chest pain, heavy bleeding, difficulty breathing, major fracture",
-    icon: AlertTriangle,
-    color: "text-amber-500",
-    bg: "bg-amber-500/10 border-amber-500/40 hover:border-amber-500",
-    activeRing: "ring-2 ring-amber-500 bg-amber-500/15",
-  },
-  {
-    priority: Priority.MEDIUM,
-    label: "Medium / Urgent Care",
-    desc: "Persistent high fever, deep lacerations, asthma attack, severe abdominal pain",
-    icon: Activity,
-    color: "text-blue-500",
-    bg: "bg-blue-500/10 border-blue-500/40 hover:border-blue-500",
-    activeRing: "ring-2 ring-blue-500 bg-blue-500/15",
-  },
-  {
-    priority: Priority.LOW,
-    label: "Standard / Medical Transfer",
-    desc: "Scheduled hospital transfer, mild non-acute conditions, routine transport",
-    icon: HeartPulse,
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10 border-emerald-500/40 hover:border-emerald-500",
-    activeRing: "ring-2 ring-emerald-500 bg-emerald-500/15",
-  },
-];
+const DEFAULT_HOSPITAL = "Closest Available Emergency Room";
 
 interface BookingWizardProps {
   initialDestination?: string;
@@ -92,16 +55,22 @@ export function EmergencyBookingWizard({
 }: BookingWizardProps) {
   const router = useRouter();
   const createMutation = useCreateRequest();
-  const [detectingGps, setDetectingGps] = useState(false);
+  const { resolve: reverseGeocode, isResolving } = useReverseGeocode();
 
-  const [selectedPriority, setSelectedPriority] = useState<Priority>(
-    Priority.CRITICAL,
-  );
+  const [detectingGps, setDetectingGps] = useState(false);
+  const [pendingData, setPendingData] =
+    useState<CreateEmergencyRequestInput | null>(null);
+
+  const hospitalOptions =
+    initialDestination && !POPULAR_HOSPITALS.includes(initialDestination)
+      ? [initialDestination, ...POPULAR_HOSPITALS]
+      : POPULAR_HOSPITALS;
 
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm<CreateEmergencyRequestInput>({
     resolver: zodResolver(createEmergencyRequestSchema),
@@ -109,251 +78,243 @@ export function EmergencyBookingWizard({
       priority: Priority.CRITICAL,
       pickupAddress: "",
       description: "",
-      hospitalName: initialDestination || "Closest Available Emergency Room",
+      contactPhone: "",
+      hospitalName: initialDestination || DEFAULT_HOSPITAL,
     },
   });
 
-  // Geolocation auto-detection
+  const priority = useWatch({ control, name: "priority" });
+  const pickupAddress = useWatch({ control, name: "pickupAddress" });
+  const isBusy = createMutation.isPending || detectingGps || isResolving;
+  const gpsLoading = detectingGps || isResolving;
+
   const handleDetectGps = () => {
     if (!navigator.geolocation) {
-      toast.error("Geolocation is not supported by your browser");
+      toast.error("Location is not supported by this browser.");
       return;
     }
 
     setDetectingGps(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
         const { latitude, longitude } = pos.coords;
-        setValue("pickupLat", latitude);
-        setValue("pickupLng", longitude);
-        setValue(
-          "pickupAddress",
-          `GPS Location (${latitude.toFixed(4)}, ${longitude.toFixed(4)}) — Dhaka Metropolitan Area`,
-        );
+        setValue("pickupLat", latitude, { shouldValidate: true });
+        setValue("pickupLng", longitude, { shouldValidate: true });
+
+        const { address } = await reverseGeocode({
+          lat: latitude,
+          lng: longitude,
+        });
+        setValue("pickupAddress", address, { shouldValidate: true });
         setDetectingGps(false);
-        toast.success("GPS Coordinates calibrated accurately");
+        toast.success("Location detected");
       },
       (err) => {
         setDetectingGps(false);
         toast.error(
-          `Unable to retrieve GPS: ${err.message}. Please enter address manually.`,
+          err.code === err.PERMISSION_DENIED
+            ? "Location permission denied. Please enter the address manually."
+            : "Couldn't get your location. Please enter the address manually.",
         );
       },
       { timeout: 10000, enableHighAccuracy: true },
     );
   };
 
-  const handleSelectQuickLocation = (loc: (typeof QUICK_LOCATIONS)[0]) => {
-    setValue("pickupAddress", loc.name);
+  const handleSelectQuickLocation = (loc: (typeof QUICK_LOCATIONS)[number]) => {
+    setValue("pickupAddress", loc.name, { shouldValidate: true });
     setValue("pickupLat", loc.lat);
     setValue("pickupLng", loc.lng);
   };
 
-  const onSubmit = (data: CreateEmergencyRequestInput) => {
-    createMutation.mutate(data, {
+  const handleReview = (data: CreateEmergencyRequestInput) => {
+    setPendingData(data);
+  };
+
+  const handleConfirmDispatch = () => {
+    if (!pendingData) return;
+    createMutation.mutate(pendingData, {
       onSuccess: () => {
+        setPendingData(null);
+        toast.success("Ambulance dispatched. Help is on the way.");
         router.push(ROUTES.PATIENT.DASHBOARD);
+      },
+      onError: () => {
+        setPendingData(null);
+        toast.error("Dispatch failed. Please try again or call 999 directly.");
       },
     });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Real-time Triage Dispatch Banner */}
-      <div className="rounded-xl border border-emergency/40 bg-emergency/10 p-4 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emergency text-white animate-pulse">
-            <HeartPulse className="h-5 w-5" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-foreground">
-              Emergency Dispatch Command Ready
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              Average Metropolitan Paramedic Response:{" "}
-              <span className="font-semibold text-emergency font-mono">
-                6 - 8 Minutes
-              </span>
-            </p>
-          </div>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
-          <Clock className="h-4 w-4 text-emerald-400" />
-          <span>Active Units: 48 On Patrol</span>
-        </div>
-      </div>
-
-      {/* Step 1: Severity Priority Selector */}
-      <Card className="p-5 sm:p-6 space-y-4">
-        <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-foreground">
-            Step 1: Patient Condition & Severity Level
-          </label>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Select the clinical urgency so dispatch matches the appropriate
-            vehicle tier.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {SEVERITY_LEVELS.map((level) => {
-            const Icon = level.icon;
-            const isSelected = selectedPriority === level.priority;
-
-            return (
-              <button
-                key={level.priority}
-                type="button"
-                onClick={() => {
-                  setValue("priority", level.priority);
-                  setSelectedPriority(level.priority);
-                }}
-                className={cn(
-                  "flex items-start gap-3 rounded-xl border p-4 text-left transition-all duration-150 cursor-pointer",
-                  level.bg,
-                  isSelected
-                    ? level.activeRing
-                    : "opacity-80 hover:opacity-100",
-                )}
-              >
-                <div
-                  className={cn(
-                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background/80 shadow-xs",
-                    level.color,
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-xs sm:text-sm text-foreground">
-                    {level.label}
-                  </div>
-                  <div className="text-3xs text-muted-foreground leading-normal mt-0.5">
-                    {level.desc}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-        {errors.priority && (
-          <p className="text-xs text-rose-500 font-medium">
-            {errors.priority.message}
-          </p>
-        )}
-      </Card>
-
-      {/* Step 2: Pickup Location */}
-      <Card className="p-5 sm:p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-foreground">
-              Step 2: Patient Pickup Location
-            </label>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Specify the street address, landmarks, or calibrate via GPS.
-            </p>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleDetectGps}
-            isLoading={detectingGps}
-            leftIcon={<Crosshair className="h-3.5 w-3.5 text-primary" />}
-          >
-            Auto-Detect GPS
-          </Button>
-        </div>
-
-        <Input
-          placeholder="e.g. House 42, Road 9/A, Dhanmondi, Dhaka"
-          leftIcon={<MapPin className="h-4 w-4" />}
-          error={errors.pickupAddress?.message}
-          disabled={createMutation.isPending}
-          {...register("pickupAddress")}
-        />
-
-        {/* Quick select popular Dhaka hubs */}
-        <div className="space-y-1.5">
-          <span className="text-3xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Quick Select Location:
-          </span>
-          <div className="flex flex-wrap gap-1.5">
-            {QUICK_LOCATIONS.map((loc) => (
-              <button
-                key={loc.name}
-                type="button"
-                onClick={() => handleSelectQuickLocation(loc)}
-                className="rounded-md border border-border/70 bg-surface px-2.5 py-1 text-3xs font-medium text-muted-foreground hover:text-foreground hover:border-primary transition-colors"
-              >
-                {loc.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </Card>
-
-      {/* Step 3: Destination Hospital & Symptoms */}
-      <Card className="p-5 sm:p-6 space-y-4">
-        <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-foreground">
-            Step 3: Clinical Notes & Preferred Hospital
-          </label>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Provide symptoms to help paramedics prepare life-support equipment
-            in advance.
-          </p>
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-muted-foreground">
-            Receiving Hospital
-          </label>
-          <div className="relative flex items-center">
-            <Building2 className="pointer-events-none absolute left-3.5 h-4 w-4 text-muted-foreground" />
-            <select
-              className="w-full h-10 rounded-md border border-border bg-surface pl-10 pr-3 py-2 text-xs sm:text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              {...register("hospitalName")}
-            >
-              {POPULAR_HOSPITALS.map((hosp) => (
-                <option key={hosp} value={hosp}>
-                  {hosp}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-muted-foreground">
-            Patient Symptoms & Critical Notes (Optional)
-          </label>
-          <div className="relative">
-            <textarea
-              rows={3}
-              placeholder="e.g. 58-year-old male with sudden onset left-arm numbness and breathing tightness..."
-              className="w-full rounded-md border border-border bg-surface p-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              {...register("description")}
-            />
-          </div>
-        </div>
-      </Card>
-
-      {/* Submit Action Button */}
-      <Button
-        type="submit"
-        variant="emergency"
-        size="lg"
-        className="w-full py-4 text-base font-bold shadow-xl shadow-emergency/25 cursor-pointer"
-        isLoading={createMutation.isPending}
-        loadingText="Dispatching Emergency Ambulance..."
-        leftIcon={<Send className="h-5 w-5" />}
+    <>
+      <form
+        onSubmit={handleSubmit(handleReview)}
+        className="space-y-6"
+        aria-busy={isBusy || undefined}
       >
-        Confirm & Mobilize Nearest Ambulance
-      </Button>
-    </form>
+        {/* Status banner — static until real telemetry is wired. */}
+        <div className="rounded-lg border border-emergency/40 bg-emergency/10 p-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emergency text-emergency-foreground">
+              <HeartPulse className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-foreground">
+                Emergency Dispatch Ready
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Enter your details below and confirm to send an ambulance.
+              </p>
+            </div>
+          </div>
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Clock className="h-4 w-4 text-success" aria-hidden="true" />
+            <span>Direct dispatch line: 999</span>
+          </div>
+        </div>
+
+        <Card className="p-5 sm:p-6">
+          <SeveritySelector
+            value={priority}
+            onChange={(p) => setValue("priority", p, { shouldValidate: true })}
+            error={errors.priority?.message}
+            disabled={isBusy}
+          />
+        </Card>
+
+        <Card className="p-5 sm:p-6 space-y-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <span className="block text-xs font-bold uppercase tracking-wider text-foreground">
+                Step 2: Pickup Location
+              </span>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Street address, landmark, or use your current location.
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleDetectGps}
+              isLoading={gpsLoading}
+              loadingText="Detecting…"
+              disabled={isBusy && !gpsLoading}
+              leftIcon={
+                <Crosshair
+                  className="h-3.5 w-3.5 text-primary"
+                  aria-hidden="true"
+                />
+              }
+            >
+              Use my location
+            </Button>
+          </div>
+
+          <Input
+            label="Pickup address"
+            placeholder="e.g. House 42, Road 9/A, Dhanmondi, Dhaka"
+            leftIcon={<MapPin className="h-4 w-4" />}
+            error={errors.pickupAddress?.message}
+            required
+            {...register("pickupAddress")}
+          />
+
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Common locations
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {QUICK_LOCATIONS.map((loc) => {
+                const isUsed = pickupAddress === loc.name;
+                return (
+                  <button
+                    key={loc.name}
+                    type="button"
+                    aria-pressed={isUsed}
+                    onClick={() => handleSelectQuickLocation(loc)}
+                    disabled={isBusy}
+                    className={cn(
+                      "rounded-md border px-2.5 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60",
+                      isUsed
+                        ? "border-primary bg-primary/10 text-foreground"
+                        : "border-border/70 bg-surface text-muted-foreground hover:text-foreground hover:border-primary",
+                    )}
+                  >
+                    {loc.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-5 sm:p-6 space-y-4">
+          <div>
+            <span className="block text-xs font-bold uppercase tracking-wider text-foreground">
+              Step 3: Patient &amp; Destination
+            </span>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Tell us who to call and where to take the patient.
+            </p>
+          </div>
+
+          <Input
+            label="Callback phone number"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="+880 1XXX-XXXXXX"
+            error={errors.contactPhone?.message}
+            required
+            {...register("contactPhone")}
+          />
+
+          <Select
+            label="Receiving hospital"
+            leftIcon={<Building2 className="h-4 w-4" />}
+            error={errors.hospitalName?.message}
+            required
+            {...register("hospitalName")}
+          >
+            {hospitalOptions.map((hosp) => (
+              <option key={hosp} value={hosp}>
+                {hosp}
+              </option>
+            ))}
+          </Select>
+
+          <Textarea
+            label="Symptoms & critical notes (optional)"
+            rows={3}
+            maxLength={500}
+            showCount
+            placeholder="e.g. 58-year-old male with sudden left-arm numbness and breathing tightness"
+            error={errors.description?.message}
+            {...register("description")}
+          />
+        </Card>
+
+        <Button
+          type="submit"
+          variant="emergency"
+          size="lg"
+          className="w-full"
+          disabled={isBusy}
+          leftIcon={<Send className="h-5 w-5" aria-hidden="true" />}
+        >
+          Review &amp; Dispatch Ambulance
+        </Button>
+      </form>
+
+      <ReviewStep
+        isOpen={pendingData !== null}
+        data={pendingData}
+        isSubmitting={createMutation.isPending}
+        onCancel={() => setPendingData(null)}
+        onConfirm={handleConfirmDispatch}
+      />
+    </>
   );
 }

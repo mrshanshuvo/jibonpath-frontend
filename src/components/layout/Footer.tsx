@@ -21,7 +21,7 @@ export function Footer() {
               Critical care emergency ambulance dispatch and hospital telemetry
               tracking network operating 24 hours, 7 days a week.
             </p>
-            <div className="flex items-center gap-2 text-xs text-emerald-400 font-medium">
+            <div className="flex items-center gap-2 text-xs text-success font-medium">
               <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>Emergency Network Online</span>
             </div>
@@ -126,7 +126,7 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© 2026 PulsePoint Operations. All rights reserved.</p>
           <div className="flex items-center gap-2 text-2xs">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+            <ShieldCheck className="h-3.5 w-3.5 text-success" />
             <span>ISO 9001:2015 Emergency Healthcare Certified</span>
           </div>
         </div>

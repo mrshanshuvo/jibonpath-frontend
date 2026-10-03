@@ -44,7 +44,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-emergency selection:text-white">
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-background text-foreground selection:bg-emergency selection:text-white"
+      >
         <QueryProvider>
           <AuthProvider>
             {children}

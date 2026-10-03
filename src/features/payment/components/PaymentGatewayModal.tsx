@@ -119,7 +119,7 @@ export function PaymentGatewayModal({
                 {formatCurrency(distanceKm * perKmRate)}
               </span>
             </div>
-            <div className="flex justify-between text-emerald-400">
+            <div className="flex justify-between text-success">
               <span>Onboard Oxygen & Paramedic Resuscitation:</span>
               <span className="font-mono font-medium">Included (৳ 0)</span>
             </div>

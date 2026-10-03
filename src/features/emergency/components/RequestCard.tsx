@@ -10,7 +10,7 @@ import {
   Ban,
   Radio,
 } from "lucide-react";
-import { Button, Badge } from "@/components/ui";
+import { Button, Badge, type BadgeVariant } from "@/components/ui";
 import { ROUTES } from "@/config/routes";
 import {
   RequestStatus,
@@ -25,44 +25,44 @@ interface RequestCardProps {
   onPay?: (request: EmergencyRequest) => void;
 }
 
+function getPriorityBadgeVariant(priority: Priority): BadgeVariant {
+  switch (priority) {
+    case Priority.CRITICAL:
+      return "emergency";
+    case Priority.HIGH:
+      return "warning";
+    case Priority.MEDIUM:
+      return "default";
+    case Priority.LOW:
+      return "secondary";
+  }
+}
+
+function getStatusBadgeVariant(status: RequestStatus): BadgeVariant {
+  switch (status) {
+    case RequestStatus.PENDING:
+      return "warning";
+    case RequestStatus.DISPATCHED:
+      return "emergency";
+    case RequestStatus.COMPLETED:
+      return "success";
+    case RequestStatus.CANCELLED:
+      return "outline";
+  }
+}
+
 export function RequestCard({ request, onPay }: RequestCardProps) {
   const cancelMutation = useCancelRequest();
-
-  const getPriorityBadgeVariant = (priority: Priority) => {
-    switch (priority) {
-      case Priority.CRITICAL:
-        return "emergency";
-      case Priority.HIGH:
-        return "warning";
-      case Priority.MEDIUM:
-        return "default";
-      case Priority.LOW:
-        return "secondary";
-    }
-  };
-
-  const getStatusBadgeVariant = (status: RequestStatus) => {
-    switch (status) {
-      case RequestStatus.PENDING:
-        return "warning";
-      case RequestStatus.DISPATCHED:
-        return "emergency";
-      case RequestStatus.COMPLETED:
-        return "success";
-      case RequestStatus.CANCELLED:
-        return "outline";
-    }
-  };
 
   const isPending = request.status === RequestStatus.PENDING;
   const isDispatched = request.status === RequestStatus.DISPATCHED;
   const isCompleted = request.status === RequestStatus.COMPLETED;
+  const canPay = isCompleted && !request.payment && Boolean(onPay);
 
   return (
-    <div className="rounded-2xl border border-border/80 bg-card p-5 sm:p-6 shadow-sm hover:border-border transition-all duration-200 flex flex-col justify-between gap-4">
+    <article className="rounded-lg border border-border/80 bg-card p-5 sm:p-6 shadow-sm hover:border-border transition-colors duration-200 flex flex-col justify-between gap-4">
       <div>
-        {/* Header: Priority & Status & Time */}
-        <div className="flex items-center justify-between gap-2 mb-3">
+        <header className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center gap-2">
             <Badge
               variant={getPriorityBadgeVariant(request.priority)}
@@ -80,15 +80,17 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
           </div>
 
           <div className="flex items-center gap-1 text-3xs font-mono text-muted-foreground">
-            <Clock className="h-3 w-3" />
+            <Clock className="h-3 w-3" aria-hidden="true" />
             <span>{formatRelativeTime(request.createdAt)}</span>
           </div>
-        </div>
+        </header>
 
-        {/* Location & Details */}
         <div className="space-y-2">
           <div className="flex items-start gap-2 text-xs sm:text-sm font-semibold text-foreground">
-            <MapPin className="h-4 w-4 shrink-0 text-emergency mt-0.5" />
+            <MapPin
+              className="h-4 w-4 shrink-0 text-emergency mt-0.5"
+              aria-hidden="true"
+            />
             <span>{request.pickupAddress}</span>
           </div>
 
@@ -99,23 +101,31 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
           )}
         </div>
 
-        {/* Active Dispatch Info if available */}
         {request.dispatch && (
-          <div className="mt-4 rounded-xl border border-border/60 bg-surface/50 p-3.5 space-y-2.5">
+          <section
+            aria-label="Active dispatch information"
+            className="mt-4 rounded-lg border border-border/60 bg-surface/50 p-3.5 space-y-2.5"
+          >
             <div className="flex items-center justify-between text-2xs font-semibold text-primary">
               <span className="flex items-center gap-1.5">
-                <Radio className="h-3.5 w-3.5 animate-pulse text-emerald-400" />
-                Active Dispatch Telemetry
+                <Radio
+                  className="h-3.5 w-3.5 motion-safe:animate-pulse text-success"
+                  aria-hidden="true"
+                />
+                Active Dispatch
               </span>
               <span className="font-mono text-muted-foreground">
-                Status: {request.dispatch.status}
+                {request.dispatch.status}
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               {request.dispatch.ambulance && (
                 <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <Ambulance className="h-3.5 w-3.5 text-primary" />
+                  <Ambulance
+                    className="h-3.5 w-3.5 text-primary"
+                    aria-hidden="true"
+                  />
                   <span className="truncate">
                     {request.dispatch.ambulance.vehicleNumber}
                   </span>
@@ -123,21 +133,23 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
               )}
               {request.dispatch.driver?.user && (
                 <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <User className="h-3.5 w-3.5 text-emerald-400" />
+                  <User
+                    className="h-3.5 w-3.5 text-success"
+                    aria-hidden="true"
+                  />
                   <span className="truncate">
                     {request.dispatch.driver.user.name}
                   </span>
                 </div>
               )}
             </div>
-          </div>
+          </section>
         )}
       </div>
 
-      {/* Action Footer */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3 mt-2">
+      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3 mt-2">
         <div className="text-3xs font-mono text-muted-foreground">
-          ID: {request.id.slice(0, 8)}...
+          ID: {request.id.slice(0, 8)}…
         </div>
 
         <div className="flex items-center gap-2">
@@ -147,8 +159,13 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
               size="sm"
               isLoading={cancelMutation.isPending}
               onClick={() => cancelMutation.mutate(request.id)}
-              leftIcon={<Ban className="h-3.5 w-3.5 text-rose-500" />}
-              className="text-rose-500 hover:text-rose-400"
+              leftIcon={
+                <Ban
+                  className="h-3.5 w-3.5 text-destructive"
+                  aria-hidden="true"
+                />
+              }
+              className="text-destructive hover:text-destructive/80"
             >
               Cancel Request
             </Button>
@@ -159,19 +176,26 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
               <Button
                 variant="emergency"
                 size="sm"
-                leftIcon={<Radio className="h-3.5 w-3.5 animate-pulse" />}
+                leftIcon={
+                  <Radio
+                    className="h-3.5 w-3.5 motion-safe:animate-pulse"
+                    aria-hidden="true"
+                  />
+                }
               >
                 Track Live
               </Button>
             </Link>
           )}
 
-          {isCompleted && !request.payment && onPay && (
+          {canPay && (
             <Button
               variant="primary"
               size="sm"
-              onClick={() => onPay(request)}
-              leftIcon={<CreditCard className="h-3.5 w-3.5" />}
+              onClick={() => onPay?.(request)}
+              leftIcon={
+                <CreditCard className="h-3.5 w-3.5" aria-hidden="true" />
+              }
             >
               Settle Fee
             </Button>
@@ -183,7 +207,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
             </Badge>
           )}
         </div>
-      </div>
-    </div>
+      </footer>
+    </article>
   );
 }

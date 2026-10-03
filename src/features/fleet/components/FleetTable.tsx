@@ -115,7 +115,7 @@ export function FleetTable() {
         );
       case AmbulanceType.INTENSIVE_CARE:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-rose-500/10 text-destructive/80 border border-rose-500/20">
             ICU (Ventilator)
           </span>
         );
@@ -212,7 +212,7 @@ export function FleetTable() {
           </div>
         ) : isError ? (
           <div className="p-8 text-center space-y-3">
-            <AlertCircle className="h-10 w-10 text-rose-500 mx-auto" />
+            <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
             <h3 className="text-base font-bold text-foreground">
               Failed to load fleet data
             </h3>
@@ -316,7 +316,7 @@ export function FleetTable() {
                                 AmbulanceStatus.AVAILABLE,
                               )
                             }
-                            className="p-1.5 rounded-md text-muted-foreground hover:text-emerald-400 hover:bg-emerald-400/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-success hover:bg-emerald-400/10 transition-colors cursor-pointer"
                           >
                             <CheckCircle className="h-3.5 w-3.5" />
                           </button>
@@ -335,7 +335,7 @@ export function FleetTable() {
                           onClick={() =>
                             handleDelete(amb.id, amb.vehicleNumber)
                           }
-                          className="p-1.5 rounded-md text-muted-foreground hover:text-rose-400 hover:bg-rose-400/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-md text-muted-foreground hover:text-destructive/80 hover:bg-rose-400/10 transition-colors cursor-pointer"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>

@@ -43,7 +43,7 @@ export default function AuthLayout({
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground font-medium border border-border/60 bg-surface/50 rounded-full px-3 py-1">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+              <ShieldCheck className="h-3.5 w-3.5 text-success" />
               <span>TLS 256-Bit Encrypted</span>
             </div>
 

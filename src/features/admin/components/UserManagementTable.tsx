@@ -73,7 +73,7 @@ export function UserManagementTable() {
         );
       case Role.DRIVER:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-3xs font-bold text-emerald-400 border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-3xs font-bold text-success border border-emerald-500/20">
             <Ambulance className="h-3 w-3" />
             DRIVER
           </span>
@@ -142,7 +142,7 @@ export function UserManagementTable() {
           </div>
         ) : isError ? (
           <div className="p-8 text-center space-y-3">
-            <AlertCircle className="h-10 w-10 text-rose-500 mx-auto" />
+            <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
             <h3 className="text-base font-bold text-foreground">
               Failed to load user directory
             </h3>
@@ -214,8 +214,8 @@ export function UserManagementTable() {
                         onClick={() => handleToggleStatus(u.id, u.isActive)}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold cursor-pointer border transition-colors ${
                           u.isActive
-                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20"
-                            : "bg-rose-500/10 text-rose-400 border-rose-500/20 hover:bg-rose-500/20"
+                            ? "bg-emerald-500/10 text-success border-emerald-500/20 hover:bg-emerald-500/20"
+                            : "bg-rose-500/10 text-destructive/80 border-rose-500/20 hover:bg-rose-500/20"
                         }`}
                       >
                         {u.isActive ? (
@@ -240,7 +240,7 @@ export function UserManagementTable() {
                       <button
                         title="Delete user"
                         onClick={() => handleDelete(u.id, u.name)}
-                        className="p-1.5 rounded-md text-muted-foreground hover:text-rose-400 hover:bg-rose-400/10 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-md text-muted-foreground hover:text-destructive/80 hover:bg-rose-400/10 transition-colors cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>

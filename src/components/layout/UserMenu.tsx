@@ -138,7 +138,7 @@ export function UserMenu() {
 
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-400 rounded-md hover:bg-rose-500/10 transition-colors cursor-pointer"
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-xs font-medium text-destructive/80 rounded-md hover:bg-rose-500/10 transition-colors cursor-pointer"
           >
             <LogOut className="h-4 w-4" />
             <span>Sign Out</span>

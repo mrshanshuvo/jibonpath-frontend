@@ -102,7 +102,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               <Button
                 variant="outline"
                 size="sm"
-                leftIcon={<Phone className="h-4 w-4 text-emerald-400" />}
+                leftIcon={<Phone className="h-4 w-4 text-success" />}
               >
                 Call Patient: {dispatch.request.caller.phone}
               </Button>
@@ -190,7 +190,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               <p className="text-sm font-bold text-foreground mt-1">
                 {dispatch.driver?.user?.name || "Paramedic Crew"}
               </p>
-              <span className="text-3xs text-emerald-400 font-mono mt-0.5 block">
+              <span className="text-3xs text-success font-mono mt-0.5 block">
                 License: {dispatch.driver?.licenseNumber || "N/A"}
               </span>
             </div>
@@ -245,7 +245,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
         </Card>
       ) : (
         <Card className="p-6 bg-emerald-500/10 border-emerald-500/30 text-center space-y-2">
-          <CheckCircle className="h-10 w-10 text-emerald-400 mx-auto" />
+          <CheckCircle className="h-10 w-10 text-success mx-auto" />
           <h4 className="text-lg font-bold text-foreground">
             Trip Completed Successfully
           </h4>

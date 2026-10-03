@@ -31,7 +31,7 @@ export default function DriverDashboardPage() {
   if (isError) {
     return (
       <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-8 text-center space-y-3">
-        <AlertCircle className="h-10 w-10 text-rose-500 mx-auto" />
+        <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
         <h3 className="text-base font-bold text-foreground">
           Telemetry Connection Interrupted
         </h3>
@@ -64,7 +64,7 @@ export default function DriverDashboardPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-emerald-400">
+          <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
             <Radio className="h-3 w-3 animate-pulse" />
             <span>STANDBY READY ON ROTATION</span>
           </div>

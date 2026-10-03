@@ -207,13 +207,13 @@ export function getRequestStatusStyles(status: RequestStatus): {
       };
     case RequestStatus.COMPLETED:
       return {
-        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        badge: "bg-emerald-500/10 text-success border-emerald-500/20",
         dot: "bg-emerald-400",
         label: "Completed",
       };
     case RequestStatus.CANCELLED:
       return {
-        badge: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+        badge: "bg-rose-500/10 text-destructive/80 border-rose-500/20",
         dot: "bg-rose-400",
         label: "Cancelled",
       };
@@ -261,7 +261,7 @@ export function getDispatchStatusStyles(status: DispatchStatus): {
       };
     case DispatchStatus.COMPLETED:
       return {
-        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        badge: "bg-emerald-500/10 text-success border-emerald-500/20",
         label: "Completed",
       };
     default:
@@ -282,7 +282,7 @@ export function getAmbulanceStatusStyles(status: AmbulanceStatus): {
   switch (status) {
     case AmbulanceStatus.AVAILABLE:
       return {
-        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        badge: "bg-emerald-500/10 text-success border-emerald-500/20",
         label: "Available",
       };
     case AmbulanceStatus.DISPATCHED:
@@ -318,7 +318,7 @@ export function getPaymentStatusStyles(status: PaymentStatus): {
   switch (status) {
     case PaymentStatus.SUCCESS:
       return {
-        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        badge: "bg-emerald-500/10 text-success border-emerald-500/20",
         label: "Paid",
       };
     case PaymentStatus.PENDING:

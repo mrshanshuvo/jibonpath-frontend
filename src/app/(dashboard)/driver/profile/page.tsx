@@ -24,7 +24,7 @@ export default function DriverProfilePage() {
 
       <Card className="p-6 space-y-6">
         <div className="flex items-center gap-4 pb-4 border-b border-border/60">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400 font-bold text-xl">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/20 text-success font-bold text-xl">
             {user.name.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -38,7 +38,7 @@ export default function DriverProfilePage() {
               {user.email}
             </p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="inline-flex items-center gap-1 text-3xs text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="inline-flex items-center gap-1 text-3xs text-success font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
                 Active on Dhaka Duty Rotation
               </span>
@@ -55,7 +55,7 @@ export default function DriverProfilePage() {
             <p className="font-mono font-bold text-foreground text-sm">
               BRTA-DHAKA-2022-7718
             </p>
-            <span className="text-3xs text-emerald-400 font-medium">
+            <span className="text-3xs text-success font-medium">
               Verified & Active
             </span>
           </div>

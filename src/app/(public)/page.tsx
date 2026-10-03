@@ -92,15 +92,15 @@ export default function HomePage() {
           {/* Key Service Badges */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Basic, ALS & ICU Ambulances</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Live GPS Tracking</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Instant bKash, SSLCommerz & Stripe</span>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="space-y-1">
-              <p className="text-3xl font-extrabold text-emerald-400">100%</p>
+              <p className="text-3xl font-extrabold text-success">100%</p>
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
                 Licensed Paramedics
               </p>
@@ -194,7 +194,7 @@ export default function HomePage() {
               className="hover:border-slate-600 transition-all duration-200"
             >
               <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400 mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/15 text-success mb-4">
                   <Building2 className="h-6 w-6" />
                 </div>
                 <CardTitle>Hospital Telemetry Handshake</CardTitle>
@@ -206,11 +206,11 @@ export default function HomePage() {
               <CardContent>
                 <ul className="space-y-2 text-xs text-muted-foreground">
                   <li className="flex items-center gap-2">
-                    <HeartPulse className="h-3.5 w-3.5 text-emerald-400" />
+                    <HeartPulse className="h-3.5 w-3.5 text-success" />
                     <span>Pre-arrival trauma bed preparation</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-success" />
                     <span>Direct capacity status verification</span>
                   </li>
                 </ul>

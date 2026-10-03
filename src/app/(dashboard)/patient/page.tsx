@@ -1,41 +1,27 @@
-"use client";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui";
+import { PatientDashboard } from "@/features/patient";
 
-import { useState } from "react";
-import { RequestList } from "@/features/emergency";
-import { PaymentGatewayModal } from "@/features/payment";
-import type { EmergencyRequest } from "@/types/entities.types";
-
-export default function PatientDashboardPage() {
-  const [paymentRequest, setPaymentRequest] = useState<EmergencyRequest | null>(
-    null,
-  );
-
+function RequestListSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              Emergency Ambulance Requests
-            </h1>
-            <span className="flex h-2.5 w-2.5 rounded-full bg-emergency animate-ping" />
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">
-            Track active ambulance dispatches, monitor arrival telemetry, and
-            manage past medical transit history.
-          </p>
-        </div>
+      <div className="border-b border-border/60 pb-5">
+        <Skeleton className="h-7 w-72" />
+        <Skeleton className="mt-3 h-3 w-full max-w-md" />
       </div>
-
-      {/* Request List */}
-      <RequestList onPay={(req) => setPaymentRequest(req)} />
-
-      {/* Payment Settlement Modal */}
-      <PaymentGatewayModal
-        isOpen={Boolean(paymentRequest)}
-        onClose={() => setPaymentRequest(null)}
-        request={paymentRequest}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <Skeleton key={idx} className="h-48 rounded-lg" />
+        ))}
+      </div>
     </div>
+  );
+}
+
+export default function PatientDashboardPage() {
+  return (
+    <Suspense fallback={<RequestListSkeleton />}>
+      <PatientDashboard />
+    </Suspense>
   );
 }

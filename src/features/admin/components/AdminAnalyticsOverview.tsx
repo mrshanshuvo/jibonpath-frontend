@@ -85,7 +85,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
               Total Revenue Settled
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-success">
               <CircleDollarSign className="h-5 w-5" />
             </div>
           </div>
@@ -94,9 +94,7 @@ export function AdminAnalyticsOverview() {
               {formatCurrency(revenue)}
             </span>
             <p className="text-3xs text-muted-foreground mt-1 flex items-center gap-1">
-              <span className="text-emerald-400 font-semibold">
-                100% Digital
-              </span>{" "}
+              <span className="text-success font-semibold">100% Digital</span>{" "}
               via bKash / SSL / Stripe
             </p>
           </div>
@@ -260,10 +258,10 @@ export function AdminAnalyticsOverview() {
             </div>
 
             <div className="rounded-xl bg-emerald-500/10 p-4 text-center border border-emerald-500/20">
-              <span className="font-mono text-2xl font-bold text-emerald-400 block">
+              <span className="font-mono text-2xl font-bold text-success block">
                 {completedRequests}
               </span>
-              <span className="text-3xs font-semibold text-emerald-400 uppercase tracking-wider mt-1 block">
+              <span className="text-3xs font-semibold text-success uppercase tracking-wider mt-1 block">
                 Safely Delivered
               </span>
             </div>
@@ -288,7 +286,7 @@ export function AdminAnalyticsOverview() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
-            <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+            <TrendingUp className="h-3.5 w-3.5 text-success" />
             <span>Redis Telemetry Live</span>
           </div>
         </div>

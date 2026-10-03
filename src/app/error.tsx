@@ -22,11 +22,11 @@ export default function RootError({
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-500/15 text-rose-500 mb-6 shadow-lg shadow-rose-500/20">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-500/15 text-destructive mb-6 shadow-lg shadow-rose-500/20">
         <AlertOctagon className="h-8 w-8" />
       </div>
 
-      <p className="text-xs uppercase tracking-widest font-semibold text-rose-500 mb-2">
+      <p className="text-xs uppercase tracking-widest font-semibold text-destructive mb-2">
         System Interruption Encountered
       </p>
       <h1 className="text-2xl sm:text-4xl font-extrabold text-foreground tracking-tight mb-3">

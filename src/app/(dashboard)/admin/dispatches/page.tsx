@@ -53,7 +53,7 @@ export default function AdminDispatchesPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-emerald-400">
+        <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-medium text-success">
           <Radio className="h-3 w-3 animate-pulse" />
           <span>RADAR TELEMETRY POLLING ACTIVE</span>
         </div>
@@ -94,7 +94,7 @@ export default function AdminDispatchesPage() {
         </div>
       ) : isError ? (
         <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10">
-          <AlertCircle className="h-10 w-10 text-rose-500 mx-auto mb-2" />
+          <AlertCircle className="h-10 w-10 text-destructive mx-auto mb-2" />
           <p className="text-sm font-bold text-foreground">
             Failed to connect to dispatch stream
           </p>

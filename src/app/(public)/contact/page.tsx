@@ -143,7 +143,7 @@ export default function ContactPage() {
                     1212, Bangladesh
                   </p>
                   <div className="flex items-center gap-2 mt-2 text-3xs text-muted-foreground">
-                    <Clock className="h-3 w-3 text-emerald-400" />
+                    <Clock className="h-3 w-3 text-success" />
                     <span>
                       Control Room: 24 Hours / 7 Days / 365 Days continuous
                       operations
@@ -165,7 +165,7 @@ export default function ContactPage() {
 
               {submitted ? (
                 <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-8 text-center space-y-3">
-                  <CheckCircle2 className="h-12 w-12 text-emerald-400 mx-auto" />
+                  <CheckCircle2 className="h-12 w-12 text-success mx-auto" />
                   <h4 className="text-base font-bold text-foreground">
                     Message Dispatched Successfully
                   </h4>

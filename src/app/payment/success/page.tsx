@@ -18,12 +18,12 @@ function PaymentSuccessContent() {
         {/* Glow backdrop */}
         <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-40 w-40 rounded-full bg-emerald-500/20 blur-2xl" />
 
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400 mx-auto shadow-lg shadow-emerald-500/20 animate-in zoom-in-50 duration-300">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-success mx-auto shadow-lg shadow-emerald-500/20 animate-in zoom-in-50 duration-300">
           <CheckCircle2 className="h-10 w-10" />
         </div>
 
         <div className="space-y-1.5">
-          <span className="text-3xs font-bold uppercase tracking-wider text-emerald-400">
+          <span className="text-3xs font-bold uppercase tracking-wider text-success">
             Payment Completed
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
@@ -47,7 +47,7 @@ function PaymentSuccessContent() {
         )}
 
         <div className="flex items-center gap-1.5 justify-center text-3xs text-muted-foreground">
-          <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+          <ShieldCheck className="h-3.5 w-3.5 text-success" />
           <span>SSL 256-Bit Encrypted Settlement</span>
         </div>
 

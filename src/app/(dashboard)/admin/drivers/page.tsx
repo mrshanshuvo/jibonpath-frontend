@@ -70,7 +70,7 @@ export default function AdminDriversPage() {
           </div>
         ) : isError ? (
           <div className="p-8 text-center space-y-3">
-            <AlertCircle className="h-10 w-10 text-rose-500 mx-auto" />
+            <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
             <h3 className="text-base font-bold text-foreground">
               Failed to load driver roster
             </h3>
@@ -108,7 +108,7 @@ export default function AdminDriversPage() {
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-success border border-emerald-500/20">
                           <Ambulance className="h-4.5 w-4.5" />
                         </div>
                         <div>
@@ -129,7 +129,7 @@ export default function AdminDriversPage() {
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold bg-emerald-500/10 text-success border border-emerald-500/20">
                         <CheckCircle className="h-3 w-3" />
                         Active on Patrol
                       </span>

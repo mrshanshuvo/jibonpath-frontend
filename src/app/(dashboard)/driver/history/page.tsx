@@ -40,7 +40,7 @@ export default function DriverHistoryPage() {
         </div>
       ) : isError ? (
         <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10">
-          <AlertCircle className="h-10 w-10 text-rose-500 mx-auto mb-2" />
+          <AlertCircle className="h-10 w-10 text-destructive mx-auto mb-2" />
           <p className="text-sm font-bold text-foreground">
             Failed to load trip history
           </p>

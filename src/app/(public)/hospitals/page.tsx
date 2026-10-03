@@ -231,7 +231,7 @@ export default function HospitalsPage() {
                     </div>
 
                     {hospital.hasCathLab && (
-                      <div className="flex items-center gap-1 rounded-md bg-rose-500/10 text-rose-400 px-2.5 py-1 text-3xs font-medium border border-rose-500/20">
+                      <div className="flex items-center gap-1 rounded-md bg-rose-500/10 text-destructive/80 px-2.5 py-1 text-3xs font-medium border border-rose-500/20">
                         <CheckCircle className="h-3 w-3" />
                         <span>24/7 Cath Lab (Cardiac)</span>
                       </div>
@@ -251,7 +251,7 @@ export default function HospitalsPage() {
                     href={`tel:${hospital.phone}`}
                     className="inline-flex items-center gap-2 text-xs font-semibold text-foreground hover:text-primary transition-colors"
                   >
-                    <PhoneCall className="h-3.5 w-3.5 text-emerald-400" />
+                    <PhoneCall className="h-3.5 w-3.5 text-success" />
                     <span>ER Line: {hospital.phone}</span>
                   </a>
 

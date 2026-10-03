@@ -42,8 +42,8 @@ export function AmbulanceFormModal({
   } = useForm<CreateAmbulanceInput>({
     resolver: zodResolver(createAmbulanceSchema),
     defaultValues: {
-      registrationNumber: "",
-      model: "",
+      vehicleNumber: "",
+      make: "",
       type: AmbulanceType.BASIC,
       status: AmbulanceStatus.AVAILABLE,
     },
@@ -52,15 +52,15 @@ export function AmbulanceFormModal({
   useEffect(() => {
     if (ambulance) {
       reset({
-        registrationNumber: ambulance.registrationNumber,
-        model: ambulance.model,
+        vehicleNumber: ambulance.vehicleNumber,
+        make: ambulance.make || "",
         type: ambulance.type,
         status: ambulance.status,
       });
     } else {
       reset({
-        registrationNumber: "",
-        model: "",
+        vehicleNumber: "",
+        make: "",
         type: AmbulanceType.BASIC,
         status: AmbulanceStatus.AVAILABLE,
       });
@@ -69,7 +69,7 @@ export function AmbulanceFormModal({
 
   const isPending = createMutation.isPending || updateMutation.isPending;
 
-  const onSubmit = (data: CreateEmergencyInput) => {
+  const onSubmit = (data: CreateAmbulanceInput) => {
     if (isEditing && ambulance) {
       updateMutation.mutate(
         { id: ambulance.id, input: data },
@@ -99,24 +99,23 @@ export function AmbulanceFormModal({
           : "Add a newly commissioned emergency response unit into the active rotation."
       }
     >
-      <form onSubmit={handleSubmit(onSubmit as never)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
-          label="Registration Number / License Plate"
+          label="Vehicle License Number"
           placeholder="e.g. DHAKA-METRO-CHA-11-2045"
           required
           leftIcon={<AmbulanceIcon className="h-4 w-4" />}
-          error={errors.registrationNumber?.message}
+          error={errors.vehicleNumber?.message}
           disabled={isPending}
-          {...register("registrationNumber")}
+          {...register("vehicleNumber")}
         />
 
         <Input
-          label="Vehicle Model & Chassis"
+          label="Vehicle Make & Model"
           placeholder="e.g. Toyota HiAce GL High-Roof 2024"
-          required
-          error={errors.model?.message}
+          error={errors.make?.message}
           disabled={isPending}
-          {...register("model")}
+          {...register("make")}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -187,4 +186,3 @@ export function AmbulanceFormModal({
     </Modal>
   );
 }
-type CreateEmergencyInput = CreateAmbulanceInput;

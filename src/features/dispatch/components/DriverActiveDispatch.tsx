@@ -173,7 +173,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                 Ambulance Reg
               </span>
               <p className="text-sm font-bold text-foreground mt-1">
-                {dispatch.ambulance?.registrationNumber || "DHAKA-EM-104"}
+                {dispatch.ambulance?.vehicleNumber || "DHAKA-EM-104"}
               </p>
               <span className="text-3xs text-primary font-mono mt-0.5 block">
                 {dispatch.ambulance?.type || "ADVANCED_LIFE_SUPPORT"}

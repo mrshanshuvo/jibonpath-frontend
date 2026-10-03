@@ -6,21 +6,21 @@ import {
 } from "@/types/entities.types";
 
 export const createAmbulanceSchema = z.object({
-  registrationNumber: z
+  vehicleNumber: z
     .string()
-    .min(3, "Registration number must be at least 3 characters"),
-  model: z.string().min(2, "Vehicle model is required"),
+    .min(1, "Vehicle number is required"),
+  make: z.string().optional(),
   type: z.nativeEnum(AmbulanceType, {
     errorMap: () => ({ message: "Select a valid ambulance equipment tier" }),
   }),
-  status: z.nativeEnum(AmbulanceStatus).optional().default(AmbulanceStatus.AVAILABLE),
+  status: z.nativeEnum(AmbulanceStatus),
 });
 
 export type CreateAmbulanceInput = z.infer<typeof createAmbulanceSchema>;
 
 export const updateAmbulanceSchema = z.object({
-  registrationNumber: z.string().min(3).optional(),
-  model: z.string().min(2).optional(),
+  vehicleNumber: z.string().optional(),
+  make: z.string().optional(),
   type: z.nativeEnum(AmbulanceType).optional(),
   status: z.nativeEnum(AmbulanceStatus).optional(),
 });

@@ -114,7 +114,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
                 <div className="flex items-center gap-1.5 text-muted-foreground">
                   <Ambulance className="h-3.5 w-3.5 text-primary" />
                   <span className="truncate">
-                    {request.dispatch.ambulance.registrationNumber}
+                    {request.dispatch.ambulance.vehicleNumber}
                   </span>
                 </div>
               )}
@@ -152,7 +152,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
           )}
 
           {isDispatched && (
-            <Link href={`${ROUTES.PATIENT.ROOT}?active=${request.id}`}>
+            <Link href={`${ROUTES.PATIENT.DASHBOARD}?active=${request.id}`}>
               <Button
                 variant="emergency"
                 size="sm"

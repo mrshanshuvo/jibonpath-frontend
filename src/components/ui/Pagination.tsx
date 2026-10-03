@@ -5,7 +5,8 @@ import { Button } from "./Button";
 import { cn } from "@/lib/utils";
 
 export interface PaginationProps {
-  page: number;
+  page?: number;
+  currentPage?: number;
   totalPages: number;
   total?: number;
   limit?: number;
@@ -15,17 +16,20 @@ export interface PaginationProps {
 
 export function Pagination({
   page,
+  currentPage,
   totalPages,
   total,
   limit,
   onPageChange,
   className,
 }: PaginationProps) {
+  const activePage = page ?? currentPage ?? 1;
+
   if (totalPages <= 1) return null;
 
-  const startItem = total && limit ? (page - 1) * limit + 1 : null;
+  const startItem = total && limit ? (activePage - 1) * limit + 1 : null;
   const endItem =
-    total && limit ? Math.min(page * limit, total) : null;
+    total && limit ? Math.min(activePage * limit, total) : null;
 
   return (
     <div
@@ -48,22 +52,22 @@ export function Pagination({
         <Button
           variant="outline"
           size="sm"
-          disabled={page <= 1}
-          onClick={() => onPageChange(page - 1)}
+          disabled={activePage <= 1}
+          onClick={() => onPageChange(activePage - 1)}
           leftIcon={<ChevronLeft className="h-4 w-4" />}
         >
           Previous
         </Button>
 
         <span className="text-xs font-medium text-foreground px-2">
-          Page {page} of {totalPages}
+          Page {activePage} of {totalPages}
         </span>
 
         <Button
           variant="outline"
           size="sm"
-          disabled={page >= totalPages}
-          onClick={() => onPageChange(page + 1)}
+          disabled={activePage >= totalPages}
+          onClick={() => onPageChange(activePage + 1)}
           rightIcon={<ChevronRight className="h-4 w-4" />}
         >
           Next

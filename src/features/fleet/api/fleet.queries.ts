@@ -72,7 +72,7 @@ export function useCreateAmbulance() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: fleetKeys.all });
-      toast.success(`Vehicle ${data.registrationNumber} added to fleet rotation!`);
+      toast.success(`Vehicle ${data.vehicleNumber} added to fleet rotation!`);
       return data;
     },
     onError: (error) => {
@@ -104,7 +104,7 @@ export function useUpdateAmbulance() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: fleetKeys.all });
-      toast.success(`Vehicle ${data.registrationNumber} updated successfully.`);
+      toast.success(`Vehicle ${data.vehicleNumber} updated successfully.`);
       return data;
     },
     onError: (error) => {

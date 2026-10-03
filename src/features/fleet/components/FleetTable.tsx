@@ -243,10 +243,10 @@ export function FleetTable() {
                         </div>
                         <div>
                           <span className="font-bold text-xs sm:text-sm font-mono block text-foreground">
-                            {amb.registrationNumber}
+                            {amb.vehicleNumber}
                           </span>
                           <span className="text-3xs text-muted-foreground">
-                            {amb.model}
+                            {amb.make || "Toyota HiAce Emergency"}
                           </span>
                         </div>
                       </div>
@@ -319,7 +319,7 @@ export function FleetTable() {
 
                         <button
                           title="Decommission vehicle"
-                          onClick={() => handleDelete(amb.id, amb.registrationNumber)}
+                          onClick={() => handleDelete(amb.id, amb.vehicleNumber)}
                           className="p-1.5 rounded-md text-muted-foreground hover:text-rose-400 hover:bg-rose-400/10 transition-colors cursor-pointer"
                         >
                           <Trash2 className="h-3.5 w-3.5" />

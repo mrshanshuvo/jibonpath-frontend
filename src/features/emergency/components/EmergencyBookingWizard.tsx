@@ -14,7 +14,6 @@ import {
   Building2,
   Clock,
   Send,
-  Loader2,
 } from "lucide-react";
 import { Button, Input, Card } from "@/components/ui";
 import { ROUTES } from "@/config/routes";
@@ -350,17 +349,10 @@ export function EmergencyBookingWizard({
         size="lg"
         className="w-full py-4 text-base font-bold shadow-xl shadow-emergency/25 cursor-pointer"
         isLoading={createMutation.isPending}
-        leftIcon={
-          createMutation.isPending ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : (
-            <Send className="h-5 w-5" />
-          )
-        }
+        loadingText="Dispatching Emergency Ambulance..."
+        leftIcon={<Send className="h-5 w-5" />}
       >
-        {createMutation.isPending
-          ? "Dispatching Emergency Ambulance..."
-          : "Confirm & Mobilize Nearest Ambulance"}
+        Confirm & Mobilize Nearest Ambulance
       </Button>
     </form>
   );

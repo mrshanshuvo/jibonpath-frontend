@@ -16,7 +16,9 @@ export function proxy(request: NextRequest) {
   // 1. If authenticated user attempts to access /login or /register, redirect to dashboard
   if (isAuthRoute) {
     if (token && role && ROLE_DEFAULT_REDIRECT[role]) {
-      return NextResponse.redirect(new URL(ROLE_DEFAULT_REDIRECT[role], request.url));
+      return NextResponse.redirect(
+        new URL(ROLE_DEFAULT_REDIRECT[role], request.url),
+      );
     }
     return NextResponse.next();
   }
@@ -39,7 +41,9 @@ export function proxy(request: NextRequest) {
   if (!role || !allowedRoles.includes(role)) {
     // If user has a valid role but wrong portal, redirect to their designated dashboard
     if (role && ROLE_DEFAULT_REDIRECT[role]) {
-      return NextResponse.redirect(new URL(ROLE_DEFAULT_REDIRECT[role], request.url));
+      return NextResponse.redirect(
+        new URL(ROLE_DEFAULT_REDIRECT[role], request.url),
+      );
     }
     // Fallback: login
     return NextResponse.redirect(new URL(ROUTES.AUTH.LOGIN, request.url));

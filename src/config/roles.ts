@@ -17,6 +17,8 @@ export const ROUTE_PERMISSIONS: {
 ];
 
 export function getAllowedRolesForPath(pathname: string): Role[] | null {
-  const match = ROUTE_PERMISSIONS.find((route) => pathname.startsWith(route.prefix));
+  const match = ROUTE_PERMISSIONS.find((route) =>
+    pathname.startsWith(route.prefix),
+  );
   return match ? match.allowedRoles : null;
 }

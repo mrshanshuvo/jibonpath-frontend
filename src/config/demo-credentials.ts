@@ -17,7 +17,8 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     email: "admin@ambulance.dev",
     password: "Admin@123",
     badge: "Admin Control",
-    description: "Full oversight of fleet, drivers, active dispatches, revenue, and system audit logs.",
+    description:
+      "Full oversight of fleet, drivers, active dispatches, revenue, and system audit logs.",
     phone: "01700000001",
   },
   {
@@ -26,7 +27,8 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     email: "patient1@ambulance.dev",
     password: "Patient@123",
     badge: "Caller / Patient",
-    description: "Book emergency ambulances with GPS coordinates, track dispatches, and settle fees.",
+    description:
+      "Book emergency ambulances with GPS coordinates, track dispatches, and settle fees.",
     phone: "01700000003",
   },
   {
@@ -35,7 +37,8 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     email: "driver1@ambulance.dev",
     password: "Driver@123",
     badge: "Paramedic Driver",
-    description: "View assigned emergency requests, navigate to pickup, update patient transit status.",
+    description:
+      "View assigned emergency requests, navigate to pickup, update patient transit status.",
     phone: "01700000002",
   },
 ];

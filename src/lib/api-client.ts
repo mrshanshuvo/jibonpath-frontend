@@ -13,6 +13,13 @@ interface RequestOptions extends RequestInit {
 let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
+// Read refresh token from document cookies or session
+function getRefreshTokenCookie(): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp("(^| )auth_refresh_token=([^;]+)"));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
 async function refreshAccessToken(): Promise<string | null> {
   if (isRefreshing && refreshPromise) {
     return refreshPromise;
@@ -21,7 +28,9 @@ async function refreshAccessToken(): Promise<string | null> {
   isRefreshing = true;
   refreshPromise = (async () => {
     try {
-      const { refreshToken, clearAuth, setAccessToken } = useAuthStore.getState();
+      const refreshToken = getRefreshTokenCookie();
+      const { clearAuth, setAccessToken } = useAuthStore.getState();
+
       if (!refreshToken) {
         clearAuth();
         return null;
@@ -65,7 +74,9 @@ async function request<T>(
 ): Promise<T> {
   const { params, skipAuth, headers: customHeaders, ...fetchOptions } = options;
 
-  let url = endpoint.startsWith("http") ? endpoint : `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+  let url = endpoint.startsWith("http")
+    ? endpoint
+    : `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
 
   if (params) {
     const searchParams = new URLSearchParams();
@@ -124,16 +135,27 @@ async function request<T>(
 
     const successJson = responseData as ApiResponse<T>;
     // If backend returns the standard ApiResponse wrapper, unpack data
-    if (successJson && typeof successJson === "object" && "success" in successJson && "data" in successJson) {
+    if (
+      successJson &&
+      typeof successJson === "object" &&
+      "success" in successJson &&
+      "data" in successJson
+    ) {
       return successJson.data;
     }
 
     return responseData as T;
   } catch (error) {
+    // Law 5: Log errors in development — never in production
+    if (process.env.NODE_ENV === "development") {
+      console.error(`[API Error] ${options.method || "GET"} ${url}:`, error);
+    }
+
     if (error instanceof ApiError) {
       throw error;
     }
-    const message = error instanceof Error ? error.message : "An unexpected network error occurred";
+    const message =
+      error instanceof Error ? error.message : "An unexpected network error occurred";
     throw new ApiError(message, 500);
   }
 }

@@ -12,7 +12,13 @@ import {
   Trash2,
   AlertCircle,
 } from "lucide-react";
-import { Button, Skeleton, Pagination, EmptyState, Input } from "@/components/ui";
+import {
+  Button,
+  Skeleton,
+  Pagination,
+  EmptyState,
+  Input,
+} from "@/components/ui";
 import { Role } from "@/types/entities.types";
 import {
   useAdminUsers,
@@ -47,7 +53,11 @@ export function UserManagementTable() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to deactivate and remove account: ${name}?`)) {
+    if (
+      confirm(
+        `Are you sure you want to deactivate and remove account: ${name}?`,
+      )
+    ) {
       deleteMutation.mutate(id);
     }
   };
@@ -119,7 +129,10 @@ export function UserManagementTable() {
         {isLoading ? (
           <div className="p-6 space-y-4">
             {Array.from({ length: 5 }).map((_, idx) => (
-              <div key={idx} className="flex justify-between items-center gap-4">
+              <div
+                key={idx}
+                className="flex justify-between items-center gap-4"
+              >
                 <Skeleton className="h-6 w-36" />
                 <Skeleton className="h-6 w-24" />
                 <Skeleton className="h-6 w-20" />
@@ -159,7 +172,10 @@ export function UserManagementTable() {
               </thead>
               <tbody className="divide-y divide-border/50 text-foreground">
                 {data.users.map((u) => (
-                  <tr key={u.id} className="hover:bg-surface-raised/40 transition-colors">
+                  <tr
+                    key={u.id}
+                    className="hover:bg-surface-raised/40 transition-colors"
+                  >
                     <td className="px-5 py-4">
                       <div>
                         <span className="font-bold text-sm text-foreground block">

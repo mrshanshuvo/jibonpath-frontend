@@ -9,7 +9,13 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
-import { Button, Badge, Skeleton, EmptyState, Pagination } from "@/components/ui";
+import {
+  Button,
+  Badge,
+  Skeleton,
+  EmptyState,
+  Pagination,
+} from "@/components/ui";
 import { DriverOnboardingModal, useAdminUsers } from "@/features/admin";
 import { Role } from "@/types/entities.types";
 import { formatDateTime } from "@/lib/utils";
@@ -32,7 +38,8 @@ export default function AdminDriversPage() {
             Paramedic Drivers Roster
           </h1>
           <p className="text-xs text-muted-foreground mt-1">
-            Commission certified drivers, manage BRTA heavy licenses, and verify emergency first-responder credentials.
+            Commission certified drivers, manage BRTA heavy licenses, and verify
+            emergency first-responder credentials.
           </p>
         </div>
 
@@ -50,7 +57,10 @@ export default function AdminDriversPage() {
         {isLoading ? (
           <div className="p-6 space-y-4">
             {Array.from({ length: 4 }).map((_, idx) => (
-              <div key={idx} className="flex justify-between items-center gap-4">
+              <div
+                key={idx}
+                className="flex justify-between items-center gap-4"
+              >
                 <Skeleton className="h-6 w-36" />
                 <Skeleton className="h-6 w-28" />
                 <Skeleton className="h-6 w-24" />
@@ -92,7 +102,10 @@ export default function AdminDriversPage() {
               </thead>
               <tbody className="divide-y divide-border/50 text-foreground">
                 {data.users.map((driver) => (
-                  <tr key={driver.id} className="hover:bg-surface-raised/40 transition-colors">
+                  <tr
+                    key={driver.id}
+                    className="hover:bg-surface-raised/40 transition-colors"
+                  >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">

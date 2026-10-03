@@ -5,7 +5,8 @@ import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
   title: "Authentication | PulsePoint Dispatch",
-  description: "Secure role-based access portal for PulsePoint Emergency Ambulance Dispatch.",
+  description:
+    "Secure role-based access portal for PulsePoint Emergency Ambulance Dispatch.",
 };
 
 export default function AuthLayout({
@@ -65,15 +66,27 @@ export default function AuthLayout({
       {/* Bottom minimal footer */}
       <footer className="relative z-10 w-full border-t border-border/40 py-4 text-center text-3xs text-muted-foreground">
         <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>&copy; {new Date().getFullYear()} PulsePoint Dispatch Systems. All rights reserved.</span>
+          <span>
+            &copy; {new Date().getFullYear()} PulsePoint Dispatch Systems. All
+            rights reserved.
+          </span>
           <div className="flex items-center gap-4">
-            <Link href={ROUTES.PUBLIC.ABOUT} className="hover:text-foreground transition-colors">
+            <Link
+              href={ROUTES.PUBLIC.ABOUT}
+              className="hover:text-foreground transition-colors"
+            >
               About
             </Link>
-            <Link href={ROUTES.PUBLIC.SERVICES} className="hover:text-foreground transition-colors">
+            <Link
+              href={ROUTES.PUBLIC.SERVICES}
+              className="hover:text-foreground transition-colors"
+            >
               Services
             </Link>
-            <Link href={ROUTES.PUBLIC.FAQ} className="hover:text-foreground transition-colors">
+            <Link
+              href={ROUTES.PUBLIC.FAQ}
+              className="hover:text-foreground transition-colors"
+            >
               FAQ
             </Link>
           </div>

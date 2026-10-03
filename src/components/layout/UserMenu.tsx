@@ -2,13 +2,22 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useAuthStore, useAuthUser, useIsAuthenticated } from "@/stores/auth.store";
+import {
+  useAuthStore,
+  useAuthUser,
+  useIsAuthenticated,
+} from "@/stores/auth.store";
 import { ROLE_DEFAULT_REDIRECT } from "@/config/roles";
 import { ROUTES } from "@/config/routes";
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { LogOut, User as UserIcon, LayoutDashboard, ChevronDown } from "lucide-react";
+import {
+  LogOut,
+  User as UserIcon,
+  LayoutDashboard,
+  ChevronDown,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export function UserMenu() {
@@ -85,8 +94,12 @@ export function UserMenu() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 rounded-lg border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95">
           <div className="px-3 py-2 border-b border-border/70 mb-1">
-            <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
-            <p className="text-2xs text-muted-foreground truncate">{user.email}</p>
+            <p className="text-xs font-semibold text-foreground truncate">
+              {user.name}
+            </p>
+            <p className="text-2xs text-muted-foreground truncate">
+              {user.email}
+            </p>
             <div className="mt-1.5">
               <Badge
                 variant={

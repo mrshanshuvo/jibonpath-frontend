@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Users,
-  Ambulance,
-  Radio,
-  CircleDollarSign,
-} from "lucide-react";
+import { Users, Ambulance, Radio, CircleDollarSign } from "lucide-react";
 import { Card, Skeleton } from "@/components/ui";
 import { useAdminStats } from "../api/admin.queries";
 import { formatCurrency } from "@/lib/utils";
@@ -18,7 +13,10 @@ export function AdminAnalyticsOverview() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="rounded-2xl border border-border/80 bg-card p-6 space-y-3">
+            <div
+              key={idx}
+              className="rounded-2xl border border-border/80 bg-card p-6 space-y-3"
+            >
               <Skeleton className="h-4 w-28" />
               <Skeleton className="h-8 w-24" />
               <Skeleton className="h-3 w-36" />
@@ -41,9 +39,7 @@ export function AdminAnalyticsOverview() {
   const revenue = stats?.payments.totalRevenue ?? 0;
 
   const fleetUtilization =
-    totalFleet > 0
-      ? Math.round((dispatchedFleet / totalFleet) * 100)
-      : 0;
+    totalFleet > 0 ? Math.round((dispatchedFleet / totalFleet) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -64,7 +60,10 @@ export function AdminAnalyticsOverview() {
               {formatCurrency(revenue)}
             </span>
             <p className="text-3xs text-muted-foreground mt-1 flex items-center gap-1">
-              <span className="text-emerald-400 font-semibold">100% Digital</span> via bKash / SSL / Stripe
+              <span className="text-emerald-400 font-semibold">
+                100% Digital
+              </span>{" "}
+              via bKash / SSL / Stripe
             </p>
           </div>
         </Card>
@@ -177,15 +176,21 @@ export function AdminAnalyticsOverview() {
           <div className="flex flex-wrap items-center justify-between text-xs pt-2">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-emergency" />
-              <span className="text-muted-foreground">Dispatched ({dispatchedFleet})</span>
+              <span className="text-muted-foreground">
+                Dispatched ({dispatchedFleet})
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-              <span className="text-muted-foreground">Available ({availableFleet})</span>
+              <span className="text-muted-foreground">
+                Available ({availableFleet})
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-              <span className="text-muted-foreground">Maintenance ({maintenanceFleet})</span>
+              <span className="text-muted-foreground">
+                Maintenance ({maintenanceFleet})
+              </span>
             </div>
           </div>
         </Card>

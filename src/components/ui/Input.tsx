@@ -26,7 +26,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
+    const inputId =
+      id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
     return (
       <div className="w-full space-y-1.5">
@@ -56,7 +57,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               "flex h-10 w-full rounded-md border border-border bg-surface px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50",
               leftIcon && "pl-10",
               (rightIcon || error) && "pr-10",
-              error && "border-rose-500/80 focus-visible:ring-rose-500 bg-rose-500/5",
+              error &&
+                "border-rose-500/80 focus-visible:ring-rose-500 bg-rose-500/5",
               className,
             )}
             {...props}

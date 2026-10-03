@@ -22,19 +22,28 @@ function PaymentCancelContent() {
             Payment Not Completed
           </h1>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            The checkout session was cancelled or timed out. Your emergency request record is preserved and can be settled anytime.
+            The checkout session was cancelled or timed out. Your emergency
+            request record is preserved and can be settled anytime.
           </p>
         </div>
 
         <div className="flex flex-col gap-2.5 pt-2">
           <Link href={ROUTES.PATIENT.DASHBOARD} className="w-full">
-            <Button variant="primary" className="w-full justify-center" leftIcon={<RefreshCw className="h-4 w-4" />}>
+            <Button
+              variant="primary"
+              className="w-full justify-center"
+              leftIcon={<RefreshCw className="h-4 w-4" />}
+            >
               Retry from Requests
             </Button>
           </Link>
 
           <Link href={ROUTES.PATIENT.DASHBOARD} className="w-full">
-            <Button variant="outline" className="w-full justify-center" leftIcon={<ArrowLeft className="h-4 w-4" />}>
+            <Button
+              variant="outline"
+              className="w-full justify-center"
+              leftIcon={<ArrowLeft className="h-4 w-4" />}
+            >
               Back to Patient Portal
             </Button>
           </Link>

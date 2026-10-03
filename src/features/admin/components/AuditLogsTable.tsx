@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { FileText, AlertCircle, Tag } from "lucide-react";
-import { Button, Badge, Skeleton, Pagination, EmptyState } from "@/components/ui";
+import {
+  Button,
+  Badge,
+  Skeleton,
+  Pagination,
+  EmptyState,
+} from "@/components/ui";
 import { useAuditLogs } from "../api/admin.queries";
 import { formatDateTime } from "@/lib/utils";
 
@@ -30,15 +36,31 @@ export function AuditLogsTable() {
     switch (action) {
       case "DISPATCH":
       case "CREATE":
-        return <Badge variant="emergency" size="sm">{action}</Badge>;
+        return (
+          <Badge variant="emergency" size="sm">
+            {action}
+          </Badge>
+        );
       case "STATUS_UPDATE":
       case "UPDATE":
-        return <Badge variant="warning" size="sm">{action}</Badge>;
+        return (
+          <Badge variant="warning" size="sm">
+            {action}
+          </Badge>
+        );
       case "DELETE":
       case "CANCEL":
-        return <Badge variant="outline" size="sm">{action}</Badge>;
+        return (
+          <Badge variant="outline" size="sm">
+            {action}
+          </Badge>
+        );
       default:
-        return <Badge variant="secondary" size="sm">{action}</Badge>;
+        return (
+          <Badge variant="secondary" size="sm">
+            {action}
+          </Badge>
+        );
     }
   };
 
@@ -69,7 +91,10 @@ export function AuditLogsTable() {
         {isLoading ? (
           <div className="p-6 space-y-4">
             {Array.from({ length: 6 }).map((_, idx) => (
-              <div key={idx} className="flex justify-between items-center gap-4">
+              <div
+                key={idx}
+                className="flex justify-between items-center gap-4"
+              >
                 <Skeleton className="h-6 w-32" />
                 <Skeleton className="h-6 w-28" />
                 <Skeleton className="h-6 w-20" />
@@ -109,7 +134,10 @@ export function AuditLogsTable() {
               </thead>
               <tbody className="divide-y divide-border/50 text-foreground">
                 {data.logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-surface-raised/40 transition-colors">
+                  <tr
+                    key={log.id}
+                    className="hover:bg-surface-raised/40 transition-colors"
+                  >
                     <td className="px-5 py-4 font-mono text-3xs text-muted-foreground whitespace-nowrap">
                       {formatDateTime(log.createdAt)}
                     </td>

@@ -155,8 +155,9 @@ export default function HospitalsPage() {
             Partner Hospitals & Trauma Centers
           </h1>
           <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Real-time ER reception coordination with tertiary facilities across Dhaka.
-            Our ambulances stream patient vitals ahead for zero-delay triage admission.
+            Real-time ER reception coordination with tertiary facilities across
+            Dhaka. Our ambulances stream patient vitals ahead for zero-delay
+            triage admission.
           </p>
         </div>
       </section>
@@ -254,8 +255,14 @@ export default function HospitalsPage() {
                     <span>ER Line: {hospital.phone}</span>
                   </a>
 
-                  <Link href={`${ROUTES.PATIENT.BOOK}?destination=${encodeURIComponent(hospital.name)}`}>
-                    <Button variant="secondary" size="sm" rightIcon={<Ambulance className="h-3.5 w-3.5" />}>
+                  <Link
+                    href={`${ROUTES.PATIENT.BOOK}?destination=${encodeURIComponent(hospital.name)}`}
+                  >
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      rightIcon={<Ambulance className="h-3.5 w-3.5" />}
+                    >
                       Route Here
                     </Button>
                   </Link>
@@ -271,7 +278,8 @@ export default function HospitalsPage() {
                 No matching hospitals found
               </h4>
               <p className="mt-1 text-xs text-muted-foreground">
-                Try searching with a different hospital name or clear the zone filter.
+                Try searching with a different hospital name or clear the zone
+                filter.
               </p>
             </div>
           )}
@@ -286,8 +294,9 @@ export default function HospitalsPage() {
             Direct Hospital Pre-Arrival Notification
           </h3>
           <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-            When you request an ambulance via PulsePoint, the destination hospital receives live telemetry
-            and estimated arrival time, ensuring the ER trauma team is scrubbed and prepared at the bay.
+            When you request an ambulance via PulsePoint, the destination
+            hospital receives live telemetry and estimated arrival time,
+            ensuring the ER trauma team is scrubbed and prepared at the bay.
           </p>
           <div className="mt-6">
             <Link href={ROUTES.PATIENT.BOOK}>

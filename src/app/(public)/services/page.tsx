@@ -34,7 +34,8 @@ const FLEET_TIERS = [
       "Sphygmomanometer & Pulse Oximeter",
       "Emergency First Responder & Driver Crew",
     ],
-    idealFor: "Post-surgery discharges, orthopedic fractures, mild respiratory distress.",
+    idealFor:
+      "Post-surgery discharges, orthopedic fractures, mild respiratory distress.",
   },
   {
     type: AmbulanceType.ADVANCED_LIFE_SUPPORT,
@@ -51,7 +52,8 @@ const FLEET_TIERS = [
       "Dual-Channel Syringe Infusion Pump",
       "Senior Critical Care Paramedic + Emergency Driver",
     ],
-    idealFor: "Myocardial infarction (Heart Attack), acute stroke, polytrauma, severe hemorrhage.",
+    idealFor:
+      "Myocardial infarction (Heart Attack), acute stroke, polytrauma, severe hemorrhage.",
   },
   {
     type: AmbulanceType.INTENSIVE_CARE,
@@ -68,7 +70,8 @@ const FLEET_TIERS = [
       "Four-Channel Precision Infusion System",
       "Critical Care Specialist Physician + ICU Nurse Crew",
     ],
-    idealFor: "Comatose patients, intubated respiratory failure, multi-organ failure transfers.",
+    idealFor:
+      "Comatose patients, intubated respiratory failure, multi-organ failure transfers.",
   },
 ];
 
@@ -106,8 +109,9 @@ export default function ServicesPage() {
             Precision Emergency Transport Services
           </h1>
           <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Every clinical emergency requires matched equipment and specialized crews.
-            Select the appropriate emergency tier for immediate GPS dispatch.
+            Every clinical emergency requires matched equipment and specialized
+            crews. Select the appropriate emergency tier for immediate GPS
+            dispatch.
           </p>
         </div>
       </section>
@@ -123,9 +127,7 @@ export default function ServicesPage() {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
-                    <Badge variant={tier.badgeVariant}>
-                      {tier.badge}
-                    </Badge>
+                    <Badge variant={tier.badgeVariant}>{tier.badge}</Badge>
                     <span className="font-mono text-2xs font-semibold text-muted-foreground">
                       {tier.type}
                     </span>
@@ -148,7 +150,10 @@ export default function ServicesPage() {
                     </h3>
                     <ul className="space-y-2">
                       {tier.equipment.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-xs text-muted-foreground"
+                        >
                           <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
                           <span>{item}</span>
                         </li>
@@ -167,9 +172,16 @@ export default function ServicesPage() {
                 </div>
 
                 <div className="mt-8 pt-4 border-t border-border/60">
-                  <Link href={`${ROUTES.PATIENT.BOOK}?tier=${tier.type}`} className="w-full block">
+                  <Link
+                    href={`${ROUTES.PATIENT.BOOK}?tier=${tier.type}`}
+                    className="w-full block"
+                  >
                     <Button
-                      variant={tier.type === AmbulanceType.INTENSIVE_CARE ? "emergency" : "primary"}
+                      variant={
+                        tier.type === AmbulanceType.INTENSIVE_CARE
+                          ? "emergency"
+                          : "primary"
+                      }
                       className="w-full justify-center"
                       rightIcon={<ArrowRight className="h-4 w-4" />}
                     >
@@ -231,7 +243,8 @@ export default function ServicesPage() {
                 24/7 Rapid Emergency Response Desk
               </h4>
               <p className="text-xs text-muted-foreground">
-                All units are monitored in real-time by Dhaka Central Emergency Control.
+                All units are monitored in real-time by Dhaka Central Emergency
+                Control.
               </p>
             </div>
           </div>

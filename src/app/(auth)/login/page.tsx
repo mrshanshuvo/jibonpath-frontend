@@ -5,7 +5,8 @@ import { Skeleton } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description: "Access the PulsePoint Emergency Ambulance Dispatch command and booking portal.",
+  description:
+    "Access the PulsePoint Emergency Ambulance Dispatch command and booking portal.",
 };
 
 function LoginLoadingSkeleton() {

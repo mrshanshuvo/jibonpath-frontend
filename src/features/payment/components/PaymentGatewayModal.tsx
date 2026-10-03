@@ -47,7 +47,8 @@ const GATEWAYS = [
     badge: "International Cards",
     desc: "Seamless 256-bit encrypted card checkout supporting all international debit and credit cards",
     icon: ShieldCheck,
-    border: "border-indigo-500/40 hover:border-indigo-500 hover:bg-indigo-950/20",
+    border:
+      "border-indigo-500/40 hover:border-indigo-500 hover:bg-indigo-950/20",
     activeRing: "ring-2 ring-indigo-500 bg-indigo-500/10",
     badgeStyle: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
   },
@@ -105,10 +106,15 @@ export function PaymentGatewayModal({
           <div className="space-y-1.5 text-xs text-muted-foreground border-t border-border/40 pt-2.5">
             <div className="flex justify-between">
               <span>Ambulance Base Activation:</span>
-              <span className="font-mono text-foreground">{formatCurrency(baseFare)}</span>
+              <span className="font-mono text-foreground">
+                {formatCurrency(baseFare)}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span>Estimated Metropolitan Transit ({distanceKm} km × {formatCurrency(perKmRate)}):</span>
+              <span>
+                Estimated Metropolitan Transit ({distanceKm} km ×{" "}
+                {formatCurrency(perKmRate)}):
+              </span>
               <span className="font-mono text-foreground">
                 {formatCurrency(distanceKm * perKmRate)}
               </span>
@@ -121,7 +127,9 @@ export function PaymentGatewayModal({
             <div className="flex justify-between text-sm font-bold text-foreground border-t border-border/60 pt-2 mt-1">
               <span>Total Payable Amount:</span>
               <span className="font-mono text-base text-primary">
-                {fareLoading ? "Calculating..." : formatCurrency(estimatedTotal)}
+                {fareLoading
+                  ? "Calculating..."
+                  : formatCurrency(estimatedTotal)}
               </span>
             </div>
           </div>
@@ -179,7 +187,11 @@ export function PaymentGatewayModal({
 
         {/* Action Button */}
         <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/60">
-          <Button variant="ghost" onClick={onClose} disabled={initiateMutation.isPending}>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            disabled={initiateMutation.isPending}
+          >
             Dismiss
           </Button>
 

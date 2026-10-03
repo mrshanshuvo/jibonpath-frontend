@@ -16,13 +16,15 @@ interface FaqItem {
 const FAQS: FaqItem[] = [
   {
     category: "Emergency Dispatch",
-    question: "How does PulsePoint achieve under 10-minute metropolitan response times?",
+    question:
+      "How does PulsePoint achieve under 10-minute metropolitan response times?",
     answer:
       "Our system uses intelligent geo-spatial routing that tracks real-time traffic density, driver availability, and vehicle proximity. When a request is triggered, our dispatch engine assigns the closest suitable ambulance and provides turn-by-turn routing with Dhaka traffic congestion avoidance.",
   },
   {
     category: "Emergency Dispatch",
-    question: "Can I request an emergency ambulance on behalf of a family member or third party?",
+    question:
+      "Can I request an emergency ambulance on behalf of a family member or third party?",
     answer:
       "Yes. In the booking flow, you can specify the exact patient pickup address and GPS coordinates, contact phone number, and clinical condition. You will receive live GPS telemetry tracking of the dispatched ambulance directly on your device.",
   },
@@ -68,7 +70,13 @@ export default function FaqPage() {
   const [openIndices, setOpenIndices] = useState<number[]>([0, 2]);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
-  const categories = ["ALL", "Emergency Dispatch", "Fleet & Medical Care", "Pricing & Payments", "Hospital Coordination"];
+  const categories = [
+    "ALL",
+    "Emergency Dispatch",
+    "Fleet & Medical Care",
+    "Pricing & Payments",
+    "Hospital Coordination",
+  ];
 
   const toggleIndex = (idx: number) => {
     setOpenIndices((prev) =>
@@ -93,7 +101,9 @@ export default function FaqPage() {
             Frequently Asked Questions
           </h1>
           <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Everything you need to know about our response protocol, vehicle capabilities, pricing transparency, and emergency hospital handovers.
+            Everything you need to know about our response protocol, vehicle
+            capabilities, pricing transparency, and emergency hospital
+            handovers.
           </p>
         </div>
       </section>
@@ -171,17 +181,24 @@ export default function FaqPage() {
               Have an unanswered question?
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Our 24/7 central dispatchers and customer care teams are available around the clock.
+              Our 24/7 central dispatchers and customer care teams are available
+              around the clock.
             </p>
           </div>
           <div className="flex items-center gap-3">
             <a href="tel:999">
-              <Button variant="emergency" leftIcon={<PhoneCall className="h-4 w-4" />}>
+              <Button
+                variant="emergency"
+                leftIcon={<PhoneCall className="h-4 w-4" />}
+              >
                 Call 999 Hotline
               </Button>
             </a>
             <Link href={ROUTES.PUBLIC.CONTACT}>
-              <Button variant="outline" rightIcon={<ArrowRight className="h-4 w-4" />}>
+              <Button
+                variant="outline"
+                rightIcon={<ArrowRight className="h-4 w-4" />}
+              >
                 Contact Operations
               </Button>
             </Link>

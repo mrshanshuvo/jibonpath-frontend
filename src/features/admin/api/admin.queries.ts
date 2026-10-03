@@ -52,9 +52,12 @@ export function useAdminUsers(params?: AdminUsersQueryParams) {
   return useQuery({
     queryKey: adminKeys.users(params),
     queryFn: async () => {
-      const res = await api.get<ApiResponse<AdminUsersApiResponse>>("/admin/users", {
-        params: queryParams,
-      });
+      const res = await api.get<ApiResponse<AdminUsersApiResponse>>(
+        "/admin/users",
+        {
+          params: queryParams,
+        },
+      );
       return res.data;
     },
   });
@@ -75,9 +78,12 @@ export function useUpdateUserRole() {
       id: string;
       role: Role;
     }): Promise<User> => {
-      const res = await api.patch<ApiResponse<User>>(`/admin/users/${id}/role`, {
-        role,
-      });
+      const res = await api.patch<ApiResponse<User>>(
+        `/admin/users/${id}/role`,
+        {
+          role,
+        },
+      );
       return res.data;
     },
     onSuccess: (data) => {
@@ -106,9 +112,12 @@ export function useToggleUserStatus() {
       id: string;
       isActive: boolean;
     }): Promise<User> => {
-      const res = await api.patch<ApiResponse<User>>(`/admin/users/${id}/status`, {
-        isActive,
-      });
+      const res = await api.patch<ApiResponse<User>>(
+        `/admin/users/${id}/status`,
+        {
+          isActive,
+        },
+      );
       return res.data;
     },
     onSuccess: (data) => {
@@ -159,7 +168,9 @@ export function useCreateDriver() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: adminKeys.all });
-      toast.success("Paramedic driver commissioned and onboarded successfully!");
+      toast.success(
+        "Paramedic driver commissioned and onboarded successfully!",
+      );
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create driver account.");

@@ -56,7 +56,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
 // Strict selector hooks for performance optimization (never use store directly in heavy components)
 export const useAuthUser = () => useAuthStore((state) => state.user);
-export const useIsAuthenticated = () => useAuthStore((state) => state.isAuthenticated);
+export const useIsAuthenticated = () =>
+  useAuthStore((state) => state.isAuthenticated);
 export const useUserRole = () => useAuthStore((state) => state.user?.role);
-export const useAuthAccessToken = () => useAuthStore((state) => state.accessToken);
+export const useAuthAccessToken = () =>
+  useAuthStore((state) => state.accessToken);
 export const useAuthLoading = () => useAuthStore((state) => state.isLoading);

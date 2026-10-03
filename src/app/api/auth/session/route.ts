@@ -54,7 +54,10 @@ export async function POST(request: Request) {
       });
     }
 
-    return NextResponse.json({ success: true, message: "Session cookies established" });
+    return NextResponse.json({
+      success: true,
+      message: "Session cookies established",
+    });
   } catch {
     return NextResponse.json(
       { success: false, message: "Failed to establish session" },
@@ -97,7 +100,9 @@ export async function GET() {
       );
     }
 
-    const data = (await backendRes.json()) as ApiResponse<{ accessToken: string }>;
+    const data = (await backendRes.json()) as ApiResponse<{
+      accessToken: string;
+    }>;
 
     return NextResponse.json({
       success: true,
@@ -121,5 +126,8 @@ export async function DELETE() {
   cookieStore.delete(REFRESH_COOKIE_NAME);
   cookieStore.delete(ROLE_COOKIE_NAME);
 
-  return NextResponse.json({ success: true, message: "Session cookies cleared" });
+  return NextResponse.json({
+    success: true,
+    message: "Session cookies cleared",
+  });
 }

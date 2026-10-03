@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Shield, Ambulance, HeartPulse, Loader2, ArrowRight } from "lucide-react";
+import {
+  Shield,
+  Ambulance,
+  HeartPulse,
+  Loader2,
+  ArrowRight,
+} from "lucide-react";
 import { DEMO_ACCOUNTS, type DemoAccount } from "@/config/demo-credentials";
 import { Role } from "@/types/entities.types";
 import { useLogin } from "../api/auth.queries";
@@ -85,8 +91,11 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
                 "group relative flex flex-col justify-between rounded-xl border p-3.5 text-left transition-all duration-200",
                 "bg-card/60 backdrop-blur-sm",
                 getRoleAccent(account.role),
-                isCurrentLoading && "ring-2 ring-primary ring-offset-2 ring-offset-background",
-                loginMutation.isPending && !isCurrentLoading && "opacity-60 cursor-not-allowed",
+                isCurrentLoading &&
+                  "ring-2 ring-primary ring-offset-2 ring-offset-background",
+                loginMutation.isPending &&
+                  !isCurrentLoading &&
+                  "opacity-60 cursor-not-allowed",
               )}
             >
               <div>
@@ -121,7 +130,8 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
                     <Loader2 className="h-3 w-3 animate-spin text-primary" />
                   ) : (
                     <span className="flex items-center gap-1">
-                      Sign in <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                      Sign in{" "}
+                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   )}
                 </div>

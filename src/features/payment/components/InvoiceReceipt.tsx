@@ -11,7 +11,11 @@ interface InvoiceReceiptProps {
   payment: Payment | null;
 }
 
-export function InvoiceReceipt({ isOpen, onClose, payment }: InvoiceReceiptProps) {
+export function InvoiceReceipt({
+  isOpen,
+  onClose,
+  payment,
+}: InvoiceReceiptProps) {
   if (!payment) return null;
 
   const handlePrint = () => {
@@ -98,7 +102,9 @@ export function InvoiceReceipt({ isOpen, onClose, payment }: InvoiceReceiptProps
           {/* Line Item Table */}
           <div className="border-t border-b border-border/60 py-3 space-y-2 text-xs">
             <div className="flex justify-between text-muted-foreground">
-              <span>Emergency Ambulance Mobile Dispatch (Metropolitan Dhaka):</span>
+              <span>
+                Emergency Ambulance Mobile Dispatch (Metropolitan Dhaka):
+              </span>
               <span className="font-mono text-foreground">
                 {formatCurrency(payment.amount)}
               </span>
@@ -111,7 +117,9 @@ export function InvoiceReceipt({ isOpen, onClose, payment }: InvoiceReceiptProps
 
           {/* Total Amount */}
           <div className="flex items-center justify-between pt-1">
-            <span className="text-sm font-bold text-foreground">Total Paid:</span>
+            <span className="text-sm font-bold text-foreground">
+              Total Paid:
+            </span>
             <span className="font-mono text-xl font-extrabold text-primary">
               {formatCurrency(payment.amount)}
             </span>
@@ -119,7 +127,10 @@ export function InvoiceReceipt({ isOpen, onClose, payment }: InvoiceReceiptProps
 
           <div className="flex items-center gap-1.5 text-3xs text-muted-foreground justify-center pt-2">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span>Electronically verified digital tax receipt. Valid for health insurance claims.</span>
+            <span>
+              Electronically verified digital tax receipt. Valid for health
+              insurance claims.
+            </span>
           </div>
         </div>
 

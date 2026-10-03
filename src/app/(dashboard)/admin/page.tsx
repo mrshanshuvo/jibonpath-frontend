@@ -8,7 +8,8 @@ export default function AdminAnalyticsPage() {
           Emergency Command & Analytics Console
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Real-time Dhaka metropolitan dispatch metrics, fleet capacity utilization, patient triage resolution, and revenue tracking.
+          Real-time Dhaka metropolitan dispatch metrics, fleet capacity
+          utilization, patient triage resolution, and revenue tracking.
         </p>
       </div>
 

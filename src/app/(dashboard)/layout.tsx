@@ -22,7 +22,10 @@ export default function DashboardLayout({
       return `${parts[0].charAt(0).toUpperCase() + parts[0].slice(1)} Portal`;
     }
     return parts
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, " "))
+      .map(
+        (part) =>
+          part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, " "),
+      )
       .join(" / ");
   };
 

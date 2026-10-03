@@ -9,14 +9,8 @@ import {
   AmbulanceType,
   type Ambulance,
 } from "@/types/entities.types";
-import {
-  createAmbulanceSchema,
-  type CreateAmbulanceInput,
-} from "../types";
-import {
-  useCreateAmbulance,
-  useUpdateAmbulance,
-} from "../api/fleet.queries";
+import { createAmbulanceSchema, type CreateAmbulanceInput } from "../types";
+import { useCreateAmbulance, useUpdateAmbulance } from "../api/fleet.queries";
 import { Ambulance as AmbulanceIcon, Plus, Save } from "lucide-react";
 
 interface AmbulanceFormModalProps {
@@ -128,7 +122,9 @@ export function AmbulanceFormModal({
               disabled={isPending}
               {...register("type")}
             >
-              <option value={AmbulanceType.BASIC}>Basic Life Support (BLS)</option>
+              <option value={AmbulanceType.BASIC}>
+                Basic Life Support (BLS)
+              </option>
               <option value={AmbulanceType.ADVANCED_LIFE_SUPPORT}>
                 Advanced Cardiac Life Support (ACLS)
               </option>
@@ -137,7 +133,9 @@ export function AmbulanceFormModal({
               </option>
             </select>
             {errors.type && (
-              <p className="text-xs text-rose-500 font-medium">{errors.type.message}</p>
+              <p className="text-xs text-rose-500 font-medium">
+                {errors.type.message}
+              </p>
             )}
           </div>
 

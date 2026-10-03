@@ -8,7 +8,8 @@ export default function AdminFleetPage() {
           Ambulance Fleet Management
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Monitor response units, equipment specifications, maintenance scheduling, and metropolitan deployment readiness.
+          Monitor response units, equipment specifications, maintenance
+          scheduling, and metropolitan deployment readiness.
         </p>
       </div>
 

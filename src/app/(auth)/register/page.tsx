@@ -5,7 +5,8 @@ import { Skeleton } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Create Account",
-  description: "Register for rapid emergency ambulance booking and patient telemetry tracking.",
+  description:
+    "Register for rapid emergency ambulance booking and patient telemetry tracking.",
 };
 
 function RegisterLoadingSkeleton() {
@@ -37,7 +38,8 @@ function RegisterContent() {
           Create Patient Account
         </h1>
         <p className="text-sm text-muted-foreground">
-          Register to quickly request ambulances, track arrivals in real-time, and view medical receipts.
+          Register to quickly request ambulances, track arrivals in real-time,
+          and view medical receipts.
         </p>
       </div>
 

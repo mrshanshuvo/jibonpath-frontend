@@ -12,10 +12,7 @@ import {
 import { Button, Badge, Card } from "@/components/ui";
 import { DispatchStepper } from "./DispatchStepper";
 import { TripLogsTimeline } from "./TripLogsTimeline";
-import {
-  DispatchStatus,
-  type Dispatch,
-} from "@/types/entities.types";
+import { DispatchStatus, type Dispatch } from "@/types/entities.types";
 import { useUpdateDispatchStatus } from "../api/dispatch.queries";
 
 interface DriverActiveDispatchProps {
@@ -24,7 +21,11 @@ interface DriverActiveDispatchProps {
 
 const NEXT_STATUS_MAP: Record<
   DispatchStatus,
-  { next: DispatchStatus; actionText: string; color: "primary" | "emergency" | "secondary" } | null
+  {
+    next: DispatchStatus;
+    actionText: string;
+    color: "primary" | "emergency" | "secondary";
+  } | null
 > = {
   [DispatchStatus.DISPATCHED]: {
     next: DispatchStatus.EN_ROUTE,
@@ -134,7 +135,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                   Patient Pickup Location
                 </span>
                 <p className="text-sm font-bold text-foreground mt-0.5">
-                  {dispatch.request?.pickupAddress || "Pickup location not provided"}
+                  {dispatch.request?.pickupAddress ||
+                    "Pickup location not provided"}
                 </p>
                 {dispatch.request?.description && (
                   <p className="text-xs text-muted-foreground mt-1">
@@ -151,7 +153,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                   Destination Emergency Department
                 </span>
                 <p className="text-sm font-bold text-foreground mt-0.5">
-                  {dispatch.hospital?.name || "Dhaka Medical College Hospital (DMCH)"}
+                  {dispatch.hospital?.name ||
+                    "Dhaka Medical College Hospital (DMCH)"}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {dispatch.hospital?.address || "Emergency Bay Room 104"}
@@ -223,7 +226,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                 Advance Status to: {nextStep.next}
               </h4>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Clicking will immediately broadcast telemetry to the central dispatch control room and the receiving hospital.
+                Clicking will immediately broadcast telemetry to the central
+                dispatch control room and the receiving hospital.
               </p>
             </div>
 
@@ -246,7 +250,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
             Trip Completed Successfully
           </h4>
           <p className="text-xs text-muted-foreground">
-            Patient handed over to emergency trauma team. Vehicle is returning to available rotation.
+            Patient handed over to emergency trauma team. Vehicle is returning
+            to available rotation.
           </p>
         </Card>
       )}

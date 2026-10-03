@@ -30,14 +30,18 @@ export function useMyPayments(params?: PaymentQueryParams) {
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
-  if (params?.status && params.status !== "ALL") queryParams.status = params.status;
+  if (params?.status && params.status !== "ALL")
+    queryParams.status = params.status;
 
   return useQuery({
     queryKey: paymentKeys.myPayments(params),
     queryFn: async () => {
-      const res = await api.get<ApiResponse<PaymentsApiResponse>>("/payments/my", {
-        params: queryParams,
-      });
+      const res = await api.get<ApiResponse<PaymentsApiResponse>>(
+        "/payments/my",
+        {
+          params: queryParams,
+        },
+      );
       return res.data;
     },
   });
@@ -108,8 +112,7 @@ export function useInitiatePayment() {
       queryClient.invalidateQueries({ queryKey: paymentKeys.all });
 
       // Handle redirect to external payment page
-      const redirectTarget =
-        data.url || data.bkashURL || data.GatewayPageURL;
+      const redirectTarget = data.url || data.bkashURL || data.GatewayPageURL;
 
       if (redirectTarget) {
         toast.info(`Redirecting to secure ${variables.gateway} portal...`);

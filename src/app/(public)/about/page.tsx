@@ -88,19 +88,27 @@ export default function AboutPage() {
               Reinventing Pre-Hospital Care in Bangladesh
             </h1>
             <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
-              PulsePoint was founded with a singular, uncompromising mission:
-              to eliminate preventable transit delays during acute medical crises.
-              By bridging automated dispatch algorithms with certified paramedic crews,
-              we ensure immediate intervention when seconds decide life.
+              PulsePoint was founded with a singular, uncompromising mission: to
+              eliminate preventable transit delays during acute medical crises.
+              By bridging automated dispatch algorithms with certified paramedic
+              crews, we ensure immediate intervention when seconds decide life.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link href={ROUTES.PATIENT.BOOK}>
-                <Button variant="emergency" size="lg" leftIcon={<HeartPulse className="h-4 w-4" />}>
+                <Button
+                  variant="emergency"
+                  size="lg"
+                  leftIcon={<HeartPulse className="h-4 w-4" />}
+                >
                   Dispatch Ambulance Now
                 </Button>
               </Link>
               <Link href={ROUTES.PUBLIC.HOSPITALS}>
-                <Button variant="secondary" size="lg" leftIcon={<Building2 className="h-4 w-4" />}>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  leftIcon={<Building2 className="h-4 w-4" />}
+                >
                   View Partner Hospitals
                 </Button>
               </Link>
@@ -138,7 +146,8 @@ export default function AboutPage() {
               Built Upon Uncompromised Medical Standards
             </h3>
             <p className="mt-4 text-sm text-muted-foreground">
-              Every ambulance dispatch adheres to internationally accredited trauma management protocols.
+              Every ambulance dispatch adheres to internationally accredited
+              trauma management protocols.
             </p>
           </div>
 
@@ -179,7 +188,8 @@ export default function AboutPage() {
               Physician-Led Operational Command
             </h3>
             <p className="mt-3 text-sm text-muted-foreground">
-              Our clinical leadership guarantees continuous quality oversight, strict protocol enforcement, and rapid triage coordination.
+              Our clinical leadership guarantees continuous quality oversight,
+              strict protocol enforcement, and rapid triage coordination.
             </p>
           </div>
 
@@ -219,7 +229,8 @@ export default function AboutPage() {
             Facing a Life-Threatening Situation?
           </h2>
           <p className="mt-2 text-sm text-muted-foreground max-w-xl mx-auto">
-            Our dispatch algorithms instantly mobilize the closest available BLS, ACLS, or ICU unit with live GPS route tracking.
+            Our dispatch algorithms instantly mobilize the closest available
+            BLS, ACLS, or ICU unit with live GPS route tracking.
           </p>
           <div className="mt-6 flex flex-wrap justify-center items-center gap-4">
             <a
@@ -229,7 +240,11 @@ export default function AboutPage() {
               <span>Call 999 Hotline</span>
             </a>
             <Link href={ROUTES.PATIENT.BOOK}>
-              <Button variant="secondary" size="lg" rightIcon={<ArrowRight className="h-4 w-4" />}>
+              <Button
+                variant="secondary"
+                size="lg"
+                rightIcon={<ArrowRight className="h-4 w-4" />}
+              >
                 Book Ambulance Online
               </Button>
             </Link>

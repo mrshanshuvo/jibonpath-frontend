@@ -17,7 +17,8 @@ export default function DriverProfilePage() {
           Paramedic Driver Credential Profile
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Verified medical first-responder certification and BRTA heavy commercial license validation.
+          Verified medical first-responder certification and BRTA heavy
+          commercial license validation.
         </p>
       </div>
 
@@ -54,7 +55,9 @@ export default function DriverProfilePage() {
             <p className="font-mono font-bold text-foreground text-sm">
               BRTA-DHAKA-2022-7718
             </p>
-            <span className="text-3xs text-emerald-400 font-medium">Verified & Active</span>
+            <span className="text-3xs text-emerald-400 font-medium">
+              Verified & Active
+            </span>
           </div>
 
           <div className="rounded-xl bg-surface p-4 border border-border/60 space-y-1">
@@ -65,7 +68,9 @@ export default function DriverProfilePage() {
             <p className="font-bold text-foreground text-sm">
               ACLS / BLS / Trauma Resuscitation
             </p>
-            <span className="text-3xs text-muted-foreground font-mono">Issued by DGHS Dhaka</span>
+            <span className="text-3xs text-muted-foreground font-mono">
+              Issued by DGHS Dhaka
+            </span>
           </div>
 
           <div className="rounded-xl bg-surface p-4 border border-border/60 space-y-1">

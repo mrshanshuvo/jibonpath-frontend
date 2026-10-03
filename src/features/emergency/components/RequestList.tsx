@@ -15,7 +15,9 @@ interface RequestListProps {
 
 export function RequestList({ onPay }: RequestListProps) {
   const [page, setPage] = useState(1);
-  const [selectedStatus, setSelectedStatus] = useState<RequestStatus | "ALL">("ALL");
+  const [selectedStatus, setSelectedStatus] = useState<RequestStatus | "ALL">(
+    "ALL",
+  );
 
   const { data, isLoading, isError, refetch } = useMyRequests({
     page,
@@ -55,7 +57,11 @@ export function RequestList({ onPay }: RequestListProps) {
         </div>
 
         <Link href={ROUTES.PATIENT.BOOK}>
-          <Button variant="emergency" size="sm" leftIcon={<PlusCircle className="h-4 w-4" />}>
+          <Button
+            variant="emergency"
+            size="sm"
+            leftIcon={<PlusCircle className="h-4 w-4" />}
+          >
             Request Ambulance
           </Button>
         </Link>
@@ -65,7 +71,10 @@ export function RequestList({ onPay }: RequestListProps) {
       {isLoading && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="rounded-2xl border border-border/80 bg-card p-6 space-y-4">
+            <div
+              key={idx}
+              className="rounded-2xl border border-border/80 bg-card p-6 space-y-4"
+            >
               <div className="flex justify-between">
                 <Skeleton className="h-6 w-24 rounded-full" />
                 <Skeleton className="h-4 w-16" />
@@ -94,15 +103,17 @@ export function RequestList({ onPay }: RequestListProps) {
       )}
 
       {/* Empty State */}
-      {!isLoading && !isError && (!data?.requests || data.requests.length === 0) && (
-        <EmptyState
-          icon={Ambulance}
-          title="No Emergency Requests Found"
-          description="You do not have any active or past ambulance requests matching this filter."
-          actionLabel="Book Emergency Ambulance"
-          onAction={() => window.location.assign(ROUTES.PATIENT.BOOK)}
-        />
-      )}
+      {!isLoading &&
+        !isError &&
+        (!data?.requests || data.requests.length === 0) && (
+          <EmptyState
+            icon={Ambulance}
+            title="No Emergency Requests Found"
+            description="You do not have any active or past ambulance requests matching this filter."
+            actionLabel="Book Emergency Ambulance"
+            onAction={() => window.location.assign(ROUTES.PATIENT.BOOK)}
+          />
+        )}
 
       {/* Request Grid */}
       {!isLoading && !isError && data?.requests && data.requests.length > 0 && (

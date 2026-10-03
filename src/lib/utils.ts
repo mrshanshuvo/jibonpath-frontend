@@ -65,7 +65,9 @@ export function formatTime(date: string | Date | null | undefined): string {
 /**
  * Formats relative time (e.g. "Just now", "5 mins ago", "2 hours ago")
  */
-export function formatRelativeTime(date: string | Date | null | undefined): string {
+export function formatRelativeTime(
+  date: string | Date | null | undefined,
+): string {
   if (!date) return "N/A";
   const d = typeof date === "string" ? new Date(date) : date;
   if (isNaN(d.getTime())) return "Invalid Date";
@@ -86,7 +88,10 @@ export function formatRelativeTime(date: string | Date | null | undefined): stri
 /**
  * Formats a monetary number into standard Bangladeshi Taka currency (৳)
  */
-export function formatCurrency(amount: number | null | undefined, currency = "BDT"): string {
+export function formatCurrency(
+  amount: number | null | undefined,
+  currency = "BDT",
+): string {
   if (amount == null) return "৳0.00";
   const formatted = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
@@ -98,7 +103,10 @@ export function formatCurrency(amount: number | null | undefined, currency = "BD
 /**
  * Formats distance in km or meters
  */
-export function formatDistance(kmOrMeters: number | null | undefined, isKm = true): string {
+export function formatDistance(
+  kmOrMeters: number | null | undefined,
+  isKm = true,
+): string {
   if (kmOrMeters == null) return "N/A";
   const km = isKm ? kmOrMeters : kmOrMeters / 1000;
   if (km < 1) {
@@ -227,19 +235,40 @@ export function getDispatchStatusStyles(status: DispatchStatus): {
 } {
   switch (status) {
     case DispatchStatus.DISPATCHED:
-      return { badge: "bg-blue-500/10 text-blue-400 border-blue-500/20", label: "Dispatched" };
+      return {
+        badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+        label: "Dispatched",
+      };
     case DispatchStatus.EN_ROUTE:
-      return { badge: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20", label: "En Route" };
+      return {
+        badge: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+        label: "En Route",
+      };
     case DispatchStatus.PATIENT_PICKUP:
-      return { badge: "bg-purple-500/10 text-purple-400 border-purple-500/20", label: "Patient Picked Up" };
+      return {
+        badge: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+        label: "Patient Picked Up",
+      };
     case DispatchStatus.HOSPITAL_SELECTED:
-      return { badge: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20", label: "Hospital Selected" };
+      return {
+        badge: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+        label: "Hospital Selected",
+      };
     case DispatchStatus.HOSPITAL_ARRIVAL:
-      return { badge: "bg-teal-500/10 text-teal-400 border-teal-500/20", label: "Arrived at Hospital" };
+      return {
+        badge: "bg-teal-500/10 text-teal-400 border-teal-500/20",
+        label: "Arrived at Hospital",
+      };
     case DispatchStatus.COMPLETED:
-      return { badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", label: "Completed" };
+      return {
+        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        label: "Completed",
+      };
     default:
-      return { badge: "bg-slate-500/10 text-slate-400 border-slate-500/20", label: status };
+      return {
+        badge: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+        label: status,
+      };
   }
 }
 
@@ -252,15 +281,30 @@ export function getAmbulanceStatusStyles(status: AmbulanceStatus): {
 } {
   switch (status) {
     case AmbulanceStatus.AVAILABLE:
-      return { badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", label: "Available" };
+      return {
+        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        label: "Available",
+      };
     case AmbulanceStatus.DISPATCHED:
-      return { badge: "bg-amber-500/10 text-amber-400 border-amber-500/20", label: "On Mission" };
+      return {
+        badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+        label: "On Mission",
+      };
     case AmbulanceStatus.MAINTENANCE:
-      return { badge: "bg-red-500/10 text-red-400 border-red-500/20", label: "Maintenance" };
+      return {
+        badge: "bg-red-500/10 text-red-400 border-red-500/20",
+        label: "Maintenance",
+      };
     case AmbulanceStatus.RETIRED:
-      return { badge: "bg-slate-600/10 text-slate-500 border-slate-600/20", label: "Retired" };
+      return {
+        badge: "bg-slate-600/10 text-slate-500 border-slate-600/20",
+        label: "Retired",
+      };
     default:
-      return { badge: "bg-slate-500/10 text-slate-400 border-slate-500/20", label: status };
+      return {
+        badge: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+        label: status,
+      };
   }
 }
 
@@ -273,15 +317,30 @@ export function getPaymentStatusStyles(status: PaymentStatus): {
 } {
   switch (status) {
     case PaymentStatus.SUCCESS:
-      return { badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", label: "Paid" };
+      return {
+        badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        label: "Paid",
+      };
     case PaymentStatus.PENDING:
-      return { badge: "bg-amber-500/10 text-amber-400 border-amber-500/20", label: "Pending" };
+      return {
+        badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+        label: "Pending",
+      };
     case PaymentStatus.FAILED:
-      return { badge: "bg-red-500/10 text-red-400 border-red-500/20", label: "Failed" };
+      return {
+        badge: "bg-red-500/10 text-red-400 border-red-500/20",
+        label: "Failed",
+      };
     case PaymentStatus.REFUNDED:
-      return { badge: "bg-purple-500/10 text-purple-400 border-purple-500/20", label: "Refunded" };
+      return {
+        badge: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+        label: "Refunded",
+      };
     default:
-      return { badge: "bg-slate-500/10 text-slate-400 border-slate-500/20", label: status };
+      return {
+        badge: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+        label: status,
+      };
   }
 }
 

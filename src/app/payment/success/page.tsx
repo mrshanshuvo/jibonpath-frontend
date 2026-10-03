@@ -9,7 +9,8 @@ import { ROUTES } from "@/config/routes";
 
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get("session_id") || searchParams.get("paymentID");
+  const sessionId =
+    searchParams.get("session_id") || searchParams.get("paymentID");
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
@@ -29,7 +30,8 @@ function PaymentSuccessContent() {
             Emergency Fee Settled
           </h1>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Your emergency ambulance transportation charge has been confirmed and settled. An electronic tax receipt has been generated.
+            Your emergency ambulance transportation charge has been confirmed
+            and settled. An electronic tax receipt has been generated.
           </p>
         </div>
 
@@ -51,13 +53,21 @@ function PaymentSuccessContent() {
 
         <div className="flex flex-col gap-2.5 pt-2">
           <Link href={ROUTES.PATIENT.PAYMENTS} className="w-full">
-            <Button variant="primary" className="w-full justify-center" leftIcon={<FileText className="h-4 w-4" />}>
+            <Button
+              variant="primary"
+              className="w-full justify-center"
+              leftIcon={<FileText className="h-4 w-4" />}
+            >
               View Invoice Receipts
             </Button>
           </Link>
 
           <Link href={ROUTES.PATIENT.DASHBOARD} className="w-full">
-            <Button variant="outline" className="w-full justify-center" rightIcon={<ArrowRight className="h-4 w-4" />}>
+            <Button
+              variant="outline"
+              className="w-full justify-center"
+              rightIcon={<ArrowRight className="h-4 w-4" />}
+            >
               Return to My Requests
             </Button>
           </Link>

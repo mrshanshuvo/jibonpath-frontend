@@ -88,12 +88,16 @@ interface BookingWizardProps {
   initialDestination?: string;
 }
 
-export function EmergencyBookingWizard({ initialDestination }: BookingWizardProps) {
+export function EmergencyBookingWizard({
+  initialDestination,
+}: BookingWizardProps) {
   const router = useRouter();
   const createMutation = useCreateRequest();
   const [detectingGps, setDetectingGps] = useState(false);
 
-  const [selectedPriority, setSelectedPriority] = useState<Priority>(Priority.CRITICAL);
+  const [selectedPriority, setSelectedPriority] = useState<Priority>(
+    Priority.CRITICAL,
+  );
 
   const {
     register,
@@ -132,7 +136,9 @@ export function EmergencyBookingWizard({ initialDestination }: BookingWizardProp
       },
       (err) => {
         setDetectingGps(false);
-        toast.error(`Unable to retrieve GPS: ${err.message}. Please enter address manually.`);
+        toast.error(
+          `Unable to retrieve GPS: ${err.message}. Please enter address manually.`,
+        );
       },
       { timeout: 10000, enableHighAccuracy: true },
     );
@@ -166,7 +172,9 @@ export function EmergencyBookingWizard({ initialDestination }: BookingWizardProp
             </h3>
             <p className="text-xs text-muted-foreground">
               Average Metropolitan Paramedic Response:{" "}
-              <span className="font-semibold text-emergency font-mono">6 - 8 Minutes</span>
+              <span className="font-semibold text-emergency font-mono">
+                6 - 8 Minutes
+              </span>
             </p>
           </div>
         </div>
@@ -184,7 +192,8 @@ export function EmergencyBookingWizard({ initialDestination }: BookingWizardProp
             Step 1: Patient Condition & Severity Level
           </label>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Select the clinical urgency so dispatch matches the appropriate vehicle tier.
+            Select the clinical urgency so dispatch matches the appropriate
+            vehicle tier.
           </p>
         </div>
 
@@ -204,7 +213,9 @@ export function EmergencyBookingWizard({ initialDestination }: BookingWizardProp
                 className={cn(
                   "flex items-start gap-3 rounded-xl border p-4 text-left transition-all duration-150 cursor-pointer",
                   level.bg,
-                  isSelected ? level.activeRing : "opacity-80 hover:opacity-100",
+                  isSelected
+                    ? level.activeRing
+                    : "opacity-80 hover:opacity-100",
                 )}
               >
                 <div
@@ -228,7 +239,9 @@ export function EmergencyBookingWizard({ initialDestination }: BookingWizardProp
           })}
         </div>
         {errors.priority && (
-          <p className="text-xs text-rose-500 font-medium">{errors.priority.message}</p>
+          <p className="text-xs text-rose-500 font-medium">
+            {errors.priority.message}
+          </p>
         )}
       </Card>
 
@@ -291,7 +304,8 @@ export function EmergencyBookingWizard({ initialDestination }: BookingWizardProp
             Step 3: Clinical Notes & Preferred Hospital
           </label>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Provide symptoms to help paramedics prepare life-support equipment in advance.
+            Provide symptoms to help paramedics prepare life-support equipment
+            in advance.
           </p>
         </div>
 

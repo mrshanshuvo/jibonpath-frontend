@@ -24,7 +24,9 @@ export default function ContactPage() {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-      toast.success("Inquiry received. Our dispatch liaison will respond promptly.");
+      toast.success(
+        "Inquiry received. Our dispatch liaison will respond promptly.",
+      );
     }, 1000);
   };
 
@@ -41,7 +43,8 @@ export default function ContactPage() {
             Contact Dispatch Operations
           </h1>
           <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Immediate phone hotlines for medical emergencies, hospital coordination, and corporate standby agreements.
+            Immediate phone hotlines for medical emergencies, hospital
+            coordination, and corporate standby agreements.
           </p>
         </div>
       </section>
@@ -57,7 +60,8 @@ export default function ContactPage() {
                   Immediate Emergency Hotlines
                 </h2>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  For active medical crisis, dial directly for priority ambulance allocation.
+                  For active medical crisis, dial directly for priority
+                  ambulance allocation.
                 </p>
               </div>
 
@@ -79,7 +83,8 @@ export default function ContactPage() {
                     999
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Direct integration with Dhaka emergency triage and traffic siren corridor.
+                    Direct integration with Dhaka emergency triage and traffic
+                    siren corridor.
                   </p>
                 </div>
                 <a
@@ -134,11 +139,15 @@ export default function ContactPage() {
                     Central Command Headquarters
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Level 4, Medical Telematics Tower, Mohakhali C/A, Dhaka 1212, Bangladesh
+                    Level 4, Medical Telematics Tower, Mohakhali C/A, Dhaka
+                    1212, Bangladesh
                   </p>
                   <div className="flex items-center gap-2 mt-2 text-3xs text-muted-foreground">
                     <Clock className="h-3 w-3 text-emerald-400" />
-                    <span>Control Room: 24 Hours / 7 Days / 365 Days continuous operations</span>
+                    <span>
+                      Control Room: 24 Hours / 7 Days / 365 Days continuous
+                      operations
+                    </span>
                   </div>
                 </div>
               </div>
@@ -150,7 +159,8 @@ export default function ContactPage() {
                 Inquiry & Corporate Standby Desk
               </h3>
               <p className="text-xs text-muted-foreground mt-1 mb-6">
-                Have questions regarding hospital integration, fleet deployment, or event standby?
+                Have questions regarding hospital integration, fleet deployment,
+                or event standby?
               </p>
 
               {submitted ? (
@@ -160,7 +170,8 @@ export default function ContactPage() {
                     Message Dispatched Successfully
                   </h4>
                   <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                    Our operations manager will review your submission and contact you within 2 business hours.
+                    Our operations manager will review your submission and
+                    contact you within 2 business hours.
                   </p>
                   <Button
                     variant="outline"
@@ -174,11 +185,25 @@ export default function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Input label="Your Name" placeholder="e.g. Dr. Kazi Rahman" required />
-                    <Input label="Contact Phone" type="tel" placeholder="017XXXXXXXX" required />
+                    <Input
+                      label="Your Name"
+                      placeholder="e.g. Dr. Kazi Rahman"
+                      required
+                    />
+                    <Input
+                      label="Contact Phone"
+                      type="tel"
+                      placeholder="017XXXXXXXX"
+                      required
+                    />
                   </div>
 
-                  <Input label="Email Address" type="email" placeholder="you@domain.com" required />
+                  <Input
+                    label="Email Address"
+                    type="email"
+                    placeholder="you@domain.com"
+                    required
+                  />
 
                   <div className="space-y-1.5">
                     <label className="block text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -188,10 +213,18 @@ export default function ContactPage() {
                       className="w-full h-10 rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                       defaultValue="GENERAL"
                     >
-                      <option value="GENERAL">General Operational Inquiry</option>
-                      <option value="HOSPITAL">Hospital Admission & Telemetry Integration</option>
-                      <option value="CORPORATE">Corporate & Industrial Event Medical Standby</option>
-                      <option value="FEEDBACK">Patient Experience & Quality Feedback</option>
+                      <option value="GENERAL">
+                        General Operational Inquiry
+                      </option>
+                      <option value="HOSPITAL">
+                        Hospital Admission & Telemetry Integration
+                      </option>
+                      <option value="CORPORATE">
+                        Corporate & Industrial Event Medical Standby
+                      </option>
+                      <option value="FEEDBACK">
+                        Patient Experience & Quality Feedback
+                      </option>
                     </select>
                   </div>
 

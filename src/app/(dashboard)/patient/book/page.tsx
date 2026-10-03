@@ -21,7 +21,8 @@ function BookingContent() {
           Book Emergency Medical Transport
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Complete the triage assessment below to mobilize the nearest matching BLS, ACLS, or ICU unit.
+          Complete the triage assessment below to mobilize the nearest matching
+          BLS, ACLS, or ICU unit.
         </p>
       </div>
 

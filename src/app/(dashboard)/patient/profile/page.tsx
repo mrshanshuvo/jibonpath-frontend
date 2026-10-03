@@ -33,7 +33,8 @@ export default function PatientProfilePage() {
         toast.success("Profile information updated successfully!");
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to update profile";
+      const msg =
+        err instanceof Error ? err.message : "Failed to update profile";
       toast.error(msg);
     } finally {
       setIsSaving(false);
@@ -49,7 +50,8 @@ export default function PatientProfilePage() {
           Patient Account & Profile
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Manage your contact credentials and default pickup address for rapid emergency dispatch.
+          Manage your contact credentials and default pickup address for rapid
+          emergency dispatch.
         </p>
       </div>
 

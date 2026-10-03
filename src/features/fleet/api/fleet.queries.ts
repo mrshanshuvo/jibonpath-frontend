@@ -27,7 +27,8 @@ export function useAmbulances(params?: FleetQueryParams) {
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
-  if (params?.status && params.status !== "ALL") queryParams.status = params.status;
+  if (params?.status && params.status !== "ALL")
+    queryParams.status = params.status;
   if (params?.type && params.type !== "ALL") queryParams.type = params.type;
 
   return useQuery({
@@ -67,7 +68,10 @@ export function useCreateAmbulance() {
 
   return useMutation({
     mutationFn: async (payload: CreateAmbulanceInput): Promise<Ambulance> => {
-      const res = await api.post<ApiResponse<Ambulance>>("/ambulances", payload);
+      const res = await api.post<ApiResponse<Ambulance>>(
+        "/ambulances",
+        payload,
+      );
       return res.data;
     },
     onSuccess: (data) => {

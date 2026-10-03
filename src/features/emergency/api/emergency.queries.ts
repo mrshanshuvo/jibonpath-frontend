@@ -28,15 +28,20 @@ export function useMyRequests(params?: RequestQueryParams) {
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
-  if (params?.status && params.status !== "ALL") queryParams.status = params.status;
-  if (params?.priority && params.priority !== "ALL") queryParams.priority = params.priority;
+  if (params?.status && params.status !== "ALL")
+    queryParams.status = params.status;
+  if (params?.priority && params.priority !== "ALL")
+    queryParams.priority = params.priority;
 
   return useQuery({
     queryKey: emergencyKeys.myRequests(params),
     queryFn: async () => {
-      const res = await api.get<ApiResponse<RequestsApiResponse>>("/requests/my", {
-        params: queryParams,
-      });
+      const res = await api.get<ApiResponse<RequestsApiResponse>>(
+        "/requests/my",
+        {
+          params: queryParams,
+        },
+      );
       return res.data;
     },
     refetchInterval: 10000, // Poll every 10s for real-time dispatch updates
@@ -51,7 +56,8 @@ export function useAdminRequests(params?: RequestQueryParams) {
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
-  if (params?.status && params.status !== "ALL") queryParams.status = params.status;
+  if (params?.status && params.status !== "ALL")
+    queryParams.status = params.status;
 
   return useQuery({
     queryKey: emergencyKeys.adminRequests(params),
@@ -74,7 +80,9 @@ export function useRequest(id?: string) {
     queryKey: emergencyKeys.detail(id || ""),
     queryFn: async () => {
       if (!id) throw new Error("Request ID is required");
-      const res = await api.get<ApiResponse<EmergencyRequest>>(`/requests/${id}`);
+      const res = await api.get<ApiResponse<EmergencyRequest>>(
+        `/requests/${id}`,
+      );
       return res.data;
     },
     enabled: Boolean(id),
@@ -90,19 +98,30 @@ export function useCreateRequest() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: CreateEmergencyRequestInput): Promise<EmergencyRequest> => {
-      const res = await api.post<ApiResponse<EmergencyRequest>>("/requests", payload);
+    mutationFn: async (
+      payload: CreateEmergencyRequestInput,
+    ): Promise<EmergencyRequest> => {
+      const res = await api.post<ApiResponse<EmergencyRequest>>(
+        "/requests",
+        payload,
+      );
       return res.data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: emergencyKeys.all });
-      toast.success("Emergency request dispatched! Locating nearest ambulance...", {
-        duration: 5000,
-      });
+      toast.success(
+        "Emergency request dispatched! Locating nearest ambulance...",
+        {
+          duration: 5000,
+        },
+      );
       return data;
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to create emergency request. Please call 999 immediately.");
+      toast.error(
+        error.message ||
+          "Failed to create emergency request. Please call 999 immediately.",
+      );
     },
   });
 }
@@ -116,7 +135,9 @@ export function useCancelRequest() {
 
   return useMutation({
     mutationFn: async (id: string): Promise<EmergencyRequest> => {
-      const res = await api.patch<ApiResponse<EmergencyRequest>>(`/requests/${id}/cancel`);
+      const res = await api.patch<ApiResponse<EmergencyRequest>>(
+        `/requests/${id}/cancel`,
+      );
       return res.data;
     },
     onSuccess: () => {

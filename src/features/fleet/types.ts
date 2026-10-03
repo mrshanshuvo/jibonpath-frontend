@@ -6,9 +6,7 @@ import {
 } from "@/types/entities.types";
 
 export const createAmbulanceSchema = z.object({
-  vehicleNumber: z
-    .string()
-    .min(1, "Vehicle number is required"),
+  vehicleNumber: z.string().min(1, "Vehicle number is required"),
   make: z.string().optional(),
   type: z.nativeEnum(AmbulanceType, {
     errorMap: () => ({ message: "Select a valid ambulance equipment tier" }),

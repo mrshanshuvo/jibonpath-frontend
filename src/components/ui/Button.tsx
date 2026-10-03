@@ -3,12 +3,7 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
 export type ButtonVariant =
-  | "primary"
-  | "secondary"
-  | "emergency"
-  | "outline"
-  | "ghost"
-  | "destructive";
+  "primary" | "secondary" | "emergency" | "outline" | "ghost" | "destructive";
 
 export type ButtonSize = "sm" | "md" | "lg" | "icon";
 

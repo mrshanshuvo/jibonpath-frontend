@@ -28,8 +28,7 @@ export function Pagination({
   if (totalPages <= 1) return null;
 
   const startItem = total && limit ? (activePage - 1) * limit + 1 : null;
-  const endItem =
-    total && limit ? Math.min(activePage * limit, total) : null;
+  const endItem = total && limit ? Math.min(activePage * limit, total) : null;
 
   return (
     <div
@@ -40,7 +39,8 @@ export function Pagination({
     >
       {total != null && startItem != null && endItem != null ? (
         <p className="text-xs text-muted-foreground">
-          Showing <span className="font-medium text-foreground">{startItem}</span> to{" "}
+          Showing{" "}
+          <span className="font-medium text-foreground">{startItem}</span> to{" "}
           <span className="font-medium text-foreground">{endItem}</span> of{" "}
           <span className="font-medium text-foreground">{total}</span> results
         </p>

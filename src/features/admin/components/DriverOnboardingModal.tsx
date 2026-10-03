@@ -4,10 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal, Button, Input } from "@/components/ui";
 import { UserPlus, User, Mail, Lock, CreditCard, Phone } from "lucide-react";
-import {
-  createDriverSchema,
-  type CreateDriverInput,
-} from "../types";
+import { createDriverSchema, type CreateDriverInput } from "../types";
 import { useCreateDriver } from "../api/admin.queries";
 
 interface DriverOnboardingModalProps {

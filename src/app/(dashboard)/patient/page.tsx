@@ -6,7 +6,9 @@ import { PaymentGatewayModal } from "@/features/payment";
 import type { EmergencyRequest } from "@/types/entities.types";
 
 export default function PatientDashboardPage() {
-  const [paymentRequest, setPaymentRequest] = useState<EmergencyRequest | null>(null);
+  const [paymentRequest, setPaymentRequest] = useState<EmergencyRequest | null>(
+    null,
+  );
 
   return (
     <div className="space-y-6">
@@ -19,7 +21,8 @@ export default function PatientDashboardPage() {
             <span className="flex h-2.5 w-2.5 rounded-full bg-emergency animate-ping" />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Track active ambulance dispatches, monitor arrival telemetry, and manage past medical transit history.
+            Track active ambulance dispatches, monitor arrival telemetry, and
+            manage past medical transit history.
           </p>
         </div>
       </div>

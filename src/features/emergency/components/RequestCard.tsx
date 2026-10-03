@@ -64,7 +64,10 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
         {/* Header: Priority & Status & Time */}
         <div className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center gap-2">
-            <Badge variant={getPriorityBadgeVariant(request.priority)} size="sm">
+            <Badge
+              variant={getPriorityBadgeVariant(request.priority)}
+              size="sm"
+            >
               {request.priority}
             </Badge>
             <Badge

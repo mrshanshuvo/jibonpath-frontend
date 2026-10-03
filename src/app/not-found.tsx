@@ -17,13 +17,18 @@ export default function NotFound() {
         Emergency Route Not Found
       </h1>
       <p className="text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
-        The requested medical dispatch coordinates or portal page could not be located.
-        If this is an active life-threatening emergency, contact 999 immediately.
+        The requested medical dispatch coordinates or portal page could not be
+        located. If this is an active life-threatening emergency, contact 999
+        immediately.
       </p>
 
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <Link href={ROUTES.home}>
-          <Button variant="primary" size="lg" leftIcon={<ArrowLeft className="h-4 w-4" />}>
+          <Button
+            variant="primary"
+            size="lg"
+            leftIcon={<ArrowLeft className="h-4 w-4" />}
+          >
             Return to Operations Base
           </Button>
         </Link>

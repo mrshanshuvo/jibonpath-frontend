@@ -33,8 +33,8 @@ export default function RootError({
         Something Went Wrong
       </h1>
       <p className="text-xs sm:text-sm text-muted-foreground max-w-md mb-8 leading-relaxed">
-        Our medical telemetry platform encountered an unexpected issue while loading
-        this view. Operational data remains intact.
+        Our medical telemetry platform encountered an unexpected issue while
+        loading this view. Operational data remains intact.
       </p>
 
       <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -47,7 +47,11 @@ export default function RootError({
           Try Again
         </Button>
         <Link href={ROUTES.home}>
-          <Button variant="secondary" size="md" leftIcon={<Home className="h-4 w-4" />}>
+          <Button
+            variant="secondary"
+            size="md"
+            leftIcon={<Home className="h-4 w-4" />}
+          >
             Return Home
           </Button>
         </Link>

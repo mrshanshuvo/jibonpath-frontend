@@ -20,14 +20,18 @@ export default function DriverHistoryPage() {
           Trip & Mission History
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Review completed patient transport assignments, emergency checkpoints, and handover timestamps.
+          Review completed patient transport assignments, emergency checkpoints,
+          and handover timestamps.
         </p>
       </div>
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="rounded-2xl border border-border/80 bg-card p-6 space-y-3">
+            <div
+              key={idx}
+              className="rounded-2xl border border-border/80 bg-card p-6 space-y-3"
+            >
               <Skeleton className="h-6 w-36" />
               <Skeleton className="h-4 w-52" />
               <Skeleton className="h-10 w-full rounded-xl" />
@@ -37,7 +41,9 @@ export default function DriverHistoryPage() {
       ) : isError ? (
         <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10">
           <AlertCircle className="h-10 w-10 text-rose-500 mx-auto mb-2" />
-          <p className="text-sm font-bold text-foreground">Failed to load trip history</p>
+          <p className="text-sm font-bold text-foreground">
+            Failed to load trip history
+          </p>
         </div>
       ) : !data?.dispatches || data.dispatches.length === 0 ? (
         <div className="py-12">
@@ -85,7 +91,9 @@ export default function DriverHistoryPage() {
               </div>
 
               <div className="border-t border-border/60 pt-3 flex items-center justify-between text-3xs text-muted-foreground">
-                <span>Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-101"}</span>
+                <span>
+                  Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-101"}
+                </span>
                 <span>Checkpoints: {d.tripStatusLogs?.length || 0} logged</span>
               </div>
             </div>

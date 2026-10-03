@@ -32,13 +32,24 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   if (isLoading) {
     return (
-      <div className={cn("w-full overflow-hidden rounded-lg border border-border bg-card", className)}>
+      <div
+        className={cn(
+          "w-full overflow-hidden rounded-lg border border-border bg-card",
+          className,
+        )}
+      >
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-border bg-surface-raised text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
                 {columns.map((col) => (
-                  <th key={col.key} className={cn("px-4 py-3 font-semibold", col.headerClassName)}>
+                  <th
+                    key={col.key}
+                    className={cn(
+                      "px-4 py-3 font-semibold",
+                      col.headerClassName,
+                    )}
+                  >
                     {col.header}
                   </th>
                 ))}
@@ -72,13 +83,24 @@ export function DataTable<T>({
   }
 
   return (
-    <div className={cn("w-full overflow-hidden rounded-lg border border-border bg-card shadow-sm", className)}>
+    <div
+      className={cn(
+        "w-full overflow-hidden rounded-lg border border-border bg-card shadow-sm",
+        className,
+      )}
+    >
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-surface-raised text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
               {columns.map((col) => (
-                <th key={col.key} className={cn("px-4 py-3.5 font-semibold", col.headerClassName)}>
+                <th
+                  key={col.key}
+                  className={cn(
+                    "px-4 py-3.5 font-semibold",
+                    col.headerClassName,
+                  )}
+                >
                   {col.header}
                 </th>
               ))}
@@ -93,7 +115,10 @@ export function DataTable<T>({
                 {columns.map((col) => {
                   const val = (item as Record<string, unknown>)[col.key];
                   return (
-                    <td key={col.key} className={cn("px-4 py-3 text-foreground", col.className)}>
+                    <td
+                      key={col.key}
+                      className={cn("px-4 py-3 text-foreground", col.className)}
+                    >
                       {col.render ? col.render(item) : String(val ?? "—")}
                     </td>
                   );

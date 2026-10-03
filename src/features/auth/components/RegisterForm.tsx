@@ -103,7 +103,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           {...register("password")}
         />
         <p className="text-3xs text-muted-foreground">
-          Must include at least 1 uppercase letter, 1 lowercase letter, and 1 number.
+          Must include at least 1 uppercase letter, 1 lowercase letter, and 1
+          number.
         </p>
       </div>
 

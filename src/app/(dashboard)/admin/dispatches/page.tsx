@@ -4,13 +4,22 @@ import { useState } from "react";
 import { useDispatches } from "@/features/dispatch";
 import { DispatchStepper } from "@/features/dispatch";
 import { Skeleton, EmptyState, Pagination, Badge } from "@/components/ui";
-import { Radio, Ambulance, MapPin, Building2, Clock, AlertCircle } from "lucide-react";
+import {
+  Radio,
+  Ambulance,
+  MapPin,
+  Building2,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 import { DispatchStatus } from "@/types/entities.types";
 
 export default function AdminDispatchesPage() {
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<DispatchStatus | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<DispatchStatus | "ALL">(
+    "ALL",
+  );
 
   const { data, isLoading, isError } = useDispatches({
     page,
@@ -39,7 +48,8 @@ export default function AdminDispatchesPage() {
             <span className="flex h-2.5 w-2.5 rounded-full bg-emergency animate-ping" />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Real-time live telemetry tracking and stage monitoring for all ambulance units in transit.
+            Real-time live telemetry tracking and stage monitoring for all
+            ambulance units in transit.
           </p>
         </div>
 
@@ -73,7 +83,10 @@ export default function AdminDispatchesPage() {
       {isLoading ? (
         <div className="space-y-4">
           {Array.from({ length: 3 }).map((_, idx) => (
-            <div key={idx} className="rounded-2xl border border-border/80 bg-card p-6 space-y-4">
+            <div
+              key={idx}
+              className="rounded-2xl border border-border/80 bg-card p-6 space-y-4"
+            >
               <Skeleton className="h-6 w-48" />
               <Skeleton className="h-16 w-full rounded-xl" />
             </div>
@@ -82,7 +95,9 @@ export default function AdminDispatchesPage() {
       ) : isError ? (
         <div className="p-8 text-center rounded-2xl border border-rose-500/30 bg-rose-500/10">
           <AlertCircle className="h-10 w-10 text-rose-500 mx-auto mb-2" />
-          <p className="text-sm font-bold text-foreground">Failed to connect to dispatch stream</p>
+          <p className="text-sm font-bold text-foreground">
+            Failed to connect to dispatch stream
+          </p>
         </div>
       ) : !data?.dispatches || data.dispatches.length === 0 ? (
         <div className="py-12">
@@ -114,8 +129,8 @@ export default function AdminDispatchesPage() {
                       </Badge>
                     </div>
                     <span className="text-3xs text-muted-foreground font-mono">
-                      Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-102"} • Driver:{" "}
-                      {d.driver?.user?.name || "Paramedic"}
+                      Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-102"} •
+                      Driver: {d.driver?.user?.name || "Paramedic"}
                     </span>
                   </div>
                 </div>
@@ -138,7 +153,8 @@ export default function AdminDispatchesPage() {
                       Pickup Address
                     </span>
                     <span className="font-medium text-foreground">
-                      {d.request?.pickupAddress || "Pickup location not provided"}
+                      {d.request?.pickupAddress ||
+                        "Pickup location not provided"}
                     </span>
                   </div>
                 </div>

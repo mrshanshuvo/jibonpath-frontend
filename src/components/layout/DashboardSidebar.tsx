@@ -41,7 +41,11 @@ const DRIVER_NAV: NavItem[] = [
 ];
 
 const ADMIN_NAV: NavItem[] = [
-  { href: ROUTES.ADMIN.DASHBOARD, label: "Analytics Overview", icon: LayoutDashboard },
+  {
+    href: ROUTES.ADMIN.DASHBOARD,
+    label: "Analytics Overview",
+    icon: LayoutDashboard,
+  },
   { href: ROUTES.ADMIN.FLEET, label: "Fleet Management", icon: Truck },
   { href: ROUTES.ADMIN.DRIVERS, label: "Paramedic Drivers", icon: Users },
   { href: ROUTES.ADMIN.DISPATCHES, label: "Active Dispatches", icon: Radio },
@@ -101,7 +105,12 @@ export function DashboardSidebar() {
                   : "text-muted-foreground hover:text-foreground hover:bg-surface-raised",
               )}
             >
-              <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-white" : "text-muted-foreground")} />
+              <Icon
+                className={cn(
+                  "h-4 w-4 shrink-0",
+                  isActive ? "text-white" : "text-muted-foreground",
+                )}
+              />
               <span>{item.label}</span>
             </Link>
           );
@@ -114,7 +123,9 @@ export function DashboardSidebar() {
           <p className="text-2xs font-semibold text-emergency">
             Direct Dispatch Line
           </p>
-          <p className="text-xs font-bold text-foreground mt-0.5">999 Hotline</p>
+          <p className="text-xs font-bold text-foreground mt-0.5">
+            999 Hotline
+          </p>
         </div>
       </div>
     </aside>

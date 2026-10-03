@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { Priority, RequestStatus, type EmergencyRequest } from "@/types/entities.types";
+import {
+  Priority,
+  RequestStatus,
+  type EmergencyRequest,
+} from "@/types/entities.types";
 
 export const createEmergencyRequestSchema = z.object({
   priority: z.nativeEnum(Priority, {

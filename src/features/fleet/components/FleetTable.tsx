@@ -10,22 +10,35 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
-import { Button, Badge, Skeleton, Pagination, EmptyState } from "@/components/ui";
+import {
+  Button,
+  Badge,
+  Skeleton,
+  Pagination,
+  EmptyState,
+} from "@/components/ui";
 import { AmbulanceFormModal } from "./AmbulanceFormModal";
 import {
   AmbulanceStatus,
   AmbulanceType,
   type Ambulance as AmbulanceModel,
 } from "@/types/entities.types";
-import { useAmbulances, useUpdateAmbulance, useDeleteAmbulance } from "../api/fleet.queries";
+import {
+  useAmbulances,
+  useUpdateAmbulance,
+  useDeleteAmbulance,
+} from "../api/fleet.queries";
 import { formatDateTime } from "@/lib/utils";
 
 export function FleetTable() {
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<AmbulanceStatus | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<AmbulanceStatus | "ALL">(
+    "ALL",
+  );
   const [typeFilter, setTypeFilter] = useState<AmbulanceType | "ALL">("ALL");
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingAmbulance, setEditingAmbulance] = useState<AmbulanceModel | null>(null);
+  const [editingAmbulance, setEditingAmbulance] =
+    useState<AmbulanceModel | null>(null);
 
   const { data, isLoading, isError, refetch } = useAmbulances({
     page,
@@ -47,10 +60,7 @@ export function FleetTable() {
     setModalOpen(true);
   };
 
-  const handleQuickStatusChange = (
-    id: string,
-    newStatus: AmbulanceStatus,
-  ) => {
+  const handleQuickStatusChange = (id: string, newStatus: AmbulanceStatus) => {
     updateMutation.mutate({ id, input: { status: newStatus } });
   };
 
@@ -189,7 +199,10 @@ export function FleetTable() {
         {isLoading ? (
           <div className="p-6 space-y-4">
             {Array.from({ length: 5 }).map((_, idx) => (
-              <div key={idx} className="flex items-center justify-between gap-4">
+              <div
+                key={idx}
+                className="flex items-center justify-between gap-4"
+              >
                 <Skeleton className="h-6 w-40" />
                 <Skeleton className="h-6 w-28" />
                 <Skeleton className="h-6 w-24" />
@@ -319,7 +332,9 @@ export function FleetTable() {
 
                         <button
                           title="Decommission vehicle"
-                          onClick={() => handleDelete(amb.id, amb.vehicleNumber)}
+                          onClick={() =>
+                            handleDelete(amb.id, amb.vehicleNumber)
+                          }
                           className="p-1.5 rounded-md text-muted-foreground hover:text-rose-400 hover:bg-rose-400/10 transition-colors cursor-pointer"
                         >
                           <Trash2 className="h-3.5 w-3.5" />

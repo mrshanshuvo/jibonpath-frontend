@@ -28,14 +28,18 @@ export function useDispatches(params?: DispatchQueryParams) {
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
-  if (params?.status && params.status !== "ALL") queryParams.status = params.status;
+  if (params?.status && params.status !== "ALL")
+    queryParams.status = params.status;
 
   return useQuery({
     queryKey: dispatchKeys.list(params),
     queryFn: async () => {
-      const res = await api.get<ApiResponse<DispatchesApiResponse>>("/dispatches", {
-        params: queryParams,
-      });
+      const res = await api.get<ApiResponse<DispatchesApiResponse>>(
+        "/dispatches",
+        {
+          params: queryParams,
+        },
+      );
       return res.data;
     },
     refetchInterval: 10000,
@@ -50,7 +54,9 @@ export function useActiveDriverDispatch() {
   return useQuery({
     queryKey: dispatchKeys.activeDriver(),
     queryFn: async () => {
-      const res = await api.get<ApiResponse<Dispatch | null>>("/dispatches/my-active");
+      const res = await api.get<ApiResponse<Dispatch | null>>(
+        "/dispatches/my-active",
+      );
       return res.data;
     },
     refetchInterval: 5000, // High-frequency polling for driver cockpit

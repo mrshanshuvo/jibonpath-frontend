@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { CreditCard, FileText, AlertCircle } from "lucide-react";
-import { Button, Badge, Skeleton, Pagination, EmptyState } from "@/components/ui";
+import {
+  Button,
+  Badge,
+  Skeleton,
+  Pagination,
+  EmptyState,
+} from "@/components/ui";
 import { InvoiceReceipt } from "./InvoiceReceipt";
 import { PaymentStatus, type Payment } from "@/types/entities.types";
 import { useMyPayments } from "../api/payment.queries";
@@ -10,7 +16,9 @@ import { formatCurrency, formatDateTime } from "@/lib/utils";
 
 export function PaymentHistoryTable() {
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<PaymentStatus | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<PaymentStatus | "ALL">(
+    "ALL",
+  );
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [receiptOpen, setReceiptOpen] = useState(false);
 
@@ -28,13 +36,29 @@ export function PaymentHistoryTable() {
   const getStatusBadge = (status: PaymentStatus) => {
     switch (status) {
       case PaymentStatus.SUCCESS:
-        return <Badge variant="success" size="sm">SUCCESS</Badge>;
+        return (
+          <Badge variant="success" size="sm">
+            SUCCESS
+          </Badge>
+        );
       case PaymentStatus.PENDING:
-        return <Badge variant="warning" size="sm">PENDING</Badge>;
+        return (
+          <Badge variant="warning" size="sm">
+            PENDING
+          </Badge>
+        );
       case PaymentStatus.FAILED:
-        return <Badge variant="emergency" size="sm">FAILED</Badge>;
+        return (
+          <Badge variant="emergency" size="sm">
+            FAILED
+          </Badge>
+        );
       case PaymentStatus.REFUNDED:
-        return <Badge variant="outline" size="sm">REFUNDED</Badge>;
+        return (
+          <Badge variant="outline" size="sm">
+            REFUNDED
+          </Badge>
+        );
     }
   };
 
@@ -67,24 +91,27 @@ export function PaymentHistoryTable() {
     <div className="space-y-6">
       {/* Top Filter Buttons */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
-        {["ALL", PaymentStatus.SUCCESS, PaymentStatus.PENDING, PaymentStatus.FAILED].map(
-          (status) => (
-            <button
-              key={status}
-              onClick={() => {
-                setStatusFilter(status as PaymentStatus | "ALL");
-                setPage(1);
-              }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
-                statusFilter === status
-                  ? "bg-primary text-white font-semibold shadow-xs"
-                  : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
-              }`}
-            >
-              {status === "ALL" ? "All Payments" : status}
-            </button>
-          ),
-        )}
+        {[
+          "ALL",
+          PaymentStatus.SUCCESS,
+          PaymentStatus.PENDING,
+          PaymentStatus.FAILED,
+        ].map((status) => (
+          <button
+            key={status}
+            onClick={() => {
+              setStatusFilter(status as PaymentStatus | "ALL");
+              setPage(1);
+            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+              statusFilter === status
+                ? "bg-primary text-white font-semibold shadow-xs"
+                : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
+            }`}
+          >
+            {status === "ALL" ? "All Payments" : status}
+          </button>
+        ))}
       </div>
 
       {/* Table Card */}
@@ -92,7 +119,10 @@ export function PaymentHistoryTable() {
         {isLoading ? (
           <div className="p-6 space-y-4">
             {Array.from({ length: 4 }).map((_, idx) => (
-              <div key={idx} className="flex justify-between items-center gap-4">
+              <div
+                key={idx}
+                className="flex justify-between items-center gap-4"
+              >
                 <Skeleton className="h-6 w-32" />
                 <Skeleton className="h-6 w-24" />
                 <Skeleton className="h-6 w-20" />
@@ -133,7 +163,10 @@ export function PaymentHistoryTable() {
               </thead>
               <tbody className="divide-y divide-border/50 text-foreground">
                 {data.payments.map((p) => (
-                  <tr key={p.id} className="hover:bg-surface-raised/40 transition-colors">
+                  <tr
+                    key={p.id}
+                    className="hover:bg-surface-raised/40 transition-colors"
+                  >
                     <td className="px-5 py-4 font-mono text-3xs text-muted-foreground">
                       {formatDateTime(p.createdAt)}
                     </td>
@@ -156,7 +189,9 @@ export function PaymentHistoryTable() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleViewReceipt(p)}
-                          leftIcon={<FileText className="h-3.5 w-3.5 text-primary" />}
+                          leftIcon={
+                            <FileText className="h-3.5 w-3.5 text-primary" />
+                          }
                         >
                           Invoice
                         </Button>

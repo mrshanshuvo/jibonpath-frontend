@@ -33,7 +33,9 @@ export function useLogin() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (credentials: LoginPayload): Promise<AuthSessionResponse> => {
+    mutationFn: async (
+      credentials: LoginPayload,
+    ): Promise<AuthSessionResponse> => {
       // Step 1: Call Express backend login
       const response = await api.post<ApiResponse<AuthSessionResponse>>(
         "/auth/login",
@@ -68,7 +70,9 @@ export function useLogin() {
       }
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to sign in. Please verify your credentials.");
+      toast.error(
+        error.message || "Failed to sign in. Please verify your credentials.",
+      );
     },
   });
 }
@@ -85,7 +89,9 @@ export function useRegister() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: RegisterPayload): Promise<AuthSessionResponse> => {
+    mutationFn: async (
+      payload: RegisterPayload,
+    ): Promise<AuthSessionResponse> => {
       const response = await api.post<ApiResponse<AuthSessionResponse>>(
         "/auth/register",
         payload,
@@ -110,7 +116,9 @@ export function useRegister() {
       router.replace(ROLE_DEFAULT_REDIRECT[data.user.role]);
     },
     onError: (error) => {
-      toast.error(error.message || "Registration failed. Please check the inputs.");
+      toast.error(
+        error.message || "Registration failed. Please check the inputs.",
+      );
     },
   });
 }

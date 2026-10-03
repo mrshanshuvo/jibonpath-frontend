@@ -8,7 +8,8 @@ export default function AdminUsersPage() {
           User Directory & Authorization
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
-          Manage system accounts, assign RBAC access roles (PATIENT, DRIVER, ADMIN), and control account status.
+          Manage system accounts, assign RBAC access roles (PATIENT, DRIVER,
+          ADMIN), and control account status.
         </p>
       </div>
 

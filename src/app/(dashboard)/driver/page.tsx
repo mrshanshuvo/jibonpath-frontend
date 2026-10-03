@@ -1,11 +1,19 @@
 "use client";
 
-import { useActiveDriverDispatch, DriverActiveDispatch } from "@/features/dispatch";
+import {
+  useActiveDriverDispatch,
+  DriverActiveDispatch,
+} from "@/features/dispatch";
 import { Skeleton, EmptyState, Button } from "@/components/ui";
 import { Ambulance, Radio, RefreshCw, AlertCircle } from "lucide-react";
 
 export default function DriverDashboardPage() {
-  const { data: dispatch, isLoading, isError, refetch } = useActiveDriverDispatch();
+  const {
+    data: dispatch,
+    isLoading,
+    isError,
+    refetch,
+  } = useActiveDriverDispatch();
 
   if (isLoading) {
     return (
@@ -30,7 +38,12 @@ export default function DriverDashboardPage() {
         <p className="text-xs text-muted-foreground">
           Could not establish live link with Dhaka Central Dispatch.
         </p>
-        <Button variant="outline" size="sm" onClick={() => refetch()} leftIcon={<RefreshCw className="h-3.5 w-3.5" />}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => refetch()}
+          leftIcon={<RefreshCw className="h-3.5 w-3.5" />}
+        >
           Reconnect
         </Button>
       </div>
@@ -46,7 +59,8 @@ export default function DriverDashboardPage() {
               Paramedic Driver Cockpit
             </h1>
             <p className="text-xs text-muted-foreground mt-1">
-              Real-time telemetry and navigation console for active emergency assignments.
+              Real-time telemetry and navigation console for active emergency
+              assignments.
             </p>
           </div>
 

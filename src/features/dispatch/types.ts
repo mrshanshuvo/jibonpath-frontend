@@ -1,0 +1,38 @@
+import { z } from "zod";
+import { DispatchStatus, type Dispatch } from "@/types/entities.types";
+
+export const updateDispatchStatusSchema = z.object({
+  status: z.nativeEnum(DispatchStatus, {
+    errorMap: () => ({ message: "Invalid dispatch status" }),
+  }),
+  note: z.string().optional(),
+});
+
+export type UpdateDispatchStatusInput = z.infer<
+  typeof updateDispatchStatusSchema
+>;
+
+export const createDispatchSchema = z.object({
+  requestId: z.string().min(1, "Request ID is required"),
+  ambulanceId: z.string().min(1, "Ambulance ID is required"),
+  driverId: z.string().min(1, "Driver ID is required"),
+});
+
+export type CreateDispatchInput = z.infer<typeof createDispatchSchema>;
+
+export interface DispatchQueryParams {
+  page?: number;
+  limit?: number;
+  status?: DispatchStatus | "ALL";
+}
+
+export interface DispatchesApiResponse {
+  dispatches: Dispatch[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
+}

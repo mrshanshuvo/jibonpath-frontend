@@ -47,26 +47,26 @@ hooks/        <- Cross-feature shared custom hooks
 lib/          <- Infrastructure (api-client, utils)
 config/       <- Static app config (routes, roles, demo credentials)
 types/        <- Shared TypeScript contracts
-middleware.ts <- Edge-level RBAC guard
+proxy.ts      <- Network-level RBAC guard (Next.js 16+ proxy convention)
 ```
 
 ### What belongs WHERE — decision table
 
-| Code type | Location |
-|---|---|
-| Route/page entry point | `app/` |
-| Business logic for a domain | `features/<domain>/` |
-| API query hooks for a domain | `features/<domain>/api/` |
-| Components used by ONE feature | `features/<domain>/components/` |
-| Components used by 2+ features | `components/ui/` or `components/layout/` |
-| Custom hook used by ONE feature | `features/<domain>/hooks/` |
-| Custom hook used by 2+ features | `hooks/` |
-| Zustand store | `stores/` |
-| Fetch client config | `lib/api-client.ts` |
-| Utility functions (cn, format) | `lib/utils.ts` |
-| App-wide constants, route maps | `config/` |
-| TypeScript entity types | `types/entities.types.ts` |
-| API response wrapper types | `types/api.types.ts` |
+| Code type                       | Location                                 |
+| ------------------------------- | ---------------------------------------- |
+| Route/page entry point          | `app/`                                   |
+| Business logic for a domain     | `features/<domain>/`                     |
+| API query hooks for a domain    | `features/<domain>/api/`                 |
+| Components used by ONE feature  | `features/<domain>/components/`          |
+| Components used by 2+ features  | `components/ui/` or `components/layout/` |
+| Custom hook used by ONE feature | `features/<domain>/hooks/`               |
+| Custom hook used by 2+ features | `hooks/`                                 |
+| Zustand store                   | `stores/`                                |
+| Fetch client config             | `lib/api-client.ts`                      |
+| Utility functions (cn, format)  | `lib/utils.ts`                           |
+| App-wide constants, route maps  | `config/`                                |
+| TypeScript entity types         | `types/entities.types.ts`                |
+| API response wrapper types      | `types/api.types.ts`                     |
 
 ---
 
@@ -181,7 +181,7 @@ src/
 │   ├── api.types.ts
 │   └── entities.types.ts
 │
-└── middleware.ts
+└── proxy.ts
 ```
 
 ### Rules for `app/` pages
@@ -207,16 +207,16 @@ export default function PatientRequestsPage() {
 
 ### Files
 
-| Type | Convention | Example |
-|---|---|---|
-| React Component | PascalCase | `LoginForm.tsx` |
-| Hook | camelCase with `use` prefix | `useAuth.ts` |
-| Utility / helper | camelCase | `formatDate.ts` |
-| Type file | camelCase + `.types.ts` suffix | `api.types.ts` |
-| API query file | camelCase + `.queries.ts` suffix | `auth.queries.ts` |
-| Store file | camelCase + `.store.ts` suffix | `auth.store.ts` |
-| Config file | camelCase | `routes.ts` |
-| Feature barrel | always `index.ts` | `index.ts` |
+| Type             | Convention                       | Example           |
+| ---------------- | -------------------------------- | ----------------- |
+| React Component  | PascalCase                       | `LoginForm.tsx`   |
+| Hook             | camelCase with `use` prefix      | `useAuth.ts`      |
+| Utility / helper | camelCase                        | `formatDate.ts`   |
+| Type file        | camelCase + `.types.ts` suffix   | `api.types.ts`    |
+| API query file   | camelCase + `.queries.ts` suffix | `auth.queries.ts` |
+| Store file       | camelCase + `.store.ts` suffix   | `auth.store.ts`   |
+| Config file      | camelCase                        | `routes.ts`       |
+| Feature barrel   | always `index.ts`                | `index.ts`        |
 
 ### Variables & Functions
 
@@ -234,15 +234,24 @@ export const MAX_FILE_SIZE_MB = 5;
 
 // Types & Interfaces — PascalCase, no "I" prefix
 type ApiResponse<T> = { success: boolean; data: T; message: string };
-interface User { id: string; name: string; role: Role }
+interface User {
+  id: string;
+  name: string;
+  role: Role;
+}
 
 // Enums — PascalCase name, SCREAMING_SNAKE_CASE values
-enum Role { PATIENT = "PATIENT", DRIVER = "DRIVER", ADMIN = "ADMIN" }
+enum Role {
+  PATIENT = "PATIENT",
+  DRIVER = "DRIVER",
+  ADMIN = "ADMIN",
+}
 
 // Query key factories — arrays
 const emergencyKeys = {
   all: ["emergency"] as const,
-  list: (filters: RequestFilters) => [...emergencyKeys.all, "list", filters] as const,
+  list: (filters: RequestFilters) =>
+    [...emergencyKeys.all, "list", filters] as const,
 };
 ```
 
@@ -337,7 +346,15 @@ import { useState } from "react";
 
 export function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
   const [value, setValue] = useState("");
-  return <input value={value} onChange={(e) => { setValue(e.target.value); onSearch(e.target.value); }} />;
+  return (
+    <input
+      value={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+        onSearch(e.target.value);
+      }}
+    />
+  );
 }
 ```
 
@@ -355,12 +372,12 @@ export function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
 
 ### Server State vs Client State
 
-| Data type | Tool |
-|---|---|
-| Data from the API (requests, dispatches, fleet) | TanStack Query |
-| Auth session (user, token, role) | Zustand (`auth.store.ts`) |
-| UI-only state (sidebar open, modal open) | local `useState` in component |
-| Multi-step form state across steps | Zustand or React context scoped to the wizard |
+| Data type                                       | Tool                                          |
+| ----------------------------------------------- | --------------------------------------------- |
+| Data from the API (requests, dispatches, fleet) | TanStack Query                                |
+| Auth session (user, token, role)                | Zustand (`auth.store.ts`)                     |
+| UI-only state (sidebar open, modal open)        | local `useState` in component                 |
+| Multi-step form state across steps              | Zustand or React context scoped to the wizard |
 
 ### TanStack Query rules
 
@@ -368,7 +385,8 @@ export function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
 // Always use structured query key factories — never raw strings
 export const emergencyKeys = {
   all: ["emergency"] as const,
-  list: (filters: RequestFilters) => [...emergencyKeys.all, "list", filters] as const,
+  list: (filters: RequestFilters) =>
+    [...emergencyKeys.all, "list", filters] as const,
   detail: (id: string) => [...emergencyKeys.all, "detail", id] as const,
 };
 
@@ -389,7 +407,9 @@ const mutation = useMutation({
 
 // NEVER use useEffect + fetch for data that TanStack Query can handle
 useEffect(() => {
-  fetch('/api/requests').then(r => r.json()).then(setData);
+  fetch("/api/requests")
+    .then((r) => r.json())
+    .then(setData);
 }, []);
 // BANNED ^^^
 ```
@@ -413,8 +433,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 }));
 
 // Use selector pattern to prevent unnecessary re-renders
-const user = useAuthStore((state) => state.user);   // CORRECT
-const store = useAuthStore();                         // WRONG — subscribes to ALL changes
+const user = useAuthStore((state) => state.user); // CORRECT
+const store = useAuthStore(); // WRONG — subscribes to ALL changes
 ```
 
 ---
@@ -555,9 +575,9 @@ import type { User } from "@/types/entities.types";
 import { useAuth } from "@/features/auth";
 
 // BANNED — importing from inside another feature (bypassing its public API)
-import { loginSchema } from "@/features/auth/types";              // BANNED
+import { loginSchema } from "@/features/auth/types"; // BANNED
 import { authQueryKeys } from "@/features/auth/api/auth.queries"; // BANNED
-import { tokenHelpers } from "@/features/auth/utils";             // BANNED
+import { tokenHelpers } from "@/features/auth/utils"; // BANNED
 ```
 
 ---
@@ -570,16 +590,26 @@ import { tokenHelpers } from "@/features/auth/utils";             // BANNED
 - **Refresh token** — HTTP-only cookie (server-set). Never in localStorage or Zustand.
 - **Never store tokens in `localStorage`** — XSS vulnerable.
 
-### Middleware (Edge RBAC)
+### Proxy Guard (Next.js 16+ Network-Level RBAC)
+
+> **Next.js 16 Note:** `middleware.ts` is replaced by `proxy.ts` (exporting a `proxy` function instead of `middleware`). It operates at the network boundary before route handlers and defaults to Node.js runtime.
 
 ```ts
-// middleware.ts — runs at the edge before the page renders
+// src/proxy.ts — runs at the network boundary before the page renders
 // Responsibilities:
 // 1. Check if route is protected
-// 2. Verify the session cookie exists
+// 2. Verify the session cookie / token exists
 // 3. Check role matches the required role for that route prefix
 // 4. Redirect to /login?redirect=<path> if unauthenticated
 // 5. Redirect to correct dashboard if wrong role accesses a portal
+
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function proxy(request: NextRequest) {
+  // Guard logic here
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: ["/patient/:path*", "/driver/:path*", "/admin/:path*"],
@@ -588,11 +618,11 @@ export const config = {
 
 ### Role to Route Access Map (`config/roles.ts`)
 
-| Route prefix | Allowed roles |
-|---|---|
-| `/patient/*` | `PATIENT` only |
-| `/driver/*` | `DRIVER` only |
-| `/admin/*` | `ADMIN` only |
+| Route prefix          | Allowed roles                                                      |
+| --------------------- | ------------------------------------------------------------------ |
+| `/patient/*`          | `PATIENT` only                                                     |
+| `/driver/*`           | `DRIVER` only                                                      |
+| `/admin/*`            | `ADMIN` only                                                       |
 | `/login`, `/register` | Unauthenticated only — redirect logged-in users to their dashboard |
 
 ---
@@ -604,7 +634,8 @@ export const config = {
 ```ts
 // CORRECT
 import { api } from "@/lib/api-client";
-const requests = await api.get<PaginatedResponse<EmergencyRequest>>("/requests");
+const requests =
+  await api.get<PaginatedResponse<EmergencyRequest>>("/requests");
 
 // BANNED — never call fetch directly in components or query hooks
 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/requests`);
@@ -661,7 +692,7 @@ Types:
 
 Scopes (use the feature or layer name):
   auth, emergency, dispatch, fleet, hospital, payment, admin
-  ui, layout, middleware, config, lib, types, store
+  ui, layout, proxy, config, lib, types, store
 
 Examples:
   feat(auth): add one-click demo login grid for 3 roles
@@ -766,7 +797,7 @@ router.push(ROUTES.patient.requests);
 router.push(ROUTES.admin.fleet);
 
 // BANNED — hardcoded route strings in components
-router.push("/admin/fleet");  // Breaks if routes change
+router.push("/admin/fleet"); // Breaks if routes change
 ```
 
 ### config/routes.ts is the single source of route truth
@@ -811,22 +842,22 @@ export const ROUTES = {
 
 ## Quick Reference — The "Never Do" List
 
-| NEVER | INSTEAD |
-|---|---|
-| `any` type | `unknown` + type guard |
-| Raw `fetch()` in components | `api` client + TanStack Query |
-| `localStorage` for tokens | HTTP-only cookie (refresh) + Zustand (access) |
-| Hardcoded route strings | `ROUTES` constants from `config/routes.ts` |
-| `"use client"` on pages/layouts | Push interactivity to leaf components |
-| Raw `<img>` tags | `<Image>` from `next/image` |
-| Dynamic Tailwind class interpolation | Explicit class maps |
-| Import from inside another feature's internals | Import from feature's `index.ts` only |
-| Business logic in `app/` pages | Move to `features/<domain>/` |
-| `useState` for server data | TanStack Query |
-| Full-page spinners as loading state | Skeleton `loading.tsx` |
-| `"update"` or `"wip"` commit messages | Conventional commit format |
-| Empty `<div />` for no-data states | `<EmptyState />` component |
+| NEVER                                          | INSTEAD                                       |
+| ---------------------------------------------- | --------------------------------------------- |
+| `any` type                                     | `unknown` + type guard                        |
+| Raw `fetch()` in components                    | `api` client + TanStack Query                 |
+| `localStorage` for tokens                      | HTTP-only cookie (refresh) + Zustand (access) |
+| Hardcoded route strings                        | `ROUTES` constants from `config/routes.ts`    |
+| `"use client"` on pages/layouts                | Push interactivity to leaf components         |
+| Raw `<img>` tags                               | `<Image>` from `next/image`                   |
+| Dynamic Tailwind class interpolation           | Explicit class maps                           |
+| Import from inside another feature's internals | Import from feature's `index.ts` only         |
+| Business logic in `app/` pages                 | Move to `features/<domain>/`                  |
+| `useState` for server data                     | TanStack Query                                |
+| Full-page spinners as loading state            | Skeleton `loading.tsx`                        |
+| `"update"` or `"wip"` commit messages          | Conventional commit format                    |
+| Empty `<div />` for no-data states             | `<EmptyState />` component                    |
 
 ---
 
-*Last updated: October 2026 — Emergency Ambulance Dispatch Frontend*
+_Last updated: October 2026 — Emergency Ambulance Dispatch Frontend_

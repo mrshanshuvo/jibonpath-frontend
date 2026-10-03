@@ -82,7 +82,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border/60 bg-linear-to-b from-card/40 to-background">
+      <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border/60 bg-surface">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-emergency/30 bg-emergency/10 px-3.5 py-1 text-2xs font-semibold text-emergency mb-6 shadow-xs">
@@ -228,7 +228,7 @@ export default function AboutPage() {
       </section>
 
       {/* Emergency CTA */}
-      <section className="py-16 border-t border-border/60 bg-linear-to-r from-emergency/10 via-card to-primary/10">
+      <section className="py-16 border-t border-border/60 bg-surface">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
             Facing a Life-Threatening Situation?

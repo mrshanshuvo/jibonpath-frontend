@@ -91,7 +91,7 @@ export default function FaqPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Header */}
-      <section className="py-16 sm:py-20 border-b border-border/60 bg-linear-to-b from-card/50 to-background">
+      <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-4">
             <HelpCircle className="h-3.5 w-3.5" />

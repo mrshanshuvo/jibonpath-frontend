@@ -42,7 +42,7 @@ export default function HomePage() {
           {/* Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight">
             Every Second Counts.{" "}
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 via-rose-500 to-amber-500">
+            <span className="text-emergency">
               Instant Emergency Ambulance Dispatch.
             </span>
           </h1>
@@ -250,7 +250,7 @@ export default function HomePage() {
       </section>
 
       {/* DEMO EVALUATION BANNER */}
-      <section className="py-16 bg-linear-to-b from-surface to-background border-b border-border/60">
+      <section className="py-16 bg-surface border-b border-border/60">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-border bg-card p-8 sm:p-12 text-center shadow-xl space-y-6">
             <Badge variant="warning" size="md">

@@ -5,64 +5,93 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: hsl(224 71% 4%);
-  --foreground: hsl(210 40% 98%);
-  --surface: hsl(222 47% 11%);
-  --surface-raised: hsl(222 47% 14%);
-  --card: hsl(222 47% 16%);
-  --card-foreground: hsl(210 40% 98%);
-  --border: hsl(222 47% 22%);
-  --input: hsl(222 47% 20%);
-  --ring: hsl(221 83% 53%);
+  --color-primary: #2F3E9E;
+  --color-primary-soft: #E6E9F8;
+  --color-secondary: #64748B;
+  --color-success: #177A4E;
+  --color-danger: #D92D3A;
+  --color-warning: #F5A524;
+  --color-info: #0B73A8;
 
-  --primary: hsl(221 83% 53%);
-  --primary-foreground: hsl(0 0% 100%);
+  --bg: #F4F6FA;
+  --surface: #FFFFFF;
+  --border: #D8DDE6;
+  --text: #1E2A36;
+  --text-muted: #4C6272;
 
-  --emergency: hsl(0 84% 55%);
-  --emergency-foreground: hsl(0 0% 100%);
+  --priority-critical: var(--color-danger);
+  --priority-urgent: var(--color-warning);
+  --priority-routine: var(--color-info);
+  --unit-available: var(--color-success);
+  --unit-enroute: var(--color-info);
+  --unit-busy: var(--color-warning);
+  --unit-offline: var(--color-secondary);
 
-  /* Dedicated destructive token, separate from emergency */
-  --destructive: hsl(0 84% 55%);
-  --destructive-foreground: hsl(0 0% 100%);
+  /* Domain tokens */
+  --priority-critical: var(--color-danger);
+  --priority-urgent: var(--color-warning);
+  --priority-routine: var(--color-info);
+  --unit-available: var(--color-success);
+  --unit-enroute: var(--color-info);
+  --unit-busy: var(--color-warning);
+  --unit-offline: var(--color-secondary);
 
-  /* Info token for neutral-positive badge/status contexts */
-  --info: hsl(217 91% 60%);
-  --info-foreground: hsl(0 0% 100%);
+  /* Legacy mapping for shadcn/ui compatibility */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --surface-raised: #FFFFFF;
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --border: var(--border);
+  --input: var(--border);
+  --ring: var(--color-primary);
 
-  --success: hsl(142 71% 45%);
-  --success-foreground: hsl(0 0% 100%);
+  --primary: var(--color-primary);
+  --primary-foreground: #FFFFFF;
 
-  --warning: hsl(38 92% 50%);
-  --warning-foreground: hsl(0 0% 100%);
+  --emergency: var(--color-danger);
+  --emergency-foreground: #FFFFFF;
 
-  --muted: hsl(217 33% 20%);
-  --muted-foreground: hsl(215 20% 65%);
+  --destructive: var(--color-danger);
+  --destructive-foreground: #FFFFFF;
 
-  --popover: hsl(222 47% 14%);
-  --popover-foreground: hsl(210 40% 98%);
+  --info: var(--color-info);
+  --info-foreground: #FFFFFF;
 
-  --secondary: hsl(222 47% 14%);
-  --secondary-foreground: hsl(210 40% 98%);
+  --success: var(--color-success);
+  --success-foreground: #FFFFFF;
 
-  --accent: hsl(222 47% 18%);
-  --accent-foreground: hsl(210 40% 98%);
+  --warning: var(--color-warning);
+  --warning-foreground: #1E2A36;
 
-  --chart-1: hsl(221 83% 53%);
-  --chart-2: hsl(142 71% 45%);
-  --chart-3: hsl(38 92% 50%);
-  --chart-4: hsl(0 84% 55%);
-  --chart-5: hsl(217 91% 60%);
+  --muted: #E6E9F8;
+  --muted-foreground: var(--text-muted);
+
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+
+  --secondary: #F4F6FA;
+  --secondary-foreground: var(--text);
+
+  --accent: var(--color-primary-soft);
+  --accent-foreground: var(--color-primary);
+
+  --chart-1: var(--color-primary);
+  --chart-2: var(--color-success);
+  --chart-3: var(--color-warning);
+  --chart-4: var(--color-danger);
+  --chart-5: var(--color-info);
 
   --radius: 0.625rem;
 
-  --sidebar: hsl(224 71% 6%);
-  --sidebar-foreground: hsl(210 40% 98%);
-  --sidebar-primary: hsl(221 83% 53%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(222 47% 14%);
-  --sidebar-accent-foreground: hsl(210 40% 98%);
-  --sidebar-border: hsl(222 47% 22%);
-  --sidebar-ring: hsl(221 83% 53%);
+  --sidebar: #F4F6FA;
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: var(--color-primary);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--color-primary-soft);
+  --sidebar-accent-foreground: var(--color-primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--color-primary);
 }
 
 @theme inline {
@@ -198,4 +227,63 @@ body {
   .animate-siren {
     animation: emergency-pulse 2s infinite ease-in-out;
   }
+}
+
+/* Dark theme (dispatcher dashboard) */
+:root[data-theme="dark"] {
+  --color-primary: #8C9BFF;
+  --color-danger: #FF5A66;
+  --bg: #0E1224;
+  --surface: #171C36;
+  --border: #2A3158;
+  --text: #E8EBF5;
+  --text-muted: #9AA3C0;
+
+  --background: var(--bg);
+  --foreground: var(--text);
+  --surface-raised: #171C36;
+  --card: #171C36;
+  --card-foreground: var(--text);
+  --border: var(--border);
+  --input: #2A3158;
+  --ring: #8C9BFF;
+
+  --primary: #8C9BFF;
+  --primary-foreground: #0E1224;
+
+  --emergency: #FF5A66;
+  --emergency-foreground: #FFFFFF;
+
+  --destructive: #FF5A66;
+  --destructive-foreground: #FFFFFF;
+
+  --info: #0B73A8;
+  --info-foreground: #FFFFFF;
+
+  --success: #177A4E;
+  --success-foreground: #FFFFFF;
+
+  --warning: #F5A524;
+  --warning-foreground: #1E2A36;
+
+  --muted: #2A3158;
+  --muted-foreground: #9AA3C0;
+
+  --popover: #171C36;
+  --popover-foreground: var(--text);
+
+  --secondary: #2A3158;
+  --secondary-foreground: var(--text);
+
+  --accent: #2A3158;
+  --accent-foreground: #E8EBF5;
+
+  --sidebar: #0E1224;
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: #8C9BFF;
+  --sidebar-primary-foreground: #0E1224;
+  --sidebar-accent: #2A3158;
+  --sidebar-accent-foreground: var(--text);
+  --sidebar-border: #2A3158;
+  --sidebar-ring: #8C9BFF;
 }

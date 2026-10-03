@@ -78,7 +78,7 @@ export function DashboardSidebar() {
           <span className="text-sm font-bold text-foreground leading-tight">
             PulsePoint
           </span>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-wider">
+          <span className="text-3xs text-muted-foreground uppercase font-medium tracking-wider">
             {roleTitle}
           </span>
         </div>
@@ -111,7 +111,7 @@ export function DashboardSidebar() {
       {/* Bottom Emergency Banner */}
       <div className="p-4 border-t border-border/80">
         <div className="rounded-lg bg-emergency/10 border border-emergency/20 p-3 text-center">
-          <p className="text-[11px] font-semibold text-emergency">
+          <p className="text-2xs font-semibold text-emergency">
             Direct Dispatch Line
           </p>
           <p className="text-xs font-bold text-foreground mt-0.5">999 Hotline</p>

@@ -72,10 +72,10 @@ export function UserMenu() {
           {getInitials(user.name)}
         </div>
         <div className="hidden sm:flex flex-col text-left">
-          <span className="text-xs font-semibold leading-tight text-foreground max-w-[120px] truncate">
+          <span className="text-xs font-semibold leading-tight text-foreground max-w-28 truncate">
             {user.name}
           </span>
-          <span className="text-[10px] text-muted-foreground leading-tight">
+          <span className="text-3xs text-muted-foreground leading-tight">
             {user.role}
           </span>
         </div>
@@ -86,7 +86,7 @@ export function UserMenu() {
         <div className="absolute right-0 mt-2 w-56 rounded-lg border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95">
           <div className="px-3 py-2 border-b border-border/70 mb-1">
             <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
-            <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
+            <p className="text-2xs text-muted-foreground truncate">{user.email}</p>
             <div className="mt-1.5">
               <Badge
                 variant={

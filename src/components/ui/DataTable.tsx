@@ -49,7 +49,7 @@ export function DataTable<T>({
                 <tr key={idx} className="bg-surface/30">
                   {columns.map((col) => (
                     <td key={col.key} className="px-4 py-3">
-                      <Skeleton className="h-4 w-full max-w-[120px]" />
+                      <Skeleton className="h-4 w-full max-w-28" />
                     </td>
                   ))}
                 </tr>

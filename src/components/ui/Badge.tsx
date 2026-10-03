@@ -49,7 +49,7 @@ export function Badge({
       className={cn(
         "inline-flex items-center font-medium border rounded-full select-none",
         variantStyles[variant],
-        size === "sm" ? "px-2 py-0.5 text-[11px] gap-1" : "px-2.5 py-1 text-xs gap-1.5",
+        size === "sm" ? "px-2 py-0.5 text-2xs gap-1" : "px-2.5 py-1 text-xs gap-1.5",
         className,
       )}
       {...props}

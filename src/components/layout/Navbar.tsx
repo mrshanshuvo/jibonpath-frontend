@@ -35,7 +35,7 @@ export function Navbar() {
               PulsePoint
               <span className="flex h-2 w-2 rounded-full bg-emergency animate-ping" />
             </span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium -mt-1">
+            <span className="text-3xs uppercase tracking-widest text-muted-foreground font-medium -mt-1">
               Ambulance Dispatch
             </span>
           </div>

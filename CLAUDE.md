@@ -1,1 +1,3 @@
 @AGENTS.md
+@docs/PROJECT_MEMORY.md
+@STANDARDS.md

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -20,9 +22,20 @@ import {
   Building2,
   CheckCircle2,
   ArrowRight,
+  Activity,
 } from "lucide-react";
+import { usePublicAmbulances } from "@/features/fleet/api/public-fleet.queries";
 
 export default function HomePage() {
+  const { data: fleetData, isLoading: fleetLoading } = usePublicAmbulances();
+
+  const available = fleetData?.ambulances?.filter(
+    (a) => a.status === "AVAILABLE"
+  ) ?? [];
+  const bls = available.filter((a) => a.type === "BASIC").length;
+  const acls = available.filter((a) => a.type === "ADVANCED_LIFE_SUPPORT").length;
+  const icu = available.filter((a) => a.type === "INTENSIVE_CARE").length;
+
   return (
     <div className="flex-1 flex flex-col">
       {/* HERO SECTION */}
@@ -32,11 +45,24 @@ export default function HomePage() {
         <div className="absolute top-1/3 left-1/3 w-72 h-72 bg-emergency/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          {/* Live Status Pill */}
-          <div className="inline-flex items-center gap-2 mb-6">
-            <Badge variant="emergency" pulse dot size="md">
-              24/7 Rapid Emergency Response Active
+          {/* Live Status Indicator */}
+          <div className="inline-flex items-center gap-3 mb-6 flex-wrap justify-center">
+            <Badge variant="emergency" size="md">
+              <span className="flex items-center gap-1.5">
+                <Activity className="h-3.5 w-3.5" />
+                <span>Live Dispatch Network</span>
+              </span>
             </Badge>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground bg-surface/60 px-3 py-1.5 rounded-full border border-border/60">
+              <span className="font-semibold text-foreground">
+                {fleetLoading ? "..." : `${available.length}`}
+              </span>
+              <span>ambulances active</span>
+              <span className="w-px h-3 bg-border" />
+              <span>BLS: <span className="font-medium text-foreground">{fleetLoading ? "..." : bls}</span></span>
+              <span>ACLS: <span className="font-medium text-foreground">{fleetLoading ? "..." : acls}</span></span>
+              <span>ICU: <span className="font-medium text-foreground">{fleetLoading ? "..." : icu}</span></span>
+            </div>
           </div>
 
           {/* Headline */}

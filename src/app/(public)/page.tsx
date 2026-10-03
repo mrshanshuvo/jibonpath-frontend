@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/Card";
 import { ROUTES } from "@/config/routes";
 import {
   Ambulance,
@@ -36,7 +42,7 @@ export default function HomePage() {
           {/* Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight">
             Every Second Counts.{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-500 to-amber-500">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 via-rose-500 to-amber-500">
               Instant Emergency Ambulance Dispatch.
             </span>
           </h1>
@@ -124,7 +130,9 @@ export default function HomePage() {
               </p>
             </div>
             <div className="space-y-1">
-              <p className="text-3xl font-extrabold text-foreground">24/7/365</p>
+              <p className="text-3xl font-extrabold text-foreground">
+                24/7/365
+              </p>
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
                 Continuous Operations
               </p>
@@ -144,14 +152,17 @@ export default function HomePage() {
               Engineered for High-Stakes Critical Care
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Seamless coordination connecting emergency callers, mobile paramedic
-              units, and hospital trauma centers in real time.
+              Seamless coordination connecting emergency callers, mobile
+              paramedic units, and hospital trauma centers in real time.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <Card glass className="hover:border-slate-600 transition-all duration-200">
+            <Card
+              glass
+              className="hover:border-slate-600 transition-all duration-200"
+            >
               <CardHeader>
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emergency/15 text-emergency mb-4">
                   <Ambulance className="h-6 w-6" />
@@ -159,7 +170,8 @@ export default function HomePage() {
                 <CardTitle>Rapid Smart Dispatch</CardTitle>
                 <CardDescription>
                   Automated proximity matching dispatches the closest available
-                  ALS, BLS, or Intensive Care unit within seconds of call intake.
+                  ALS, BLS, or Intensive Care unit within seconds of call
+                  intake.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -177,15 +189,18 @@ export default function HomePage() {
             </Card>
 
             {/* Card 2 */}
-            <Card glass className="hover:border-slate-600 transition-all duration-200">
+            <Card
+              glass
+              className="hover:border-slate-600 transition-all duration-200"
+            >
               <CardHeader>
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400 mb-4">
                   <Building2 className="h-6 w-6" />
                 </div>
                 <CardTitle>Hospital Telemetry Handshake</CardTitle>
                 <CardDescription>
-                  Emergency doctors receive live patient vitals and triage status
-                  prior to ambulance arrival at the emergency room.
+                  Emergency doctors receive live patient vitals and triage
+                  status prior to ambulance arrival at the emergency room.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -203,7 +218,10 @@ export default function HomePage() {
             </Card>
 
             {/* Card 3 */}
-            <Card glass className="hover:border-slate-600 transition-all duration-200">
+            <Card
+              glass
+              className="hover:border-slate-600 transition-all duration-200"
+            >
               <CardHeader>
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400 mb-4">
                   <CreditCard className="h-6 w-6" />
@@ -242,12 +260,17 @@ export default function HomePage() {
               Test All 3 System Roles with 1-Click Demo Login
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              Instantly switch between System Admin command, Paramedic Driver live
-              transit mode, and Patient emergency booking without manual signups.
+              Instantly switch between System Admin command, Paramedic Driver
+              live transit mode, and Patient emergency booking without manual
+              signups.
             </p>
             <div className="pt-2">
               <Link href={ROUTES.login}>
-                <Button variant="primary" size="lg" rightIcon={<ArrowRight className="h-4 w-4" />}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  rightIcon={<ArrowRight className="h-4 w-4" />}
+                >
                   Open 1-Click Demo Login Grid
                 </Button>
               </Link>

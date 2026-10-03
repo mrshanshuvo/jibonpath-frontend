@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { EmergencyBookingWizard } from "@/features/emergency";
 import { Skeleton } from "@/components/ui";
 import { HeartPulse } from "lucide-react";
+import { InteractiveMap } from "@/components/map/InteractiveMap";
 
 function BookingContent() {
   const searchParams = useSearchParams();
@@ -27,6 +28,23 @@ function BookingContent() {
       </div>
 
       <EmergencyBookingWizard initialDestination={initialDestination} />
+
+      {/* Interactive Map Section */}
+      <section className="pt-4">
+        <h2 className="text-sm font-bold text-foreground mb-3">Live Dispatch Area</h2>
+        <InteractiveMap
+          pickup={{ lng: 90.4125, lat: 23.8103, label: "Pickup" }}
+          destination={{ lng: 90.424, lat: 23.82, label: "Hospital" }}
+          ambulances={[
+            { id: "AMB-01", lng: 90.405, lat: 23.805, label: "AMB-01", type: "ambulance", status: "AVAILABLE" },
+            { id: "AMB-02", lng: 90.418, lat: 23.815, label: "AMB-02", type: "ambulance", status: "AVAILABLE" },
+          ]}
+          hospitals={[
+            { id: "H-01", lng: 90.424, lat: 23.82, label: "Dhaka Medical College", type: "hospital", capacity: 45 },
+            { id: "H-02", lng: 90.395, lat: 23.795, label: "Square Hospital", type: "hospital", capacity: 30 },
+          ]}
+        />
+      </section>
     </div>
   );
 }

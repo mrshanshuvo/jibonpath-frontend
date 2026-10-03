@@ -11,10 +11,19 @@ export const createEmergencyRequestSchema = z.object({
   }),
   pickupAddress: z
     .string()
+    .trim()
     .min(5, "Pickup address must be at least 5 characters"),
   pickupLat: z.number().optional(),
   pickupLng: z.number().optional(),
-  description: z.string().optional(),
+  contactPhone: z
+    .string()
+    .trim()
+    .min(1, "Callback number is required")
+    .regex(/^[+\d][\d\s\-()]{6,}$/, "Enter a valid phone number"),
+  description: z
+    .string()
+    .max(500, "Notes must be 500 characters or fewer")
+    .optional(),
   hospitalName: z.string().optional(),
 });
 

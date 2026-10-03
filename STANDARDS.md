@@ -23,6 +23,7 @@
 13. [Performance Rules](#13-performance-rules)
 14. [Error Handling Rules](#14-error-handling-rules)
 15. [URL & Navigation Rules](#15-url--navigation-rules)
+16. [Accessibility Rules](#16-accessibility-rules)
 
 ---
 
@@ -675,6 +676,14 @@ type PaginatedResponse<T> = ApiResponse<{
 }>;
 ```
 
+### API client exception
+
+Next.js route handlers under `app/api/**/route.ts` MAY call `fetch` directly
+when proxying to the backend. The `api` client in `lib/api-client.ts` is
+browser-oriented (Zustand store, `window` redirects) and is not usable
+server-side. Client components and TanStack Query hooks MUST still use
+`api` — the ban remains for all client code.
+
 ---
 
 ## 12. Git & Commit Rules
@@ -842,6 +851,56 @@ export const ROUTES = {
   },
 } as const;
 ```
+
+---
+
+## 16. Accessibility Rules
+
+### Form primitives
+
+1. Every input MUST have a programmatically associated label
+   (`htmlFor` + matching `id`).
+2. Primitive inputs MUST use React's `useId()` for id generation —
+   never derived from label text (breaks on duplicate labels + parentheses).
+3. Inputs with errors MUST set `aria-invalid={true}` and
+   `aria-describedby` pointing to the error element's id.
+4. Error text MUST be rendered with `role="alert"`.
+5. Decorative icons inside buttons/inputs MUST have `aria-hidden="true"`.
+
+### Composite widgets
+
+1. Custom radio groups MUST use `role="radiogroup"` + `role="radio"` +
+   `aria-checked`.
+2. Radio groups MUST support arrow-key navigation and roving tabindex.
+3. Tabs must use `role="tablist"` / `role="tab"` / `role="tabpanel"`.
+
+### Motion
+
+1. All non-essential animation MUST use the `motion-safe:` prefix or be
+   gated inside `@media (prefers-reduced-motion: no-preference)`.
+2. Loading indicators (`animate-spin` on spinners) are essential and exempt.
+
+### Modals
+
+1. Modals MUST render via `createPortal` to `document.body`.
+2. Modals MUST trap focus and restore it to the trigger on close.
+3. Modals MUST have `role="dialog"` + `aria-modal="true"` +
+   `aria-labelledby` / `aria-describedby`.
+4. Modals MUST close on Escape.
+5. `document.body.style.overflow` MUST be saved and restored —
+   never set to `"unset"` on cleanup.
+
+### Tables
+
+1. `<th>` elements MUST have `scope="col"`.
+2. Every table MUST have an accessible name — either a visible heading
+   or a `<caption className="sr-only">`.
+
+### Navigation
+
+1. Paginated/filtered regions MUST be wrapped in
+   `<nav aria-label="...">`.
+2. The current page indicator MUST use `aria-current="page"`.
 
 ---
 

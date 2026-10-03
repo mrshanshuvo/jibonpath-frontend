@@ -39,6 +39,8 @@ export function Badge({
   children,
   ...props
 }: BadgeProps) {
+  const showDot = dot || pulse;
+
   return (
     <span
       className={cn(
@@ -51,14 +53,26 @@ export function Badge({
       )}
       {...props}
     >
-      {(dot || pulse) && (
+      {showDot && (
         <span
-          className={cn(
-            "h-1.5 w-1.5 rounded-full",
-            dotColors[variant],
-            pulse && "animate-ping opacity-75",
+          aria-hidden="true"
+          className="relative inline-flex h-1.5 w-1.5 shrink-0"
+        >
+          <span
+            className={cn(
+              "relative inline-flex h-1.5 w-1.5 rounded-full",
+              dotColors[variant],
+            )}
+          />
+          {pulse && (
+            <span
+              className={cn(
+                "absolute inset-0 inline-flex rounded-full opacity-75 motion-safe:animate-ping",
+                dotColors[variant],
+              )}
+            />
           )}
-        />
+        </span>
       )}
       {children}
     </span>

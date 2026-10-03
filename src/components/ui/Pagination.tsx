@@ -27,17 +27,20 @@ export function Pagination({
 
   if (totalPages <= 1) return null;
 
-  const startItem = total && limit ? (activePage - 1) * limit + 1 : null;
-  const endItem = total && limit ? Math.min(activePage * limit, total) : null;
+  const startItem =
+    total != null && limit != null ? (activePage - 1) * limit + 1 : null;
+  const endItem =
+    total != null && limit != null ? Math.min(activePage * limit, total) : null;
 
   return (
-    <div
+    <nav
+      aria-label="Pagination"
       className={cn(
         "flex flex-col sm:flex-row items-center justify-between gap-4 py-3",
         className,
       )}
     >
-      {total != null && startItem != null && endItem != null ? (
+      {startItem != null && endItem != null ? (
         <p className="text-xs text-muted-foreground">
           Showing{" "}
           <span className="font-medium text-foreground">{startItem}</span> to{" "}
@@ -54,12 +57,16 @@ export function Pagination({
           size="sm"
           disabled={activePage <= 1}
           onClick={() => onPageChange(activePage - 1)}
+          aria-label="Go to previous page"
           leftIcon={<ChevronLeft className="h-4 w-4" />}
         >
           Previous
         </Button>
 
-        <span className="text-xs font-medium text-foreground px-2">
+        <span
+          aria-current="page"
+          className="text-xs font-medium text-foreground px-2"
+        >
           Page {activePage} of {totalPages}
         </span>
 
@@ -68,11 +75,12 @@ export function Pagination({
           size="sm"
           disabled={activePage >= totalPages}
           onClick={() => onPageChange(activePage + 1)}
+          aria-label="Go to next page"
           rightIcon={<ChevronRight className="h-4 w-4" />}
         >
           Next
         </Button>
       </div>
-    </div>
+    </nav>
   );
 }

@@ -1,0 +1,130 @@
+"use client";
+
+import {
+  forwardRef,
+  useId,
+  type ReactNode,
+  type SelectHTMLAttributes,
+} from "react";
+import { cn } from "@/lib/utils";
+import { AlertCircle, ChevronDown } from "lucide-react";
+
+export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  error?: string;
+  helperText?: string;
+  leftIcon?: ReactNode;
+}
+
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  (
+    {
+      className,
+      label,
+      error,
+      helperText,
+      leftIcon,
+      id,
+      disabled,
+      required,
+      children,
+      "aria-describedby": ariaDescribedByProp,
+      ...props
+    },
+    ref,
+  ) => {
+    const generatedId = useId();
+    const selectId = id ?? `select-${generatedId}`;
+    const errorId = `${selectId}-error`;
+    const helperId = `${selectId}-helper`;
+
+    const describedBy =
+      [
+        ariaDescribedByProp,
+        error ? errorId : null,
+        !error && helperText ? helperId : null,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined;
+
+    return (
+      <div className="w-full space-y-1.5">
+        {label && (
+          <label
+            htmlFor={selectId}
+            className="block text-xs font-medium uppercase tracking-wider text-muted-foreground"
+          >
+            {label}
+            {required && (
+              <span className="text-destructive ml-1" aria-hidden="true">
+                *
+              </span>
+            )}
+          </label>
+        )}
+
+        <div className="relative flex items-center">
+          {leftIcon && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3.5 flex items-center text-muted-foreground"
+            >
+              {leftIcon}
+            </div>
+          )}
+
+          <select
+            id={selectId}
+            ref={ref}
+            disabled={disabled}
+            required={required}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describedBy}
+            className={cn(
+              "flex h-10 w-full appearance-none rounded-md border border-border bg-surface pl-3.5 pr-10 py-2 text-sm text-foreground transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
+              leftIcon && "pl-10",
+              error &&
+                "border-destructive/80 focus-visible:ring-destructive bg-destructive/5",
+              className,
+            )}
+            {...props}
+          >
+            {children}
+          </select>
+
+          {error ? (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute right-3 flex items-center text-destructive"
+            >
+              <AlertCircle className="h-4 w-4" />
+            </div>
+          ) : (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute right-3 flex items-center text-muted-foreground"
+            >
+              <ChevronDown className="h-4 w-4" />
+            </div>
+          )}
+        </div>
+
+        {error ? (
+          <p
+            id={errorId}
+            role="alert"
+            className="text-xs font-medium text-destructive motion-safe:animate-in motion-safe:fade-in-50 duration-150"
+          >
+            {error}
+          </p>
+        ) : helperText ? (
+          <p id={helperId} className="text-xs text-muted-foreground">
+            {helperText}
+          </p>
+        ) : null}
+      </div>
+    );
+  },
+);
+
+Select.displayName = "Select";

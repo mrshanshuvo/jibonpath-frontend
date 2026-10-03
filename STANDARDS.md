@@ -301,6 +301,7 @@ export function formatDate(date: string): string { ... }
 - API wrapper types live in `src/types/api.types.ts`.
 - Feature-specific types live in `src/features/<domain>/types.ts`.
 - Never define types inline inside component files unless they are component prop types.
+- **Never reference a design token that is not defined in `globals.css`**. A misspelled or missing token (e.g. `text-destructive` when `--color-destructive` doesn't exist) fails silently at build time. When adding a new utility class, verify its token exists.
 
 ```ts
 // Component prop types inline is fine
@@ -506,6 +507,9 @@ const colorMap = { red: "bg-red-500", green: "bg-green-500" };
 ### Design Token Rules (Tailwind CSS v4 @theme)
 
 Define ALL design tokens in `src/app/globals.css`. Never use raw color hex values in components.
+
+- **Design token discipline**: Components must reference tokens via Tailwind utility classes (`text-destructive`, `bg-emergency`). Raw hex values, `rgb()`, and `rgba()` literals are only permitted inside `globals.css` keyframes and glass helpers — never inside `.tsx` files. Non-token color usage (e.g. `text-blue-400`) is banned in favor of the closest semantic token.
+- **Reduced motion**: All non-essential animation (`ping`, `pulse`, transform-on-hover, custom keyframes) MUST be gated behind `motion-safe:` or `@media (prefers-reduced-motion: no-preference)`. Loading indicators (`animate-spin`) are essential and exempt.
 
 ```css
 @theme inline {

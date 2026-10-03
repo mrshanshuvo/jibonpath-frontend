@@ -16,6 +16,7 @@ export interface DataTableProps<T> {
   columns: Column<T>[];
   keyExtractor: (item: T) => string;
   isLoading?: boolean;
+  caption?: string;
   emptyTitle?: string;
   emptyDescription?: string;
   className?: string;
@@ -26,27 +27,38 @@ export function DataTable<T>({
   columns,
   keyExtractor,
   isLoading = false,
+  caption,
   emptyTitle = "No records found",
   emptyDescription = "There is currently no data to display for this view.",
   className,
 }: DataTableProps<T>) {
+  const captionNode = caption ? (
+    <caption className="sr-only">{caption}</caption>
+  ) : null;
+
   if (isLoading) {
     return (
       <div
         className={cn(
-          "w-full overflow-hidden rounded-lg border border-border bg-card",
+          "w-full overflow-hidden rounded-lg border border-border bg-card shadow-sm",
           className,
         )}
       >
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table
+            className="w-full text-left text-sm"
+            aria-busy="true"
+            aria-live="polite"
+          >
+            {captionNode}
             <thead className="border-b border-border bg-surface-raised text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
                 {columns.map((col) => (
                   <th
                     key={col.key}
+                    scope="col"
                     className={cn(
-                      "px-4 py-3 font-semibold",
+                      "px-4 py-3.5 font-semibold",
                       col.headerClassName,
                     )}
                   >
@@ -55,9 +67,9 @@ export function DataTable<T>({
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/60">
               {Array.from({ length: 5 }).map((_, idx) => (
-                <tr key={idx} className="bg-surface/30">
+                <tr key={idx}>
                   {columns.map((col) => (
                     <td key={col.key} className="px-4 py-3">
                       <Skeleton className="h-4 w-full max-w-28" />
@@ -91,11 +103,13 @@ export function DataTable<T>({
     >
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
+          {captionNode}
           <thead className="border-b border-border bg-surface-raised text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
               {columns.map((col) => (
                 <th
                   key={col.key}
+                  scope="col"
                   className={cn(
                     "px-4 py-3.5 font-semibold",
                     col.headerClassName,

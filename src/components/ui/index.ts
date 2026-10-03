@@ -5,6 +5,8 @@ export {
   type ButtonSize,
 } from "./Button";
 export { Input, type InputProps } from "./Input";
+export { Select, type SelectProps } from "./Select";
+export { Textarea, type TextareaProps } from "./Textarea";
 export { Badge, type BadgeProps, type BadgeVariant } from "./Badge";
 export {
   Card,
@@ -14,6 +16,7 @@ export {
   CardContent,
   CardFooter,
   type CardProps,
+  type CardTitleProps,
 } from "./Card";
 export { Skeleton } from "./Skeleton";
 export { Modal, type ModalProps } from "./Modal";

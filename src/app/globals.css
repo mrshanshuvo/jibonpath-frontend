@@ -17,6 +17,14 @@
   --emergency: hsl(0 84% 55%);
   --emergency-foreground: hsl(0 0% 100%);
 
+  /* NEW — dedicated destructive token, separate from emergency */
+  --destructive: hsl(0 84% 55%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  /* NEW — info token for neutral-positive badge/status contexts */
+  --info: hsl(217 91% 60%);
+  --info-foreground: hsl(0 0% 100%);
+
   --success: hsl(142 71% 45%);
   --success-foreground: hsl(0 0% 100%);
 
@@ -40,8 +48,18 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
   --color-emergency: var(--emergency);
   --color-emergency-foreground: var(--emergency-foreground);
+
+  /* NEW */
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* NEW */
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -92,34 +110,37 @@ body {
 
 /* Glassmorphism helpers */
 .glass-panel {
-  background: rgba(17, 24, 39, 0.75);
+  background: color-mix(in oklab, var(--surface) 75%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
 }
 
 .glass-card {
-  background: rgba(26, 35, 51, 0.65);
+  background: color-mix(in oklab, var(--card) 65%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid color-mix(in oklab, var(--foreground) 7%, transparent);
 }
 
-/* Siren pulse effect for emergency elements */
+/* Siren pulse effect for emergency elements.
+   Motion is opt-in — users with reduced-motion preference get a static state. */
 @keyframes emergency-pulse {
   0%,
   100% {
     box-shadow:
-      0 0 15px rgba(239, 68, 68, 0.4),
-      inset 0 0 15px rgba(239, 68, 68, 0.2);
+      0 0 15px color-mix(in oklab, var(--emergency) 40%, transparent),
+      inset 0 0 15px color-mix(in oklab, var(--emergency) 20%, transparent);
   }
   50% {
     box-shadow:
-      0 0 30px rgba(239, 68, 68, 0.8),
-      inset 0 0 25px rgba(239, 68, 68, 0.4);
+      0 0 30px color-mix(in oklab, var(--emergency) 80%, transparent),
+      inset 0 0 25px color-mix(in oklab, var(--emergency) 40%, transparent);
   }
 }
 
-.animate-siren {
-  animation: emergency-pulse 2s infinite ease-in-out;
+@media (prefers-reduced-motion: no-preference) {
+  .animate-siren {
+    animation: emergency-pulse 2s infinite ease-in-out;
+  }
 }

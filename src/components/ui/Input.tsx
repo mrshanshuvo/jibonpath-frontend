@@ -1,4 +1,11 @@
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from "react";
+"use client";
+
+import {
+  forwardRef,
+  useId,
+  type InputHTMLAttributes,
+  type ReactNode,
+} from "react";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 
@@ -22,12 +29,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       id,
       disabled,
+      required,
+      "aria-describedby": ariaDescribedByProp,
       ...props
     },
     ref,
   ) => {
-    const inputId =
-      id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
+    const generatedId = useId();
+    const inputId = id ?? `input-${generatedId}`;
+    const errorId = `${inputId}-error`;
+    const helperId = `${inputId}-helper`;
+
+    const describedBy =
+      [
+        ariaDescribedByProp,
+        error ? errorId : null,
+        !error && helperText ? helperId : null,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined;
 
     return (
       <div className="w-full space-y-1.5">
@@ -37,13 +57,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className="block text-xs font-medium uppercase tracking-wider text-muted-foreground"
           >
             {label}
-            {props.required && <span className="text-emergency ml-1">*</span>}
+            {required && (
+              <span className="text-destructive ml-1" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
 
         <div className="relative flex items-center">
           {leftIcon && (
-            <div className="pointer-events-none absolute left-3.5 flex items-center text-muted-foreground">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3.5 flex items-center text-muted-foreground"
+            >
               {leftIcon}
             </div>
           )}
@@ -53,37 +80,51 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             type={type}
             disabled={disabled}
+            required={required}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describedBy}
             className={cn(
-              "flex h-10 w-full rounded-md border border-border bg-surface px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-10 w-full rounded-md border border-border bg-surface px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
               leftIcon && "pl-10",
               (rightIcon || error) && "pr-10",
               error &&
-                "border-rose-500/80 focus-visible:ring-rose-500 bg-rose-500/5",
+                "border-destructive/80 focus-visible:ring-destructive bg-destructive/5",
               className,
             )}
             {...props}
           />
 
           {error ? (
-            <div className="pointer-events-none absolute right-3 flex items-center text-rose-500">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute right-3 flex items-center text-destructive"
+            >
               <AlertCircle className="h-4 w-4" />
             </div>
           ) : (
             rightIcon && (
-              <div className="absolute right-3 flex items-center text-muted-foreground">
+              <div
+                aria-hidden="true"
+                className="absolute right-3 flex items-center text-muted-foreground"
+              >
                 {rightIcon}
               </div>
             )
           )}
         </div>
 
-        {/* Inline validation error display per STANDARDS.md Section 7 */}
         {error ? (
-          <p className="text-xs font-medium text-rose-500 animate-in fade-in-50 duration-150">
+          <p
+            id={errorId}
+            role="alert"
+            className="text-xs font-medium text-destructive motion-safe:animate-in motion-safe:fade-in-50 duration-150"
+          >
             {error}
           </p>
         ) : helperText ? (
-          <p className="text-xs text-muted-foreground">{helperText}</p>
+          <p id={helperId} className="text-xs text-muted-foreground">
+            {helperText}
+          </p>
         ) : null}
       </div>
     );

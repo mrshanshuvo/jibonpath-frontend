@@ -72,7 +72,7 @@ export function DashboardSidebar() {
         : "Patient Portal";
 
   return (
-    <aside className="w-64 border-r border-border bg-surface shrink-0 flex flex-col min-h-screen">
+    <aside className="w-64 h-full border-r border-border bg-surface shrink-0 flex flex-col">
       {/* Brand Header */}
       <div className="h-16 flex items-center gap-2.5 px-6 border-b border-border/80">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emergency text-white">

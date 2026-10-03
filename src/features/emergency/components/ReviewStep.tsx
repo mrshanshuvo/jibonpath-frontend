@@ -63,7 +63,7 @@ export function ReviewStep({
               <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {row.label}
               </dt>
-              <dd className="text-sm text-foreground break-words">
+              <dd className="text-sm text-foreground wrap-break-word">
                 {row.value || "—"}
               </dd>
             </div>

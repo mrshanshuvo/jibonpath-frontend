@@ -30,9 +30,9 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen flex bg-background text-foreground">
+    <div className="h-dvh flex overflow-hidden bg-background text-foreground">
       {/* Desktop Persistent Sidebar */}
-      <div className="hidden lg:block shrink-0">
+      <div className="hidden lg:block shrink-0 h-full">
         <DashboardSidebar />
       </div>
 
@@ -60,9 +60,9 @@ export default function DashboardLayout({
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-full">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border/80 bg-background/80 px-4 sm:px-6 lg:px-8 backdrop-blur-md">
+        <header className="shrink-0 z-30 flex h-16 items-center justify-between border-b border-border/80 bg-background/80 px-4 sm:px-6 lg:px-8 backdrop-blur-md">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -101,7 +101,7 @@ export default function DashboardLayout({
         </header>
 
         {/* Scrollable Dashboard Body */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>

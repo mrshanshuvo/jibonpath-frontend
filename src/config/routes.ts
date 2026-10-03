@@ -1,4 +1,41 @@
 export const ROUTES = {
+  // Section 15 exact canonical keys
+  home: "/",
+  about: "/about",
+  services: "/services",
+  hospitals: "/hospitals",
+  contact: "/contact",
+  faq: "/faq",
+  login: "/login",
+  register: "/register",
+  patient: {
+    root: "/patient",
+    requests: "/patient",
+    book: "/patient/book",
+    payments: "/patient/payments",
+    profile: "/patient/profile",
+  },
+  driver: {
+    root: "/driver",
+    active: "/driver",
+    history: "/driver/history",
+    profile: "/driver/profile",
+  },
+  admin: {
+    root: "/admin",
+    analytics: "/admin",
+    fleet: "/admin/fleet",
+    drivers: "/admin/drivers",
+    dispatches: "/admin/dispatches",
+    users: "/admin/users",
+    auditLogs: "/admin/audit-logs",
+  },
+  payment: {
+    success: "/payment/success",
+    cancel: "/payment/cancel",
+  },
+
+  // Uppercase namespace aliases for backwards compatibility
   PUBLIC: {
     HOME: "/",
     ABOUT: "/about",

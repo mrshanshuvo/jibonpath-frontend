@@ -71,6 +71,7 @@ export interface ApiErrorResponse {
 }
 
 export class ApiError extends Error {
+  readonly success = false as const;
   status: number;
   errors?: string[] | Record<string, string[]> | unknown;
 
@@ -83,5 +84,6 @@ export class ApiError extends Error {
     this.name = "ApiError";
     this.status = status;
     this.errors = errors;
+    Object.setPrototypeOf(this, ApiError.prototype);
   }
 }

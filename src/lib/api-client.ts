@@ -156,8 +156,22 @@ async function request<T>(
       headers,
     });
 
+    const isAuthEndpoint =
+      endpoint.includes("/auth/login") ||
+      endpoint.includes("/auth/register") ||
+      endpoint.includes("/auth/refresh-token");
+
+    const hadAuthHeader = headers.has("Authorization");
+
     // Responsibility 2: 401 Unauthorized handling with single refresh retry
-    if (response.status === 401 && !skipAuth && !isRetry) {
+    // Only attempt refresh if an Authorization token was sent, and NOT on auth endpoints
+    if (
+      response.status === 401 &&
+      hadAuthHeader &&
+      !isAuthEndpoint &&
+      !skipAuth &&
+      !isRetry
+    ) {
       const newToken = await refreshAccessToken();
       if (newToken) {
         return request<T>(endpoint, options, true);
@@ -196,6 +210,12 @@ async function request<T>(
     if (error instanceof ApiError) {
       throw error;
     }
+
+    // Don't mask AbortError (e.g. TanStack Query cancelations) as a 500 error
+    if ((error as Error)?.name === "AbortError") {
+      throw error;
+    }
+
     const message =
       error instanceof Error ? error.message : "An unexpected network error occurred";
     throw new ApiError(message, 500);

@@ -4,6 +4,11 @@ export const metadata: Metadata = {
   title: "Partner Hospitals & Trauma Centers",
   description:
     "Direct emergency trauma coordination network and ICU availability across Dhaka metropolitan hospitals.",
+  openGraph: {
+    title: "Partner Hospitals & Trauma Centers | PulsePoint",
+    description:
+      "Direct emergency trauma coordination network and ICU availability across Dhaka metropolitan hospitals.",
+  },
 };
 
 export default function HospitalsLayout({

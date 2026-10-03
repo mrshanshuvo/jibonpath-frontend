@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pulsepoint-emergency.vercel.app"),
   title: {
     default: "PulsePoint — Rapid Emergency Ambulance Dispatch System",
     template: "%s | PulsePoint Dispatch",
@@ -32,6 +33,21 @@ export const metadata: Metadata = {
     "Dhaka",
   ],
   authors: [{ name: "PulsePoint Operations" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://pulsepoint-emergency.vercel.app",
+    title: "PulsePoint — Rapid Emergency Ambulance Dispatch System",
+    description:
+      "Real-time GPS ambulance dispatch, emergency triage, hospital tracking, and telemetry response platform.",
+    siteName: "PulsePoint Emergency Dispatch",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PulsePoint — Rapid Emergency Ambulance Dispatch System",
+    description:
+      "Real-time GPS ambulance dispatch, emergency triage, hospital tracking, and telemetry response platform.",
+  },
 };
 
 export default function RootLayout({

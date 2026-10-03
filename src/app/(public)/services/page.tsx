@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "Emergency Medical Fleet & Specialized Services",
   description:
     "Comprehensive pre-hospital emergency medical services: Basic Life Support, ACLS Cardiac, and Mobile Intensive Care Units (MICU) in Dhaka.",
+  openGraph: {
+    title: "Emergency Medical Fleet & Specialized Services | PulsePoint",
+    description:
+      "Comprehensive pre-hospital emergency medical services: Basic Life Support, ACLS Cardiac, and Mobile Intensive Care Units (MICU) in Dhaka.",
+  },
 };
 
 const FLEET_TIERS = [

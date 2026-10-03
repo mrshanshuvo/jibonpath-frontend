@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "About Our Emergency Dispatch Network",
   description:
     "Learn how PulsePoint coordinates rapid ambulance dispatch, specialized paramedic teams, and hospital telemetry across Dhaka.",
+  openGraph: {
+    title: "About Our Emergency Dispatch Network | PulsePoint",
+    description:
+      "Learn how PulsePoint coordinates rapid ambulance dispatch, specialized paramedic teams, and hospital telemetry across Dhaka.",
+  },
 };
 
 const METRICS = [

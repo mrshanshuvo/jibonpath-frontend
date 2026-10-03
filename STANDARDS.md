@@ -491,8 +491,9 @@ import { cn } from "@/lib/utils"; // cn = clsx + tailwind-merge
 <div className="mt-3" />                // CORRECT
 
 // NEVER use arbitrary values unless there is no Tailwind equivalent
-<div className="h-[347px]" />                   // BANNED — use h-80 or h-96
-<div className="h-[calc(100vh-64px)]" />         // OK — justified, no Tailwind equivalent
+<div className="h-[347px/**/]" />       // BANNED — use h-80 or h-96
+<div className="h-[calc(100vh-64px)]" /> // OK - justified, no Tailwind equivalent
+
 
 // NEVER use dynamic class interpolation — Tailwind cannot purge it
 <div className={`bg-${color}-500`} />           // BANNED

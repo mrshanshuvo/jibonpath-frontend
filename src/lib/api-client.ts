@@ -1,4 +1,8 @@
-import { ApiError, type ApiResponse, type ApiErrorResponse } from "@/types/api.types";
+import {
+  ApiError,
+  type ApiResponse,
+  type ApiErrorResponse,
+} from "@/types/api.types";
 import { useAuthStore } from "@/stores/auth.store";
 
 const API_BASE_URL =
@@ -14,8 +18,37 @@ let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
 /**
+ * Cleanly handles logout per STANDARDS.md Section 11 Law 2:
+ * 1. Clears in-memory client state
+ * 2. Clears server-set HTTP-only cookies via DELETE /api/auth/session
+ * 3. Redirects unauthenticated user to login with return path
+ */
+async function handleLogout(): Promise<void> {
+  useAuthStore.getState().clearAuth();
+
+  if (typeof window !== "undefined") {
+    try {
+      await fetch("/api/auth/session", {
+        method: "DELETE",
+        credentials: "include",
+      });
+    } catch {
+      // Ignore network errors during session cleanup
+    }
+
+    const currentPath = window.location.pathname;
+    const isAuthRoute =
+      currentPath.startsWith("/login") || currentPath.startsWith("/register");
+
+    if (!isAuthRoute) {
+      window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+    }
+  }
+}
+
+/**
  * Refreshes access token via server route handler /api/auth/session
- * which holds the HTTP-only refresh token cookie.
+ * which safely holds the HTTP-only refresh token cookie.
  */
 async function refreshAccessToken(): Promise<string | null> {
   if (isRefreshing && refreshPromise) {
@@ -25,25 +58,34 @@ async function refreshAccessToken(): Promise<string | null> {
   isRefreshing = true;
   refreshPromise = (async () => {
     try {
-      const res = await fetch("/api/auth/session", {
+      const endpoint =
+        typeof window !== "undefined"
+          ? "/api/auth/session"
+          : `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/auth/session`;
+
+      const res = await fetch(endpoint, {
         method: "GET",
+        credentials: "include",
       });
 
       if (!res.ok) {
-        useAuthStore.getState().clearAuth();
+        await handleLogout();
         return null;
       }
 
-      const json = (await res.json()) as { success: boolean; accessToken?: string };
+      const json = (await res.json()) as {
+        success: boolean;
+        accessToken?: string;
+      };
       if (json.success && json.accessToken) {
         useAuthStore.getState().setAccessToken(json.accessToken);
         return json.accessToken;
       }
 
-      useAuthStore.getState().clearAuth();
+      await handleLogout();
       return null;
     } catch {
-      useAuthStore.getState().clearAuth();
+      await handleLogout();
       return null;
     } finally {
       isRefreshing = false;
@@ -54,6 +96,14 @@ async function refreshAccessToken(): Promise<string | null> {
   return refreshPromise;
 }
 
+/**
+ * Centralized request dispatcher satisfying all 5 responsibilities in STANDARDS.md Section 11:
+ * 1. Injects Bearer token from Zustand store automatically
+ * 2. Handles 401 Unauthorized — attempts token refresh once, retries request, then logs out
+ * 3. Parses errors consistently into ApiError shape: { message, status, errors }
+ * 4. Never throws raw Response objects — always throws typed ApiError
+ * 5. Logs errors in development — never in production
+ */
 async function request<T>(
   endpoint: string,
   options: RequestOptions = {},
@@ -79,8 +129,12 @@ async function request<T>(
   }
 
   const headers = new Headers(customHeaders);
-  if (!headers.has("Content-Type") && !(fetchOptions.body instanceof FormData)) {
-    headers.set("Content-Type", "application/json");
+
+  // Set Content-Type only if request has a payload and isn't FormData
+  if (fetchOptions.body && !(fetchOptions.body instanceof FormData)) {
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
   }
 
   if (!skipAuth) {
@@ -96,7 +150,7 @@ async function request<T>(
       headers,
     });
 
-    // 401 Unauthorized handling with token refresh retry
+    // Responsibility 2: 401 Unauthorized handling with single refresh retry
     if (response.status === 401 && !skipAuth && !isRetry) {
       const newToken = await refreshAccessToken();
       if (newToken) {
@@ -113,27 +167,22 @@ async function request<T>(
       responseData = await response.text();
     }
 
+    // Responsibility 3 & 4: Parse errors consistently into ApiError
     if (!response.ok) {
       const errorJson = responseData as ApiErrorResponse | null;
-      const message = errorJson?.message || `Request failed with status ${response.status}`;
+      const message =
+        errorJson?.message ||
+        (typeof responseData === "string" && responseData
+          ? responseData
+          : `Request failed with status ${response.status}`);
       const errors = errorJson?.errors;
       throw new ApiError(message, response.status, errors);
     }
 
-    const successJson = responseData as ApiResponse<T>;
-    // If backend returns the standard ApiResponse wrapper, unpack data
-    if (
-      successJson &&
-      typeof successJson === "object" &&
-      "success" in successJson &&
-      "data" in successJson
-    ) {
-      return successJson.data;
-    }
-
+    // Return the response data preserving caller's specified contract type T
     return responseData as T;
   } catch (error) {
-    // Law 5: Log errors in development — never in production
+    // Responsibility 5: Log errors in development — never in production
     if (process.env.NODE_ENV === "development") {
       console.error(`[API Error] ${options.method || "GET"} ${url}:`, error);
     }
@@ -142,7 +191,9 @@ async function request<T>(
       throw error;
     }
     const message =
-      error instanceof Error ? error.message : "An unexpected network error occurred";
+      error instanceof Error
+        ? error.message
+        : "An unexpected network error occurred";
     throw new ApiError(message, 500);
   }
 }
@@ -155,21 +206,36 @@ export const api = {
     request<T>(endpoint, {
       ...options,
       method: "POST",
-      body: body instanceof FormData ? body : JSON.stringify(body),
+      body:
+        body === undefined
+          ? undefined
+          : body instanceof FormData
+            ? body
+            : JSON.stringify(body),
     }),
 
   put: <T>(endpoint: string, body?: unknown, options?: RequestOptions) =>
     request<T>(endpoint, {
       ...options,
       method: "PUT",
-      body: body instanceof FormData ? body : JSON.stringify(body),
+      body:
+        body === undefined
+          ? undefined
+          : body instanceof FormData
+            ? body
+            : JSON.stringify(body),
     }),
 
   patch: <T>(endpoint: string, body?: unknown, options?: RequestOptions) =>
     request<T>(endpoint, {
       ...options,
       method: "PATCH",
-      body: body instanceof FormData ? body : JSON.stringify(body),
+      body:
+        body === undefined
+          ? undefined
+          : body instanceof FormData
+            ? body
+            : JSON.stringify(body),
     }),
 
   delete: <T>(endpoint: string, options?: RequestOptions) =>

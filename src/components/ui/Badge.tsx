@@ -1,56 +1,77 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-export type BadgeVariant =
-  "default" | "success" | "emergency" | "warning" | "outline" | "secondary";
+const badgeVariants = cva(
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors select-none",
+  {
+    variants: {
+      variant: {
+        default: "border-primary/20 bg-primary/10 text-primary",
+        primary: "border-primary/20 bg-primary/10 text-primary",
+        secondary: "border-border bg-surface-raised text-foreground",
+        destructive: "border-destructive/20 bg-destructive/10 text-destructive",
+        emergency: "border-emergency/20 bg-emergency/10 text-emergency",
+        success: "border-success/20 bg-success/10 text-success",
+        warning: "border-warning/20 bg-warning/10 text-warning",
+        info: "border-info/20 bg-info/10 text-info",
+        outline: "border-border bg-transparent text-muted-foreground",
+      },
+      size: {
+        default: "px-2.5 py-0.5 text-xs gap-1.5",
+        sm: "px-2 py-0.5 text-2xs gap-1",
+        md: "px-2.5 py-1 text-xs gap-1.5",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+);
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: BadgeVariant;
-  size?: "sm" | "md";
+const dotColors: Record<string, string> = {
+  default: "bg-primary",
+  primary: "bg-primary",
+  secondary: "bg-muted-foreground",
+  destructive: "bg-destructive",
+  emergency: "bg-emergency",
+  success: "bg-success",
+  warning: "bg-warning",
+  info: "bg-info",
+  outline: "bg-muted-foreground",
+};
+
+export type BadgeVariant = NonNullable<
+  VariantProps<typeof badgeVariants>["variant"]
+>;
+export type BadgeSize = NonNullable<VariantProps<typeof badgeVariants>["size"]>;
+
+export interface BadgeProps
+  extends
+    React.HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {
   pulse?: boolean;
   dot?: boolean;
-  children: ReactNode;
 }
 
-const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  success: "bg-emerald-500/10 text-success border-emerald-500/20",
-  emergency: "bg-rose-500/10 text-destructive/80 border-rose-500/20",
-  warning: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  outline: "border-border bg-transparent text-muted-foreground",
-  secondary: "bg-surface-raised text-foreground border-border",
-};
-
-const dotColors: Record<BadgeVariant, string> = {
-  default: "bg-blue-400",
-  success: "bg-emerald-400",
-  emergency: "bg-rose-500",
-  warning: "bg-amber-400",
-  outline: "bg-slate-400",
-  secondary: "bg-slate-300",
-};
-
-export function Badge({
+function Badge({
   className,
   variant = "default",
-  size = "md",
+  size = "default",
   pulse = false,
   dot = false,
   children,
   ...props
 }: BadgeProps) {
   const showDot = dot || pulse;
+  const currentVariant = variant || "default";
+  const dotColor = dotColors[currentVariant] || "bg-primary";
 
   return (
     <span
-      className={cn(
-        "inline-flex items-center font-medium border rounded-full select-none",
-        variantStyles[variant],
-        size === "sm"
-          ? "px-2 py-0.5 text-2xs gap-1"
-          : "px-2.5 py-1 text-xs gap-1.5",
-        className,
-      )}
+      data-slot="badge"
+      className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     >
       {showDot && (
@@ -61,14 +82,14 @@ export function Badge({
           <span
             className={cn(
               "relative inline-flex h-1.5 w-1.5 rounded-full",
-              dotColors[variant],
+              dotColor,
             )}
           />
           {pulse && (
             <span
               className={cn(
                 "absolute inset-0 inline-flex rounded-full opacity-75 motion-safe:animate-ping",
-                dotColors[variant],
+                dotColor,
               )}
             />
           )}
@@ -78,3 +99,5 @@ export function Badge({
     </span>
   );
 }
+
+export { Badge, badgeVariants };

@@ -1,23 +1,21 @@
 "use client";
 
-import {
-  forwardRef,
-  useId,
-  type InputHTMLAttributes,
-  type ReactNode,
-} from "react";
+import * as React from "react";
+import { Input as InputPrimitive } from "@base-ui/react/input";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.ComponentProps<
+  typeof InputPrimitive
+> {
   label?: string;
   error?: string;
   helperText?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,
@@ -35,7 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const generatedId = useId();
+    const generatedId = React.useId();
     const inputId = id ?? `input-${generatedId}`;
     const errorId = `${inputId}-error`;
     const helperId = `${inputId}-helper`;
@@ -48,6 +46,32 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       ]
         .filter(Boolean)
         .join(" ") || undefined;
+
+    const inputNode = (
+      <InputPrimitive
+        id={inputId}
+        ref={ref}
+        type={type}
+        disabled={disabled}
+        required={required}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy}
+        data-slot="input"
+        className={cn(
+          "flex h-10 w-full rounded-lg border border-input bg-surface px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+          leftIcon && "pl-10",
+          (rightIcon || error) && "pr-10",
+          error &&
+            "border-destructive/80 focus-visible:ring-destructive bg-destructive/5",
+          className,
+        )}
+        {...props}
+      />
+    );
+
+    if (!label && !error && !helperText && !leftIcon && !rightIcon) {
+      return inputNode;
+    }
 
     return (
       <div className="w-full space-y-1.5">
@@ -75,24 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
 
-          <input
-            id={inputId}
-            ref={ref}
-            type={type}
-            disabled={disabled}
-            required={required}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={describedBy}
-            className={cn(
-              "flex h-10 w-full rounded-md border border-border bg-surface px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
-              leftIcon && "pl-10",
-              (rightIcon || error) && "pr-10",
-              error &&
-                "border-destructive/80 focus-visible:ring-destructive bg-destructive/5",
-              className,
-            )}
-            {...props}
-          />
+          {inputNode}
 
           {error ? (
             <div
@@ -132,3 +139,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = "Input";
+
+export { Input };

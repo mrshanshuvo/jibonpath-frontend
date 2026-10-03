@@ -1,10 +1,10 @@
 "use client";
 
-import { forwardRef, useId, type TextareaHTMLAttributes } from "react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 
-export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -12,7 +12,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   showCount?: boolean;
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       className,
@@ -31,7 +31,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref,
   ) => {
-    const generatedId = useId();
+    const generatedId = React.useId();
     const textareaId = id ?? `textarea-${generatedId}`;
     const errorId = `${textareaId}-error`;
     const helperId = `${textareaId}-helper`;
@@ -54,6 +54,42 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ? defaultValue.length
           : undefined;
 
+    const textareaNode = (
+      <div className="relative">
+        <textarea
+          id={textareaId}
+          ref={ref}
+          disabled={disabled}
+          required={required}
+          maxLength={maxLength}
+          value={value}
+          defaultValue={defaultValue}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy}
+          data-slot="textarea"
+          className={cn(
+            "flex field-sizing-content min-h-20 w-full rounded-lg border border-input bg-surface p-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+            error &&
+              "border-destructive/80 focus-visible:ring-destructive bg-destructive/5",
+            className,
+          )}
+          {...props}
+        />
+        {error && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-3 top-3 flex items-center text-destructive"
+          >
+            <AlertCircle className="h-4 w-4" />
+          </div>
+        )}
+      </div>
+    );
+
+    if (!label && !error && !helperText && !showCount) {
+      return textareaNode;
+    }
+
     return (
       <div className="w-full space-y-1.5">
         {label && (
@@ -70,34 +106,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           </label>
         )}
 
-        <div className="relative">
-          <textarea
-            id={textareaId}
-            ref={ref}
-            disabled={disabled}
-            required={required}
-            maxLength={maxLength}
-            value={value}
-            defaultValue={defaultValue}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={describedBy}
-            className={cn(
-              "w-full rounded-md border border-border bg-surface p-3 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
-              error &&
-                "border-destructive/80 focus-visible:ring-destructive bg-destructive/5",
-              className,
-            )}
-            {...props}
-          />
-          {error && (
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute right-3 top-3 flex items-center text-destructive"
-            >
-              <AlertCircle className="h-4 w-4" />
-            </div>
-          )}
-        </div>
+        {textareaNode}
 
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -130,3 +139,5 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 );
 
 Textarea.displayName = "Textarea";
+
+export { Textarea };

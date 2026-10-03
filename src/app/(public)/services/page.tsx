@@ -100,8 +100,8 @@ export default function ServicesPage() {
   return (
     <div className="flex flex-col">
       {/* Header Banner */}
-      <section className="py-16 sm:py-20 border-b border-border/60 bg-gradient-to-b from-card/50 to-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto">
+      <section className="py-16 sm:py-20 border-b border-border/60 bg-linear-to-b from-card/50 to-background">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
           <Badge variant="emergency" className="mb-4">
             Tiered Emergency Response Fleet
           </Badge>

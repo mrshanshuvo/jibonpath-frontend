@@ -146,8 +146,8 @@ export default function HospitalsPage() {
   return (
     <div className="flex flex-col">
       {/* Header Banner */}
-      <section className="py-16 border-b border-border/60 bg-gradient-to-b from-card/50 to-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto">
+      <section className="py-16 border-b border-border/60 bg-linear-to-b from-card/50 to-background">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
           <Badge variant="default" className="mb-4">
             Dhaka Emergency Medical Network
           </Badge>
@@ -287,8 +287,8 @@ export default function HospitalsPage() {
       </section>
 
       {/* Emergency Bottom Section */}
-      <section className="py-12 border-t border-border/60 bg-gradient-to-r from-card to-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-2xl mx-auto">
+      <section className="py-12 border-t border-border/60 bg-linear-to-r from-card to-background">
+        <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 text-center">
           <ShieldCheck className="h-8 w-8 text-primary mx-auto mb-3" />
           <h3 className="text-xl font-bold text-foreground">
             Direct Hospital Pre-Arrival Notification

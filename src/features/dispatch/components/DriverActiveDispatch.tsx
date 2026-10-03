@@ -216,7 +216,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
 
       {/* Advance Stage Control Card */}
       {nextStep ? (
-        <Card className="p-6 bg-gradient-to-r from-card to-surface-raised border-primary/30">
+        <Card className="p-6 bg-linear-to-r from-card to-surface-raised border-primary/30">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <span className="text-3xs font-bold uppercase tracking-wider text-primary">

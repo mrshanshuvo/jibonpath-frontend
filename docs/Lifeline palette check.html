@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lifeline palette check</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap">
+<style>
+:root{
+  --primary:#2F3E9E;--on-primary:#fff;--primary-soft:#E6E9F8;
+  --secondary:#64748B;--on-secondary:#fff;
+  --success:#177A4E;--on-success:#fff;
+  --danger:#D92D3A;--on-danger:#fff;
+  --warning:#F5A524;--on-warning:#1E2A36;
+  --info:#0B73A8;--on-info:#fff;
+  --bg:#F4F6FA;--surface:#fff;--border:#D8DDE6;--text:#1E2A36;--muted:#4C6272;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --primary:#8C9BFF;--on-primary:#0E1224;--primary-soft:#232A55;
+  --secondary:#94A3B8;--on-secondary:#0E1224;
+  --success:#3DDC97;--on-success:#0E1224;
+  --danger:#FF5A66;--on-danger:#0E1224;
+  --warning:#F5A524;--on-warning:#0E1224;
+  --info:#4FC3F7;--on-info:#0E1224;
+  --bg:#0E1224;--surface:#171C36;--border:#2A3158;--text:#E8EBF5;--muted:#9AA3C0;}}
+:root[data-theme="dark"]{
+  --primary:#8C9BFF;--on-primary:#0E1224;--primary-soft:#232A55;
+  --secondary:#94A3B8;--on-secondary:#0E1224;
+  --success:#3DDC97;--on-success:#0E1224;
+  --danger:#FF5A66;--on-danger:#0E1224;
+  --warning:#F5A524;--on-warning:#0E1224;
+  --info:#4FC3F7;--on-info:#0E1224;
+  --bg:#0E1224;--surface:#171C36;--border:#2A3158;--text:#E8EBF5;--muted:#9AA3C0;}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 "Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+h1{font-size:1.9rem;line-height:1.15;margin:0 0 6px}
+h2{font-size:1.15rem;margin:36px 0 12px}
+p{margin:0;color:var(--muted);max-width:60ch}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:10px 16px;font-weight:500}
+button:focus-visible,input:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+.toggle{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
+.sw .chip{padding:18px 14px 14px;min-height:92px;display:flex;flex-direction:column;justify-content:space-between}
+.sw .chip b{font-size:1rem}
+.sw .meta{padding:8px 14px;font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.pass{color:var(--success);font-weight:700}.fail{color:var(--danger);font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-secondary{background:var(--secondary);color:var(--on-secondary)}
+.btn-success{background:var(--success);color:var(--on-success)}
+.btn-danger{background:var(--danger);color:var(--on-danger)}
+.btn-warning{background:var(--warning);color:var(--on-warning)}
+.btn-info{background:var(--info);color:var(--on-info)}
+.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.alert{display:flex;gap:10px;padding:12px 14px;border-radius:8px;border:1px solid var(--c);border-left-width:6px;background:var(--surface);margin-bottom:8px}
+.alert i{font-style:normal;font-weight:700;color:var(--c)}
+.alert.s{--c:var(--success)}.alert.d{--c:var(--danger)}.alert.w{--c:var(--warning)}.alert.i{--c:var(--info)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.85rem;font-weight:700;background:var(--c);color:var(--o)}
+.b-crit{--c:var(--danger);--o:var(--on-danger)}.b-urg{--c:var(--warning);--o:var(--on-warning)}.b-rou{--c:var(--info);--o:var(--on-info)}
+.b-av{--c:var(--success);--o:var(--on-success)}.b-en{--c:var(--info);--o:var(--on-info)}.b-bu{--c:var(--warning);--o:var(--on-warning)}.b-off{--c:var(--secondary);--o:var(--on-secondary)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);font-size:.95rem}
+th{color:var(--muted);font-weight:500}
+tr.sel td{background:var(--primary-soft)}
+td.crit{box-shadow:inset 4px 0 0 var(--danger)}
+label{display:block;font-size:.9rem;margin-bottom:4px}
+input{width:100%;font:inherit;padding:9px 12px;border-radius:8px;border:2px solid var(--border);background:var(--surface);color:var(--text)}
+input.ok{border-color:var(--success)}input.bad{border-color:var(--danger)}
+.hint{font-size:.85rem;margin-top:4px;color:var(--muted)}
+.hint.ok{color:var(--success)}.hint.bad{color:var(--danger)}
+a{color:var(--primary)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <h1>Lifeline palette check</h1>
+    <p>Every color with its text pair, a live contrast ratio, and how it behaves in real dispatch components. Switch themes to test both.</p>
+  </div>
+  <button class="toggle" id="theme" aria-label="Switch theme">Switch to dark</button>
+</header>
+
+<h2>Colors and contrast</h2>
+<p style="margin-bottom:12px">Ratios are calculated live from the current theme. AA needs 4.5:1 for normal text.</p>
+<div class="grid" id="swatches"></div>
+
+<h2>Buttons</h2>
+<div class="card row">
+  <button class="btn-primary">Request ambulance</button>
+  <button class="btn-secondary">Reassign</button>
+  <button class="btn-success">Mark complete</button>
+  <button class="btn-danger">Cancel dispatch</button>
+  <button class="btn-warning">Escalate</button>
+  <button class="btn-info">Track unit</button>
+  <button class="btn-outline">View details</button>
+</div>
+
+<h2>Alerts</h2>
+<div>
+  <div class="alert d" role="alert"><i aria-hidden="true">⚠</i><span><b>Critical:</b> cardiac arrest reported, no unit assigned yet.</span></div>
+  <div class="alert w"><i aria-hidden="true">!</i><span><b>Delay:</b> Unit A-12 is stuck in traffic, ETA moved by 6 min.</span></div>
+  <div class="alert i"><i aria-hidden="true">i</i><span><b>Dispatched:</b> Unit A-07 is en route to the caller.</span></div>
+  <div class="alert s"><i aria-hidden="true">✓</i><span><b>Completed:</b> patient handed over at the hospital.</span></div>
+</div>
+
+<h2>Priority and unit status</h2>
+<div class="card row">
+  <span class="badge b-crit"><span aria-hidden="true">▲</span>P1 Critical</span>
+  <span class="badge b-urg"><span aria-hidden="true">■</span>P2 Urgent</span>
+  <span class="badge b-rou"><span aria-hidden="true">●</span>P3 Routine</span>
+  <span style="width:1px;height:24px;background:var(--border)"></span>
+  <span class="badge b-av"><span aria-hidden="true">✓</span>Available</span>
+  <span class="badge b-en"><span aria-hidden="true">→</span>En route</span>
+  <span class="badge b-bu"><span aria-hidden="true">◐</span>Busy</span>
+  <span class="badge b-off"><span aria-hidden="true">○</span>Offline</span>
+</div>
+
+<h2>Dispatch board</h2>
+<div class="card tbl">
+  <table>
+    <thead><tr><th>Call</th><th>Location</th><th>Priority</th><th>Unit</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td class="crit">#2041</td><td>Mirpur 10</td><td><span class="badge b-crit"><span aria-hidden="true">▲</span>P1 Critical</span></td><td>—</td><td><span class="badge b-bu"><span aria-hidden="true">◐</span>Awaiting unit</span></td></tr>
+      <tr class="sel"><td>#2040</td><td>Dhanmondi 27</td><td><span class="badge b-urg"><span aria-hidden="true">■</span>P2 Urgent</span></td><td>A-07</td><td><span class="badge b-en"><span aria-hidden="true">→</span>En route</span></td></tr>
+      <tr><td>#2038</td><td>Uttara Sector 7</td><td><span class="badge b-rou"><span aria-hidden="true">●</span>P3 Routine</span></td><td>A-03</td><td><span class="badge b-av"><span aria-hidden="true">✓</span>Completed</span></td></tr>
+      <tr><td>#2035</td><td>Motijheel</td><td><span class="badge b-rou"><span aria-hidden="true">●</span>P3 Routine</span></td><td>A-12</td><td><span class="badge b-off"><span aria-hidden="true">○</span>Offline</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Form states</h2>
+<div class="card two">
+  <div><label for="p">Patient phone</label><input id="p" class="ok" value="01712 345678"><div class="hint ok">✓ Number looks valid.</div></div>
+  <div><label for="a">Pickup address</label><input id="a" class="bad" value="" placeholder="Required"><div class="hint bad">✕ Enter the pickup address so we can find you.</div></div>
+</div>
+
+<h2>Text</h2>
+<div class="card">
+  <p style="color:var(--text)">Primary text on a surface. <span style="color:var(--muted)">Muted text for secondary details.</span> <a href="#">A link in the brand color.</a></p>
+</div>
+</main>
+
+<script>
+const rootEl=document.documentElement;
+const tokens=[
+ ["Primary","--primary","--on-primary"],["Primary soft","--primary-soft","--primary"],
+ ["Secondary","--secondary","--on-secondary"],["Success","--success","--on-success"],
+ ["Danger","--danger","--on-danger"],["Warning","--warning","--on-warning"],["Info","--info","--on-info"],
+ ["Background","--bg","--text"],["Surface","--surface","--text"],["Muted text","--surface","--muted"],
+ ["Border","--border","--text"]
+];
+const val=v=>getComputedStyle(rootEl).getPropertyValue(v).trim();
+function lum(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");
+ const f=[0,2,4].map(i=>{const c=parseInt(h.substr(i,2),16)/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)});
+ return .2126*f[0]+.7152*f[1]+.0722*f[2]}
+function ratio(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function render(){
+ document.getElementById("swatches").innerHTML=tokens.map(([n,bg,fg])=>{
+  const b=val(bg),f=val(fg),r=ratio(b,f),ok=r>=4.5;
+  const label=n==="Muted text"?"muted on surface":"text on it";
+  return `<div class="sw"><div class="chip" style="background:${b};color:${f}"><b>${n}</b><span>Aa sample text</span></div>
+  <div class="meta"><span>${b.toUpperCase()}</span><span class="${ok?"pass":"fail"}">${r.toFixed(1)}:1 ${ok?"✓ AA":"✕ low"}</span></div>
+  <div class="meta" style="padding-top:0"><span>${bg}</span><span>${label}</span></div></div>`}).join("");
+}
+function isDark(){const t=rootEl.dataset.theme;return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function sync(){document.getElementById("theme").textContent=isDark()?"Switch to light":"Switch to dark";render()}
+document.getElementById("theme").onclick=()=>{rootEl.dataset.theme=isDark()?"light":"dark";sync()};
+sync();
+</script>
+</body>
+</html>

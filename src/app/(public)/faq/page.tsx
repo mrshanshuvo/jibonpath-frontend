@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
+import { useUrlParams } from "@/hooks/useUrlParams";
 import { ChevronDown, HelpCircle, PhoneCall, ArrowRight } from "lucide-react";
 import { Button } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
@@ -66,9 +67,9 @@ const FAQS: FaqItem[] = [
   },
 ];
 
-export default function FaqPage() {
+function FaqContent() {
+  const { params, setParams } = useUrlParams();
   const [openIndices, setOpenIndices] = useState<number[]>([0, 2]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
   const categories = [
     "ALL",
@@ -77,6 +78,10 @@ export default function FaqPage() {
     "Pricing & Payments",
     "Hospital Coordination",
   ];
+
+  const rawCategory = params.get("category");
+  const selectedCategory =
+    rawCategory && categories.includes(rawCategory) ? rawCategory : "ALL";
 
   const toggleIndex = (idx: number) => {
     setOpenIndices((prev) =>
@@ -114,9 +119,13 @@ export default function FaqPage() {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              onClick={() => {
+                setParams({
+                  category: cat === "ALL" ? "" : cat,
+                });
+              }}
               className={cn(
-                "px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors",
+                "px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer",
                 selectedCategory === cat
                   ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                   : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised",
@@ -206,5 +215,13 @@ export default function FaqPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function FaqPage() {
+  return (
+    <Suspense>
+      <FaqContent />
+    </Suspense>
   );
 }

@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { useDispatches } from "@/features/dispatch";
 import { DispatchStepper } from "@/features/dispatch";
-import { Skeleton, EmptyState, Pagination, StatusBadge } from "@/components/shared";
+import {
+  Skeleton,
+  EmptyState,
+  Pagination,
+  StatusBadge,
+} from "@/components/shared";
 import {
   Radio,
   Ambulance,
@@ -13,13 +17,21 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
+import { useUrlParams } from "@/hooks/useUrlParams";
 import { DispatchStatus } from "@/types/entities.types";
 
 export default function AdminDispatchesPage() {
-  const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<DispatchStatus | "ALL">(
-    "ALL",
-  );
+  const { params, setParams } = useUrlParams();
+
+  const rawStatus = params.get("status");
+  const statusFilter: DispatchStatus | "ALL" =
+    rawStatus &&
+    Object.values(DispatchStatus).includes(rawStatus as DispatchStatus)
+      ? (rawStatus as DispatchStatus)
+      : "ALL";
+
+  const parsedPage = Number(params.get("page") ?? "1");
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
   const { data, isLoading, isError } = useDispatches({
     page,
@@ -45,7 +57,6 @@ export default function AdminDispatchesPage() {
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               Metropolitan Active Dispatches
             </h1>
-            
           </div>
           <p className="text-xs text-muted-foreground mt-1">
             Real-time live telemetry tracking and stage monitoring for all
@@ -65,8 +76,10 @@ export default function AdminDispatchesPage() {
           <button
             key={status}
             onClick={() => {
-              setStatusFilter(status);
-              setPage(1);
+              setParams({
+                status: status === "ALL" ? "" : status,
+                page: "1",
+              });
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
               statusFilter === status
@@ -187,7 +200,7 @@ export default function AdminDispatchesPage() {
           <Pagination
             currentPage={data.meta.page}
             totalPages={data.meta.totalPages}
-            onPageChange={(p) => setPage(p)}
+            onPageChange={(p) => setParams({ page: String(p) })}
           />
         </div>
       )}

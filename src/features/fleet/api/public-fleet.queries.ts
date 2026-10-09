@@ -14,9 +14,12 @@ export function usePublicAmbulances() {
   return useQuery({
     queryKey: ["public-fleet"],
     queryFn: async () => {
-      const res = await api.get<ApiResponse<PublicFleetResponse>>("/ambulances", {
-        params: { limit: 50 },
-      });
+      const res = await api.get<ApiResponse<PublicFleetResponse>>(
+        "/ambulances",
+        {
+          params: { limit: 50 },
+        },
+      );
       return res.data;
     },
     refetchInterval: 15000,

@@ -18,9 +18,7 @@ export function PatientDashboard() {
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               Emergency Ambulance Requests
             </h1>
-            <span
-              aria-hidden="true"
-            />
+            <span aria-hidden="true" />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
             Track active ambulance dispatches, monitor arrival telemetry, and

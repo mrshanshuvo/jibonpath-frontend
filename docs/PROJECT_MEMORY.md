@@ -122,6 +122,19 @@ Integrated optimistic mutations into queries so UI updates instantaneously befor
   - `src/app/(public)/contact/page.tsx`
   - `src/app/(public)/about/page.tsx`
 
+### Phase 8: URL State Synchronization Across All Views & Tables
+
+- Extended `useUrlParams` and debounced input searching (`useDebounce`) across 100% of data-heavy and filterable views:
+  - `FleetTable.tsx` (ambulance status, equipment tier, page)
+  - `UserManagementTable.tsx` (role filter, debounced name/email search, page)
+  - `AuditLogsTable.tsx` (action filter, page)
+  - `AdminDispatchesPage` (dispatch checkpoint status, page)
+  - `PaymentHistoryTable.tsx` (payment status, page)
+  - `DriverHistoryPage` (page)
+  - `HospitalsPage` (debounced search, zone filter, wrapped with `<Suspense>`)
+  - `FaqPage` (category pill selector, wrapped with `<Suspense>`)
+- Guarantees shareable, bookmarkable URLs (`?page=2&status=active&search=rafiq`) in strict compliance with assignment guidelines.
+
 ---
 
 ## 6. Complete Route Catalog (29 Routes)

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { FileText, AlertCircle, Tag } from "lucide-react";
 import {
   Button,
@@ -9,12 +8,18 @@ import {
   Pagination,
   EmptyState,
 } from "@/components/shared";
+import { useUrlParams } from "@/hooks/useUrlParams";
 import { useAuditLogs } from "../api/admin.queries";
 import { formatDateTime } from "@/lib/utils";
 
 export function AuditLogsTable() {
-  const [page, setPage] = useState(1);
-  const [selectedAction, setSelectedAction] = useState<string>("ALL");
+  const { params, setParams } = useUrlParams();
+
+  const rawAction = params.get("action");
+  const selectedAction = rawAction && rawAction !== "" ? rawAction : "ALL";
+
+  const parsedPage = Number(params.get("page") ?? "1");
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
   const { data, isLoading, isError, refetch } = useAuditLogs({
     page,
@@ -77,8 +82,10 @@ export function AuditLogsTable() {
           <button
             key={act}
             onClick={() => {
-              setSelectedAction(act);
-              setPage(1);
+              setParams({
+                action: act === "ALL" ? "" : act,
+                page: "1",
+              });
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
               selectedAction === act
@@ -203,7 +210,7 @@ export function AuditLogsTable() {
             <Pagination
               currentPage={data.meta.page}
               totalPages={data.meta.totalPages}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={(p) => setParams({ page: String(p) })}
             />
           </div>
         )}

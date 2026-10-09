@@ -18,6 +18,7 @@ import {
   StatusBadge,
 } from "@/components/shared";
 import { AmbulanceFormModal } from "./AmbulanceFormModal";
+import { useUrlParams } from "@/hooks/useUrlParams";
 import {
   AmbulanceStatus,
   AmbulanceType,
@@ -31,11 +32,24 @@ import {
 import { formatDateTime } from "@/lib/utils";
 
 export function FleetTable() {
-  const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<AmbulanceStatus | "ALL">(
-    "ALL",
-  );
-  const [typeFilter, setTypeFilter] = useState<AmbulanceType | "ALL">("ALL");
+  const { params, setParams } = useUrlParams();
+
+  const rawStatus = params.get("status");
+  const statusFilter: AmbulanceStatus | "ALL" =
+    rawStatus &&
+    Object.values(AmbulanceStatus).includes(rawStatus as AmbulanceStatus)
+      ? (rawStatus as AmbulanceStatus)
+      : "ALL";
+
+  const rawType = params.get("type");
+  const typeFilter: AmbulanceType | "ALL" =
+    rawType && Object.values(AmbulanceType).includes(rawType as AmbulanceType)
+      ? (rawType as AmbulanceType)
+      : "ALL";
+
+  const parsedPage = Number(params.get("page") ?? "1");
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editingAmbulance, setEditingAmbulance] =
     useState<AmbulanceModel | null>(null);
@@ -46,6 +60,24 @@ export function FleetTable() {
     status: statusFilter,
     type: typeFilter,
   });
+
+  const handleStatusFilterChange = (status: AmbulanceStatus | "ALL") => {
+    setParams({
+      status: status === "ALL" ? "" : status,
+      page: "1",
+    });
+  };
+
+  const handleTypeFilterChange = (type: AmbulanceType | "ALL") => {
+    setParams({
+      type: type === "ALL" ? "" : type,
+      page: "1",
+    });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setParams({ page: String(newPage) });
+  };
 
   const updateMutation = useUpdateAmbulance();
   const deleteMutation = useDeleteAmbulance();
@@ -120,10 +152,7 @@ export function FleetTable() {
           {statuses.map((status) => (
             <button
               key={status}
-              onClick={() => {
-                setStatusFilter(status);
-                setPage(1);
-              }}
+              onClick={() => handleStatusFilterChange(status)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                 statusFilter === status
                   ? "bg-primary text-primary-foreground font-semibold shadow-xs"
@@ -145,10 +174,9 @@ export function FleetTable() {
           ].map((type) => (
             <button
               key={type}
-              onClick={() => {
-                setTypeFilter(type as AmbulanceType | "ALL");
-                setPage(1);
-              }}
+              onClick={() =>
+                handleTypeFilterChange(type as AmbulanceType | "ALL")
+              }
               className={`px-2.5 py-1 rounded-md text-3xs font-medium transition-colors cursor-pointer ${
                 typeFilter === type
                   ? "bg-foreground text-background font-bold"
@@ -336,7 +364,7 @@ export function FleetTable() {
             <Pagination
               currentPage={data.meta.page}
               totalPages={data.meta.totalPages}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={handlePageChange}
             />
           </div>
         )}

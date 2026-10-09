@@ -1,8 +1,4 @@
-import {
-  type ReactNode,
-  type ElementType,
-  isValidElement,
-} from "react";
+import { type ReactNode, type ElementType, isValidElement } from "react";
 import { Inbox } from "lucide-react";
 import { Button } from "./Button";
 import { cn } from "@/lib/utils";

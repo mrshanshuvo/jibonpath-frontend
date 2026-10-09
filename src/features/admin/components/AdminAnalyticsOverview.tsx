@@ -69,9 +69,21 @@ export function AdminAnalyticsOverview() {
 
   const chartData = [
     { name: "Available", count: availableFleet, color: "var(--color-chart-2)" },
-    { name: "Dispatched", count: dispatchedFleet, color: "var(--color-chart-5)" },
-    { name: "Maintenance", count: maintenanceFleet, color: "var(--color-chart-3)" },
-    { name: "Delivered", count: completedRequests, color: "var(--color-chart-2)" },
+    {
+      name: "Dispatched",
+      count: dispatchedFleet,
+      color: "var(--color-chart-5)",
+    },
+    {
+      name: "Maintenance",
+      count: maintenanceFleet,
+      color: "var(--color-chart-3)",
+    },
+    {
+      name: "Delivered",
+      count: completedRequests,
+      color: "var(--color-chart-2)",
+    },
     { name: "Pending", count: pendingRequests, color: "var(--color-chart-1)" },
   ];
 
@@ -94,7 +106,9 @@ export function AdminAnalyticsOverview() {
               {formatCurrency(revenue)}
             </span>
             <p className="text-3xs text-muted-foreground mt-1 flex items-center gap-1">
-              <span className="text-success-ink font-semibold">100% Digital</span>{" "}
+              <span className="text-success-ink font-semibold">
+                100% Digital
+              </span>{" "}
               via bKash / SSL / Stripe
             </p>
           </div>

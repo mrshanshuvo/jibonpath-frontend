@@ -3,7 +3,12 @@
 import { useSyncExternalStore } from "react";
 import { useDispatches } from "@/features/dispatch";
 import { useUrlParams } from "@/hooks/useUrlParams";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/shared/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/shared/Card";
 import { Badge } from "@/components/shared/Badge";
 import { Button } from "@/components/shared/Button";
 import { EmptyState } from "@/components/shared";
@@ -260,10 +265,7 @@ export default function DriverEarningsPage() {
           {isLoading ? (
             <div className="space-y-3 py-4">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-12 bg-surface rounded-lg"
-                />
+                <div key={i} className="h-12 bg-surface rounded-lg" />
               ))}
             </div>
           ) : !data?.dispatches || data.dispatches.length === 0 ? (

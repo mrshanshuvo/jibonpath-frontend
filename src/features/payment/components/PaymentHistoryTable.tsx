@@ -10,16 +10,24 @@ import {
   EmptyState,
   StatusBadge,
 } from "@/components/shared";
+import { useUrlParams } from "@/hooks/useUrlParams";
 import { InvoiceReceipt } from "./InvoiceReceipt";
 import { PaymentStatus, type Payment } from "@/types/entities.types";
 import { useMyPayments } from "../api/payment.queries";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 
 export function PaymentHistoryTable() {
-  const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<PaymentStatus | "ALL">(
-    "ALL",
-  );
+  const { params, setParams } = useUrlParams();
+
+  const rawStatus = params.get("status");
+  const statusFilter: PaymentStatus | "ALL" =
+    rawStatus &&
+    Object.values(PaymentStatus).includes(rawStatus as PaymentStatus)
+      ? (rawStatus as PaymentStatus)
+      : "ALL";
+
+  const parsedPage = Number(params.get("page") ?? "1");
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [receiptOpen, setReceiptOpen] = useState(false);
 
@@ -59,8 +67,10 @@ export function PaymentHistoryTable() {
           <button
             key={status}
             onClick={() => {
-              setStatusFilter(status as PaymentStatus | "ALL");
-              setPage(1);
+              setParams({
+                status: status === "ALL" ? "" : status,
+                page: "1",
+              });
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
               statusFilter === status
@@ -188,7 +198,7 @@ export function PaymentHistoryTable() {
             <Pagination
               currentPage={data.meta.page}
               totalPages={data.meta.totalPages}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={(p) => setParams({ page: String(p) })}
             />
           </div>
         )}

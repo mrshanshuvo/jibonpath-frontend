@@ -189,7 +189,9 @@ export function EmergencyBookingWizard({
                   step.done ? "bg-emergency" : "bg-border"
                 }`}
               />
-              {i < 3 && <span className="text-3xs text-muted-foreground">→</span>}
+              {i < 3 && (
+                <span className="text-3xs text-muted-foreground">→</span>
+              )}
             </div>
           ))}
         </div>
@@ -344,25 +346,42 @@ export function EmergencyBookingWizard({
       {/* Real-time ETA & Ambulance Preview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
         <Card className="p-4 bg-surface border-border">
-          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Estimated Arrival</div>
+          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            Estimated Arrival
+          </div>
           <div className="text-2xl font-extrabold text-emergency">8–12 min</div>
-          <div className="text-xs text-muted-foreground mt-1">Based on nearest available unit</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Based on nearest available unit
+          </div>
         </Card>
         <Card className="p-4 bg-surface border-border">
-          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Nearest Unit</div>
+          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            Nearest Unit
+          </div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-emergency/10 flex items-center justify-center"><Ambulance className="h-4 w-4 text-emergency" /></div>
+            <div className="w-8 h-8 rounded-full bg-emergency/10 flex items-center justify-center">
+              <Ambulance className="h-4 w-4 text-emergency" />
+            </div>
             <div>
               <div className="text-sm font-bold text-foreground">AMB-07</div>
-              <div className="text-xs text-muted-foreground">ACLS · 1.2 km away</div>
+              <div className="text-xs text-muted-foreground">
+                ACLS · 1.2 km away
+              </div>
             </div>
           </div>
         </Card>
         <Card className="p-4 bg-surface border-border">
-          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Equipment</div>
+          <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            Equipment
+          </div>
           <div className="flex flex-wrap gap-1.5">
             {["Defibrillator", "Ventilator", "O2", "ECG"].map((item) => (
-              <span key={item} className="text-3xs px-2 py-0.5 rounded-full bg-primary-soft text-primary font-medium">{item}</span>
+              <span
+                key={item}
+                className="text-3xs px-2 py-0.5 rounded-full bg-primary-soft text-primary font-medium"
+              >
+                {item}
+              </span>
             ))}
           </div>
         </Card>

@@ -110,7 +110,9 @@ export function DashboardSidebar() {
               <Icon
                 className={cn(
                   "h-4 w-4 shrink-0",
-                  isActive ? "text-primary-foreground" : "text-muted-foreground",
+                  isActive
+                    ? "text-primary-foreground"
+                    : "text-muted-foreground",
                 )}
               />
               <span>{item.label}</span>

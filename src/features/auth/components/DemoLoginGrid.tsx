@@ -37,7 +37,9 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
       case Role.ADMIN:
         return <Shield className="h-5 w-5 text-primary" />;
       case Role.DRIVER:
-        return <Ambulance className="h-5 w-5 text-success-ink dark:text-success" />;
+        return (
+          <Ambulance className="h-5 w-5 text-success-ink dark:text-success" />
+        );
       case Role.PATIENT:
         return <HeartPulse className="h-5 w-5 text-emergency" />;
     }

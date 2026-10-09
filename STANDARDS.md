@@ -53,21 +53,21 @@ proxy.ts      <- Network-level RBAC guard (Next.js 16+ proxy convention)
 
 ### What belongs WHERE — decision table
 
-| Code type                       | Location                                 |
-| ------------------------------- | ---------------------------------------- |
-| Route/page entry point          | `app/`                                   |
-| Business logic for a domain     | `features/<domain>/`                     |
-| API query hooks for a domain    | `features/<domain>/api/`                 |
-| Components used by ONE feature  | `features/<domain>/components/`          |
+| Code type                       | Location                                                       |
+| ------------------------------- | -------------------------------------------------------------- |
+| Route/page entry point          | `app/`                                                         |
+| Business logic for a domain     | `features/<domain>/`                                           |
+| API query hooks for a domain    | `features/<domain>/api/`                                       |
+| Components used by ONE feature  | `features/<domain>/components/`                                |
 | Components used by 2+ features  | `components/shared/` (custom) or `components/ui/` (shadcn CLI) |
-| Custom hook used by ONE feature | `features/<domain>/hooks/`               |
-| Custom hook used by 2+ features | `hooks/`                                 |
-| Zustand store                   | `stores/`                                |
-| Fetch client config             | `lib/api-client.ts`                      |
-| Utility functions (cn, format)  | `lib/utils.ts`                           |
-| App-wide constants, route maps  | `config/`                                |
-| TypeScript entity types         | `types/entities.types.ts`                |
-| API response wrapper types      | `types/api.types.ts`                     |
+| Custom hook used by ONE feature | `features/<domain>/hooks/`                                     |
+| Custom hook used by 2+ features | `hooks/`                                                       |
+| Zustand store                   | `stores/`                                                      |
+| Fetch client config             | `lib/api-client.ts`                                            |
+| Utility functions (cn, format)  | `lib/utils.ts`                                                 |
+| App-wide constants, route maps  | `config/`                                                      |
+| TypeScript entity types         | `types/entities.types.ts`                                      |
+| API response wrapper types      | `types/api.types.ts`                                           |
 
 ---
 

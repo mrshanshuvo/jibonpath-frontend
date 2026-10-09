@@ -84,7 +84,9 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
         </div>
         <div className="flex justify-between text-muted-foreground print:text-black/70">
           <span>Onboard Vital Monitoring & Resuscitation Equipment:</span>
-          <span className="font-mono text-success-ink dark:text-success">Included</span>
+          <span className="font-mono text-success-ink dark:text-success">
+            Included
+          </span>
         </div>
       </div>
 

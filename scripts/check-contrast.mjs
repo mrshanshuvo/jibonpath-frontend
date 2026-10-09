@@ -30,32 +30,102 @@ const PALETTES = {
   light: {
     name: "Light Mode",
     pairs: [
-      { name: "Default Text on Canvas", fg: "#0F172A", bg: "#F8FAFC", min: 4.5 },
+      {
+        name: "Default Text on Canvas",
+        fg: "#0F172A",
+        bg: "#F8FAFC",
+        min: 4.5,
+      },
       { name: "Muted Text on Canvas", fg: "#475569", bg: "#F8FAFC", min: 4.5 },
-      { name: "Default Text on Surface", fg: "#0F172A", bg: "#FFFFFF", min: 4.5 },
+      {
+        name: "Default Text on Surface",
+        fg: "#0F172A",
+        bg: "#FFFFFF",
+        min: 4.5,
+      },
       { name: "Muted Text on Surface", fg: "#475569", bg: "#FFFFFF", min: 4.5 },
       { name: "Primary FG on Primary", fg: "#FFFFFF", bg: "#1E3A8A", min: 4.5 },
-      { name: "Emergency FG on Emergency", fg: "#FFFFFF", bg: "#DC2626", min: 4.5 },
-      { name: "Warning Ink on Warning Tint", fg: "#B45309", bg: "#FEF3C7", min: 4.5 },
-      { name: "Success Ink on Success Tint", fg: "#15803D", bg: "#DCFCE7", min: 4.5 },
-      { name: "Danger Ink on Danger Tint", fg: "#B91C1C", bg: "#FEE2E2", min: 4.5 },
+      {
+        name: "Emergency FG on Emergency",
+        fg: "#FFFFFF",
+        bg: "#DC2626",
+        min: 4.5,
+      },
+      {
+        name: "Warning Ink on Warning Tint",
+        fg: "#B45309",
+        bg: "#FEF3C7",
+        min: 4.5,
+      },
+      {
+        name: "Success Ink on Success Tint",
+        fg: "#15803D",
+        bg: "#DCFCE7",
+        min: 4.5,
+      },
+      {
+        name: "Danger Ink on Danger Tint",
+        fg: "#B91C1C",
+        bg: "#FEE2E2",
+        min: 4.5,
+      },
       { name: "Info Ink on Info Tint", fg: "#1D4ED8", bg: "#DBEAFE", min: 4.5 },
-      { name: "Emergency Button Hover", fg: "#FFFFFF", bg: "#B91C1C", min: 4.5 },
+      {
+        name: "Emergency Button Hover",
+        fg: "#FFFFFF",
+        bg: "#B91C1C",
+        min: 4.5,
+      },
     ],
   },
   dark: {
     name: "Dark Mode",
     pairs: [
-      { name: "Default Text on Canvas", fg: "#E8EBF5", bg: "#0E1224", min: 4.5 },
+      {
+        name: "Default Text on Canvas",
+        fg: "#E8EBF5",
+        bg: "#0E1224",
+        min: 4.5,
+      },
       { name: "Muted Text on Canvas", fg: "#9AA3C0", bg: "#0E1224", min: 4.5 },
-      { name: "Default Text on Surface", fg: "#E8EBF5", bg: "#171C36", min: 4.5 },
+      {
+        name: "Default Text on Surface",
+        fg: "#E8EBF5",
+        bg: "#171C36",
+        min: 4.5,
+      },
       { name: "Muted Text on Surface", fg: "#9AA3C0", bg: "#171C36", min: 4.5 },
       { name: "Primary FG on Primary", fg: "#0E1224", bg: "#8C9BFF", min: 4.5 },
-      { name: "Emergency FG on Emergency", fg: "#0E1224", bg: "#FF5A66", min: 4.5 },
-      { name: "Warning Text on Dark Surface", fg: "#F5A524", bg: "#171C36", min: 4.5 },
-      { name: "Success Text on Dark Surface", fg: "#3DDC97", bg: "#171C36", min: 4.5 },
-      { name: "Danger Text on Dark Surface", fg: "#FF5A66", bg: "#171C36", min: 4.5 },
-      { name: "Info Text on Dark Surface", fg: "#4FC3F7", bg: "#171C36", min: 4.5 },
+      {
+        name: "Emergency FG on Emergency",
+        fg: "#0E1224",
+        bg: "#FF5A66",
+        min: 4.5,
+      },
+      {
+        name: "Warning Text on Dark Surface",
+        fg: "#F5A524",
+        bg: "#171C36",
+        min: 4.5,
+      },
+      {
+        name: "Success Text on Dark Surface",
+        fg: "#3DDC97",
+        bg: "#171C36",
+        min: 4.5,
+      },
+      {
+        name: "Danger Text on Dark Surface",
+        fg: "#FF5A66",
+        bg: "#171C36",
+        min: 4.5,
+      },
+      {
+        name: "Info Text on Dark Surface",
+        fg: "#4FC3F7",
+        bg: "#171C36",
+        min: 4.5,
+      },
     ],
   },
 };
@@ -77,7 +147,7 @@ for (const themeKey of Object.keys(PALETTES)) {
     const status = passed ? "\x1b[32mPASS\x1b[0m" : "\x1b[31mFAIL\x1b[0m";
 
     console.log(
-      ` ${status} ${pair.name.padEnd(32)} ${ratio.toFixed(2)}:1 (min ${pair.min}:1) [${pair.fg} on ${pair.bg}]`
+      ` ${status} ${pair.name.padEnd(32)} ${ratio.toFixed(2)}:1 (min ${pair.min}:1) [${pair.fg} on ${pair.bg}]`,
     );
 
     if (!passed) {
@@ -92,8 +162,16 @@ console.log("  Auditing Codebase for Forbidden Raw Color Classes");
 console.log("=======================================================\n");
 
 const FORBIDDEN_PATTERNS = [
-  { pattern: /\btext-white\b/g, label: "text-white (use text-primary-foreground or text-emergency-foreground)" },
-  { pattern: /\b(?:bg|text|border)-(?:emerald|rose|amber|blue|indigo|purple|slate|zinc|cyan|sky)-\d+\b/g, label: "raw palette utility (use semantic tokens)" },
+  {
+    pattern: /\btext-white\b/g,
+    label:
+      "text-white (use text-primary-foreground or text-emergency-foreground)",
+  },
+  {
+    pattern:
+      /\b(?:bg|text|border)-(?:emerald|rose|amber|blue|indigo|purple|slate|zinc|cyan|sky)-\d+\b/g,
+    label: "raw palette utility (use semantic tokens)",
+  },
 ];
 
 function getTsxFiles(dir, fileList = []) {
@@ -124,7 +202,7 @@ for (const file of tsxFiles) {
     const matches = content.match(pattern);
     if (matches) {
       console.log(
-        `\x1b[31mFAIL\x1b[0m ${relPath}: found ${matches.length} instance(s) of ${label}`
+        `\x1b[31mFAIL\x1b[0m ${relPath}: found ${matches.length} instance(s) of ${label}`,
       );
       lintErrors += matches.length;
     }
@@ -132,14 +210,20 @@ for (const file of tsxFiles) {
 }
 
 if (lintErrors === 0) {
-  console.log("\x1b[32mPASS\x1b[0m All .tsx files are free of forbidden raw color utilities!");
+  console.log(
+    "\x1b[32mPASS\x1b[0m All .tsx files are free of forbidden raw color utilities!",
+  );
 }
 
 console.log("\n=======================================================");
 if (failedPairs === 0 && lintErrors === 0) {
-  console.log("\x1b[32m✔ SUCCESS: All Lifeline contrast pairings and token rules verified!\x1b[0m\n");
+  console.log(
+    "\x1b[32m✔ SUCCESS: All Lifeline contrast pairings and token rules verified!\x1b[0m\n",
+  );
   process.exit(0);
 } else {
-  console.log(`\x1b[31m✖ FAILURE: ${failedPairs} contrast failures, ${lintErrors} lint errors detected.\x1b[0m\n`);
+  console.log(
+    `\x1b[31m✖ FAILURE: ${failedPairs} contrast failures, ${lintErrors} lint errors detected.\x1b[0m\n`,
+  );
   process.exit(1);
 }

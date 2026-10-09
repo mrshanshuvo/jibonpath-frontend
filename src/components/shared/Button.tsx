@@ -27,8 +27,7 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive shadow-sm",
         warning:
           "bg-warning text-warning-foreground hover:bg-warning/90 focus-visible:ring-warning shadow-sm font-semibold",
-        info:
-          "bg-info text-info-foreground hover:bg-info/90 focus-visible:ring-info shadow-sm",
+        info: "bg-info text-info-foreground hover:bg-info/90 focus-visible:ring-info shadow-sm",
         success:
           "bg-success text-success-foreground hover:bg-success/90 focus-visible:ring-success shadow-sm",
         link: "text-primary underline-offset-4 hover:underline",

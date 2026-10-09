@@ -162,7 +162,9 @@ export function getDispatchStatusConfig(status: DispatchStatus): StatusConfig {
 /**
  * Ambulance Fleet Telemetry Status
  */
-export function getAmbulanceStatusConfig(status: AmbulanceStatus): StatusConfig {
+export function getAmbulanceStatusConfig(
+  status: AmbulanceStatus,
+): StatusConfig {
   switch (status) {
     case AmbulanceStatus.AVAILABLE:
       return {

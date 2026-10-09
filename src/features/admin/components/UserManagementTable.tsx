@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Users,
   Search,
@@ -19,6 +19,8 @@ import {
   EmptyState,
   Input,
 } from "@/components/ui";
+import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Role } from "@/types/entities.types";
 import {
   useAdminUsers,
@@ -29,15 +31,35 @@ import {
 import { formatDateTime } from "@/lib/utils";
 
 export function UserManagementTable() {
-  const [page, setPage] = useState(1);
-  const [roleFilter, setRoleFilter] = useState<Role | "ALL">("ALL");
-  const [searchTerm, setSearchTerm] = useState("");
+  const { params, setParams } = useUrlParams();
+
+  const rawRole = params.get("role");
+  const roleFilter: Role | "ALL" =
+    rawRole && Object.values(Role).includes(rawRole as Role)
+      ? (rawRole as Role)
+      : "ALL";
+
+  const urlSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
+  const parsedPage = Number(params.get("page") ?? "1");
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+        page: "1",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
 
   const { data, isLoading, isError, refetch } = useAdminUsers({
     page,
     limit: 8,
     role: roleFilter,
-    search: searchTerm.trim() || undefined,
+    search: debouncedSearch.trim() || undefined,
   });
 
   const updateRoleMutation = useUpdateUserRole();
@@ -97,8 +119,10 @@ export function UserManagementTable() {
             <button
               key={r}
               onClick={() => {
-                setRoleFilter(r as Role | "ALL");
-                setPage(1);
+                setParams({
+                  role: r === "ALL" ? "" : r,
+                  page: "1",
+                });
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                 roleFilter === r
@@ -115,10 +139,7 @@ export function UserManagementTable() {
           <Input
             placeholder="Search by name or email..."
             value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setPage(1);
-            }}
+            onChange={(e) => setSearchTerm(e.target.value)}
             leftIcon={<Search className="h-4 w-4" />}
           />
         </div>
@@ -258,7 +279,7 @@ export function UserManagementTable() {
             <Pagination
               currentPage={data.meta.page}
               totalPages={data.meta.totalPages}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={(p) => setParams({ page: String(p) })}
             />
           </div>
         )}

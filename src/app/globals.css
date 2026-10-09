@@ -12,35 +12,35 @@
   color-scheme: light;
 
   /* Lifeline Raw Palette (Light Mode) */
-  --ll-primary: #2F3E9E;
-  --ll-primary-foreground: #FFFFFF;
-  --ll-primary-soft: #E6E9F8;
+  --ll-primary: #2f3e9e;
+  --ll-primary-foreground: #ffffff;
+  --ll-primary-soft: #e6e9f8;
 
-  --ll-secondary: #64748B;
-  --ll-secondary-foreground: #FFFFFF;
+  --ll-secondary: #64748b;
+  --ll-secondary-foreground: #ffffff;
 
-  --ll-success: #177A4E;
-  --ll-success-foreground: #FFFFFF;
-  --ll-success-ink: #177A4E;
+  --ll-success: #177a4e;
+  --ll-success-foreground: #ffffff;
+  --ll-success-ink: #177a4e;
 
-  --ll-danger: #D92D3A;
-  --ll-danger-foreground: #FFFFFF;
-  --ll-danger-ink: #B42330;
+  --ll-danger: #d92d3a;
+  --ll-danger-foreground: #ffffff;
+  --ll-danger-ink: #b42330;
 
-  --ll-warning: #F5A524;
-  --ll-warning-foreground: #1E2A36;
-  --ll-warning-ink: #B45309;
+  --ll-warning: #f5a524;
+  --ll-warning-foreground: #1e2a36;
+  --ll-warning-ink: #b45309;
 
-  --ll-info: #0B73A8;
-  --ll-info-foreground: #FFFFFF;
-  --ll-info-ink: #0A6491;
+  --ll-info: #0b73a8;
+  --ll-info-foreground: #ffffff;
+  --ll-info-ink: #0a6491;
 
-  --ll-bg: #F4F6FA;
-  --ll-surface: #FFFFFF;
-  --ll-surface-raised: #FFFFFF;
-  --ll-border: #D8DDE6;
-  --ll-text: #1E2A36;
-  --ll-text-muted: #4C6272;
+  --ll-bg: #f4f6fa;
+  --ll-surface: #ffffff;
+  --ll-surface-raised: #ffffff;
+  --ll-border: #d8dde6;
+  --ll-text: #1e2a36;
+  --ll-text-muted: #4c6272;
 
   /* Domain Tokens */
   --priority-critical: var(--ll-danger);
@@ -123,35 +123,35 @@
   color-scheme: dark;
 
   /* Lifeline Raw Palette (Dark Mode - Dispatcher Console & Tablet Night Cockpit) */
-  --ll-primary: #8C9BFF;
-  --ll-primary-foreground: #0E1224;
-  --ll-primary-soft: #232A55;
+  --ll-primary: #8c9bff;
+  --ll-primary-foreground: #0e1224;
+  --ll-primary-soft: #232a55;
 
-  --ll-secondary: #94A3B8;
-  --ll-secondary-foreground: #0E1224;
+  --ll-secondary: #94a3b8;
+  --ll-secondary-foreground: #0e1224;
 
-  --ll-success: #3DDC97;
-  --ll-success-foreground: #0E1224;
-  --ll-success-ink: #3DDC97;
+  --ll-success: #3ddc97;
+  --ll-success-foreground: #0e1224;
+  --ll-success-ink: #3ddc97;
 
-  --ll-danger: #FF5A66;
-  --ll-danger-foreground: #0E1224;
-  --ll-danger-ink: #FF5A66;
+  --ll-danger: #ff5a66;
+  --ll-danger-foreground: #0e1224;
+  --ll-danger-ink: #ff5a66;
 
-  --ll-warning: #F5A524;
-  --ll-warning-foreground: #0E1224;
-  --ll-warning-ink: #F5A524;
+  --ll-warning: #f5a524;
+  --ll-warning-foreground: #0e1224;
+  --ll-warning-ink: #f5a524;
 
-  --ll-info: #4FC3F7;
-  --ll-info-foreground: #0E1224;
-  --ll-info-ink: #4FC3F7;
+  --ll-info: #4fc3f7;
+  --ll-info-foreground: #0e1224;
+  --ll-info-ink: #4fc3f7;
 
-  --ll-bg: #0E1224;
-  --ll-surface: #171C36;
-  --ll-surface-raised: #1D2342;
-  --ll-border: #2A3158;
-  --ll-text: #E8EBF5;
-  --ll-text-muted: #9AA3C0;
+  --ll-bg: #0e1224;
+  --ll-surface: #171c36;
+  --ll-surface-raised: #1d2342;
+  --ll-border: #2a3158;
+  --ll-text: #e8ebf5;
+  --ll-text-muted: #9aa3c0;
 
   /* Domain Tokens */
   --priority-critical: var(--ll-danger);
@@ -202,7 +202,7 @@
   --info-foreground: var(--ll-info-foreground);
   --info-ink: var(--ll-info-ink);
 
-  --muted: #232A55;
+  --muted: #232a55;
   --muted-foreground: var(--ll-text-muted);
 
   --popover: var(--ll-surface);

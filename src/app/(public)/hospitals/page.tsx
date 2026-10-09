@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import {
   Building2,
   PhoneCall,
@@ -129,19 +131,33 @@ const ZONES = [
   "Shahbagh",
 ];
 
-export default function HospitalsPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedZone, setSelectedZone] = useState("ALL");
+function HospitalsContent() {
+  const { params, setParams } = useUrlParams();
+
+  const urlSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
+  const rawZone = params.get("zone");
+  const selectedZone = rawZone && ZONES.includes(rawZone) ? rawZone : "ALL";
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
 
   const filteredHospitals = useMemo(() => {
     return DHAKA_HOSPITALS.filter((hosp) => {
       const matchesSearch =
-        hosp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        hosp.address.toLowerCase().includes(searchTerm.toLowerCase());
+        hosp.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        hosp.address.toLowerCase().includes(debouncedSearch.toLowerCase());
       const matchesZone = selectedZone === "ALL" || hosp.zone === selectedZone;
       return matchesSearch && matchesZone;
     });
-  }, [searchTerm, selectedZone]);
+  }, [debouncedSearch, selectedZone]);
 
   return (
     <div className="flex flex-col">
@@ -179,8 +195,12 @@ export default function HospitalsPage() {
               {ZONES.map((zone) => (
                 <button
                   key={zone}
-                  onClick={() => setSelectedZone(zone)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+                  onClick={() => {
+                    setParams({
+                      zone: zone === "ALL" ? "" : zone,
+                    });
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
                     selectedZone === zone
                       ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                       : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
@@ -308,5 +328,13 @@ export default function HospitalsPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function HospitalsPage() {
+  return (
+    <Suspense>
+      <HospitalsContent />
+    </Suspense>
   );
 }

@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useDispatches } from "@/features/dispatch";
 import { Skeleton, EmptyState, Pagination, Badge } from "@/components/shared";
 import { Ambulance, MapPin, Building2, Clock, AlertCircle } from "lucide-react";
+import { useUrlParams } from "@/hooks/useUrlParams";
 import { formatDateTime } from "@/lib/utils";
 
 export default function DriverHistoryPage() {
-  const [page, setPage] = useState(1);
+  const { params, setParams } = useUrlParams();
+  const parsedPage = Number(params.get("page") ?? "1");
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
   const { data, isLoading, isError } = useDispatches({
     page,
     limit: 6,
@@ -106,7 +109,7 @@ export default function DriverHistoryPage() {
           <Pagination
             currentPage={data.meta.page}
             totalPages={data.meta.totalPages}
-            onPageChange={(p) => setPage(p)}
+            onPageChange={(p) => setParams({ page: String(p) })}
           />
         </div>
       )}

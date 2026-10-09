@@ -12,10 +12,7 @@ import {
 } from "lucide-react";
 import { Button, Badge, StatusBadge } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
-import {
-  RequestStatus,
-  type EmergencyRequest,
-} from "@/types/entities.types";
+import { RequestStatus, type EmergencyRequest } from "@/types/entities.types";
 import { formatRelativeTime } from "@/lib/utils";
 import { useCancelRequest } from "../api/emergency.queries";
 
@@ -143,12 +140,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
               <Button
                 variant="emergency"
                 size="sm"
-                leftIcon={
-                  <Radio
-                    className="h-3.5 w-3.5"
-                    aria-hidden="true"
-                  />
-                }
+                leftIcon={<Radio className="h-3.5 w-3.5" aria-hidden="true" />}
               >
                 Track Live
               </Button>

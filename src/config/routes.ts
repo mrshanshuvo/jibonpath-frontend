@@ -13,6 +13,7 @@ export const ROUTES = {
     requests: "/patient",
     book: "/patient/book",
     payments: "/patient/payments",
+    invoice: (id: string) => `/patient/invoice/${id}`,
     profile: "/patient/profile",
   },
   driver: {
@@ -53,6 +54,7 @@ export const ROUTES = {
     DASHBOARD: "/patient",
     BOOK: "/patient/book",
     PAYMENTS: "/patient/payments",
+    INVOICE: (id: string) => `/patient/invoice/${id}`,
     PROFILE: "/patient/profile",
   },
   DRIVER: {

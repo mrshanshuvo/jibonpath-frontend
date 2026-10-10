@@ -25,7 +25,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
         </div>
 
         <div className="text-right">
-          <span className="inline-flex items-center gap-1 rounded-md bg-success/10 px-2 py-0.5 text-2xs font-bold text-success-ink border border-success-ink/20">
+          <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-0.5 text-2xs font-bold text-emerald-950 dark:text-emerald-300 border border-emerald-500/20">
             <CheckCircle className="h-3 w-3" />
             PAID & SETTLED
           </span>

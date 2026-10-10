@@ -272,4 +272,39 @@ test.describe("Authoritative UX & Accessibility (A11y) Audit Suite (Every Single
     await page.waitForLoadState("networkidle");
     await assertAccessible(page);
   });
+
+  test("26 - Patient Standalone Printable Invoice Receipt passes WCAG accessibility audit", async ({
+    page,
+  }) => {
+    await page.route(
+      "**/api/v1/payments/sample-receipt-inv-001",
+      async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({
+            success: true,
+            data: {
+              id: "sample-receipt-inv-001",
+              requestId: "req-emergency-882194",
+              amount: 3500,
+              status: "SUCCESS",
+              gateway: "SSLCOMMERZ",
+              gatewayTxnId: "TXN-SSL-9921402941",
+              createdAt: "2026-10-10T06:00:00.000Z",
+              updatedAt: "2026-10-10T06:01:00.000Z",
+            },
+          }),
+        });
+      },
+    );
+
+    await loginAs(page, "PATIENT");
+    await page.goto("/patient/invoice/sample-receipt-inv-001");
+    await page.waitForLoadState("networkidle");
+    await expect(page.getByText("JibonPath Dispatch Systems")).toBeVisible({
+      timeout: 5000,
+    });
+    await assertAccessible(page);
+  });
 });

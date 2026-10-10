@@ -286,7 +286,7 @@ export default function HomePage() {
 
       {/* DEMO EVALUATION BANNER */}
       <section className="py-16 bg-surface border-b border-border/60">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-border bg-card p-8 sm:p-12 text-center shadow-xl space-y-6">
             <Badge variant="warning" size="md">
               Evaluation Access Available

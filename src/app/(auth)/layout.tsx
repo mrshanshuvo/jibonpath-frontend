@@ -25,7 +25,7 @@ export default function AuthLayout({
       {/* Top minimal bar */}
       <header className="relative z-10 w-full border-b border-border/40 bg-background/60 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <JibonPathLogo size="md" tagline="Emergency Dispatch Portal" />
+          <JibonPathLogo size="md" />
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground font-medium border border-border/60 bg-surface/50 rounded-full px-3 py-1">

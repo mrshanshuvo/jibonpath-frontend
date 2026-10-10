@@ -143,8 +143,8 @@ export function JibonPathIcon({
 
 export function JibonPathLogo({
   size = "md",
-  showTagline = true,
-  tagline = "Ambulance Dispatch & Telemetry",
+  showTagline = false,
+  tagline,
   href = ROUTES.PUBLIC.HOME,
   className,
   iconOnly = false,
@@ -186,7 +186,7 @@ export function JibonPathLogo({
             </span>
           </div>
 
-          {showTagline && (
+          {showTagline && tagline && (
             <span
               className={cn(
                 "text-muted-foreground uppercase tracking-wider font-semibold -mt-0.5",

@@ -11,11 +11,11 @@
 !.yarn/versions
 
 # testing
-/coverage
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
 
 # next.js
 /.next/

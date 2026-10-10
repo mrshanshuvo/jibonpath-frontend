@@ -34,7 +34,7 @@ export default function ContactPage() {
     <div className="flex flex-col">
       {/* Hero Header */}
       <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-4">
             <ShieldAlert className="h-3.5 w-3.5" />
             <span>24/7 Central Command & Control</span>
@@ -42,7 +42,7 @@ export default function ContactPage() {
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
             Contact Dispatch Operations
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             Immediate phone hotlines for medical emergencies, hospital
             coordination, and corporate standby agreements.
           </p>

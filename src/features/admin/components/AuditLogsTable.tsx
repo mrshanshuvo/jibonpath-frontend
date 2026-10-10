@@ -87,7 +87,7 @@ export function AuditLogsTable() {
                 page: "1",
               });
             }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
               selectedAction === act
                 ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"

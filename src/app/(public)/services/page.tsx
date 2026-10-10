@@ -112,14 +112,14 @@ export default function ServicesPage() {
     <div className="flex flex-col">
       {/* Header Banner */}
       <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
           <Badge variant="emergency" className="mb-4">
             Tiered Emergency Response Fleet
           </Badge>
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
             Precision Emergency Transport Services
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             Every clinical emergency requires matched equipment and specialized
             crews. Select the appropriate emergency tier for immediate GPS
             dispatch.

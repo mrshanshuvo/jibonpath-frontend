@@ -163,14 +163,14 @@ function HospitalsContent() {
     <div className="flex flex-col">
       {/* Header Banner */}
       <section className="py-16 border-b border-border/60 bg-surface">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
           <Badge variant="default" className="mb-4">
             Dhaka Emergency Medical Network
           </Badge>
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
             Partner Hospitals & Trauma Centers
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             Real-time ER reception coordination with tertiary facilities across
             Dhaka. Our ambulances stream patient vitals ahead for zero-delay
             triage admission.
@@ -308,12 +308,12 @@ function HospitalsContent() {
 
       {/* Emergency Bottom Section */}
       <section className="py-12 border-t border-border/60 bg-surface">
-        <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
           <ShieldCheck className="h-8 w-8 text-primary mx-auto mb-3" />
           <h3 className="text-xl font-bold text-foreground">
             Direct Hospital Pre-Arrival Notification
           </h3>
-          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             When you request an ambulance via JibonPath, the destination
             hospital receives live telemetry and estimated arrival time,
             ensuring the ER trauma team is scrubbed and prepared at the bay.

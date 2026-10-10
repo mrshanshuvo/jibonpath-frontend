@@ -26,14 +26,17 @@ export default function PatientInvoicePage({
 
   if (error || !payment) {
     return (
-      <div className="w-full max-w-md mx-auto text-center py-16 space-y-4">
+      <div className="w-full text-center py-16 space-y-4">
         <h2 className="text-xl font-bold text-foreground">Invoice Not Found</h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground max-w-md mx-auto">
           We couldn&apos;t find an invoice matching reference ID #{id}.
         </p>
         <Link href="/patient/payments">
-          <Button variant="outline" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+          <Button
+            variant="outline"
+            size="sm"
+            leftIcon={<ArrowLeft className="h-4 w-4" />}
+          >
             Back to Payments
           </Button>
         </Link>
@@ -46,8 +49,11 @@ export default function PatientInvoicePage({
       {/* Top action navigation */}
       <div className="flex items-center justify-between print:hidden">
         <Link href="/patient/payments">
-          <Button variant="ghost" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+          <Button
+            variant="ghost"
+            size="sm"
+            leftIcon={<ArrowLeft className="h-4 w-4" />}
+          >
             All Payments
           </Button>
         </Link>

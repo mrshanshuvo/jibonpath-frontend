@@ -115,24 +115,36 @@ export function UserManagementTable() {
       {/* Header Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
-          {["ALL", Role.PATIENT, Role.DRIVER, Role.ADMIN].map((r) => (
-            <button
-              key={r}
-              onClick={() => {
-                setParams({
-                  role: r === "ALL" ? "" : r,
-                  page: "1",
-                });
-              }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
-                roleFilter === r
-                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                  : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
-              }`}
-            >
-              {r === "ALL" ? "All Roles" : r}
-            </button>
-          ))}
+          {(["ALL", Role.PATIENT, Role.DRIVER, Role.ADMIN] as const).map(
+            (r) => {
+              const label =
+                r === "ALL"
+                  ? "All Roles"
+                  : r === Role.PATIENT
+                    ? "Patients"
+                    : r === Role.DRIVER
+                      ? "Drivers"
+                      : "Admins";
+              return (
+                <button
+                  key={r}
+                  onClick={() => {
+                    setParams({
+                      role: r === "ALL" ? "" : r,
+                      page: "1",
+                    });
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                    roleFilter === r
+                      ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                      : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            },
+          )}
         </div>
 
         <div className="w-full sm:max-w-xs">

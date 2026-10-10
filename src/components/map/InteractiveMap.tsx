@@ -100,6 +100,7 @@ export function InteractiveMap({
       if (map.getSource(routeId)) {
         (map.getSource(routeId) as mapboxgl.GeoJSONSource).setData({
           type: "Feature",
+          properties: {},
           geometry: {
             type: "LineString",
             coordinates: [
@@ -113,6 +114,7 @@ export function InteractiveMap({
           type: "geojson",
           data: {
             type: "Feature",
+            properties: {},
             geometry: {
               type: "LineString",
               coordinates: [

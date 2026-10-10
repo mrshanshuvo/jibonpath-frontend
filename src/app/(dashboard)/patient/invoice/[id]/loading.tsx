@@ -2,7 +2,7 @@ import { FormSkeleton } from "@/components/skeletons";
 
 export default function InvoiceLoading() {
   return (
-    <div className="max-w-2xl mx-auto py-8">
+    <div className="w-full py-6 space-y-6">
       <FormSkeleton />
     </div>
   );

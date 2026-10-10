@@ -127,7 +127,7 @@ export function TableSkeleton({
 
 export function FormSkeleton() {
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in-50 duration-200">
+    <div className="w-full space-y-6 animate-in fade-in-50 duration-200">
       <div className="space-y-1.5">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-4 w-80" />
@@ -163,7 +163,7 @@ export function FormSkeleton() {
 
 export function ProfileSkeleton() {
   return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in-50 duration-200">
+    <div className="w-full space-y-6 animate-in fade-in-50 duration-200">
       <div className="space-y-1.5">
         <Skeleton className="h-8 w-40" />
         <Skeleton className="h-4 w-60" />

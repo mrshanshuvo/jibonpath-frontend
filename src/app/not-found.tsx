@@ -36,7 +36,7 @@ export default function NotFound() {
           <Button
             variant="outline"
             size="lg"
-            className="border-emergency text-emergency hover:bg-emergency/10"
+            className="border-emergency/60 text-destructive-ink dark:text-emergency font-semibold hover:bg-emergency/10"
             leftIcon={<PhoneCall className="h-4 w-4" />}
           >
             Emergency 999 Hotline

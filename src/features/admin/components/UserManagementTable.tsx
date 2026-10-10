@@ -218,6 +218,7 @@ export function UserManagementTable() {
                         {getRoleBadge(u.role)}
                         <select
                           value={u.role}
+                          aria-label={`Change role for ${u.name}`}
                           onChange={(e) =>
                             handleRoleChange(u.id, e.target.value as Role)
                           }

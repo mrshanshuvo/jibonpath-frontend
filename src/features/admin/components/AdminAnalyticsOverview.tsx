@@ -102,7 +102,7 @@ export function AdminAnalyticsOverview() {
             </div>
           </div>
           <div className="mt-3">
-            <span className="font-mono text-2xl sm:text-3xl font-extrabold text-foreground">
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-foreground">
               {formatCurrency(revenue)}
             </span>
             <p className="text-3xs text-muted-foreground mt-1 flex items-center gap-1">
@@ -124,14 +124,17 @@ export function AdminAnalyticsOverview() {
               <Radio className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3">
-            <span className="font-mono text-2xl sm:text-3xl font-extrabold text-emergency">
-              {dispatchedFleet} Units
+          <div className="mt-3 flex items-baseline gap-1.5">
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-emergency">
+              {dispatchedFleet}
             </span>
-            <p className="text-3xs text-muted-foreground mt-1">
-              {pendingRequests} pending triage calls waiting
-            </p>
+            <span className="text-sm font-semibold text-muted-foreground uppercase">
+              Units
+            </span>
           </div>
+          <p className="text-3xs text-muted-foreground mt-1">
+            {pendingRequests} pending triage calls waiting
+          </p>
         </Card>
 
         {/* Available Fleet */}
@@ -145,7 +148,7 @@ export function AdminAnalyticsOverview() {
             </div>
           </div>
           <div className="mt-3">
-            <span className="font-mono text-2xl sm:text-3xl font-extrabold text-foreground">
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-foreground">
               {availableFleet} / {totalFleet}
             </span>
             <p className="text-3xs text-muted-foreground mt-1">
@@ -165,7 +168,7 @@ export function AdminAnalyticsOverview() {
             </div>
           </div>
           <div className="mt-3">
-            <span className="font-mono text-2xl sm:text-3xl font-extrabold text-foreground">
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-foreground">
               {usersCount}
             </span>
             <p className="text-3xs text-muted-foreground mt-1">
@@ -188,8 +191,11 @@ export function AdminAnalyticsOverview() {
                 Current allocation across Dhaka emergency sectors
               </p>
             </div>
-            <span className="font-mono text-base font-bold text-primary">
-              {fleetUtilization}% In Transit
+            <span className="text-sm font-bold text-primary tabular-nums">
+              {fleetUtilization}%{" "}
+              <span className="font-medium text-muted-foreground text-xs">
+                In Transit
+              </span>
             </span>
           </div>
 

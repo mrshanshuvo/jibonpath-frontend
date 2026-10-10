@@ -14,7 +14,7 @@ function BookingContent() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="border-b border-border/60 pb-5">
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-emergency/30 bg-emergency/10 px-3 py-0.5 text-3xs font-bold text-emergency mb-2">
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-emergency/30 bg-emergency/10 px-3 py-0.5 text-3xs font-bold text-destructive-ink dark:text-emergency mb-2">
           <HeartPulse className="h-3 w-3" />
           <span>Priority Emergency Dispatch</span>
         </div>

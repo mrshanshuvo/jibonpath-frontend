@@ -76,7 +76,7 @@ export default function ContactPage() {
                   </span>
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-emergency uppercase tracking-wider">
+                  <span className="text-xs font-bold text-destructive-ink dark:text-emergency uppercase tracking-wider">
                     National Emergency Triage Line
                   </span>
                   <div className="text-3xl sm:text-4xl font-extrabold font-mono text-foreground mt-1">
@@ -206,10 +206,15 @@ export default function ContactPage() {
                   />
 
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <label
+                      htmlFor="inquiry-category"
+                      className="block text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                    >
                       Inquiry Category
                     </label>
                     <select
+                      id="inquiry-category"
+                      aria-label="Inquiry Category"
                       className="w-full h-10 rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                       defaultValue="GENERAL"
                     >

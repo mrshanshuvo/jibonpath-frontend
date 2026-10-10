@@ -133,7 +133,12 @@ export function AuditLogsTable() {
             />
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label="Audit logs table"
+            className="overflow-x-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40"
+          >
             <table className="w-full text-left text-xs">
               <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
                 <tr>

@@ -64,7 +64,7 @@ export default function AdminDispatchesPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-success-ink/20 bg-success/10 px-3 py-1 text-3xs font-medium text-success-ink">
+        <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-3xs font-semibold text-emerald-900 dark:text-emerald-300">
           <Radio className="h-3 w-3" />
           <span>RADAR TELEMETRY POLLING ACTIVE</span>
         </div>

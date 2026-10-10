@@ -71,7 +71,7 @@ export function Navbar() {
 
           <a
             href="tel:999"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emergency/30 bg-emergency/10 text-emergency hover:bg-emergency/20 text-xs font-bold transition-all"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emergency/30 bg-emergency/10 text-danger-ink dark:text-emergency hover:bg-emergency/20 text-xs font-bold transition-all"
           >
             <PhoneCall className="h-3.5 w-3.5" />
             <span>999 Hotline</span>

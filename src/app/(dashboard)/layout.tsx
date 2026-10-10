@@ -90,7 +90,7 @@ export default function DashboardLayout({
 
             <a
               href="tel:999"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/30 bg-emergency/10 text-emergency hover:bg-emergency/20 text-xs font-bold transition-all shadow-xs"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/30 bg-emergency/10 text-danger-ink dark:text-emergency hover:bg-emergency/20 text-xs font-bold transition-all shadow-xs"
             >
               <PhoneCall className="h-3.5 w-3.5" />
               <span>999 Hotline</span>

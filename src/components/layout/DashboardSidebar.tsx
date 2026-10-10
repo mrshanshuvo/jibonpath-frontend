@@ -124,7 +124,7 @@ export function DashboardSidebar() {
       {/* Bottom Emergency Banner */}
       <div className="p-4 border-t border-border/80">
         <div className="rounded-lg bg-emergency/10 border border-emergency/20 p-3 text-center">
-          <p className="text-2xs font-semibold text-emergency">
+          <p className="text-2xs font-bold text-danger-ink dark:text-emergency">
             Direct Dispatch Line
           </p>
           <p className="text-xs font-bold text-foreground mt-0.5">

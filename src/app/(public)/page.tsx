@@ -116,7 +116,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto border-emergency/40 text-emergency hover:bg-emergency/10"
+                className="w-full sm:w-auto border-emergency/40 text-danger-ink dark:text-emergency font-bold hover:bg-emergency/10"
                 leftIcon={<PhoneCall className="h-4 w-4" />}
               >
                 Direct 999 Hotline

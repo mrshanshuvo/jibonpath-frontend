@@ -16,7 +16,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
           </div>
           <div>
             <span className="font-bold text-sm text-foreground print:text-black leading-tight block">
-              PulsePoint Dispatch Systems
+              JibonPath Dispatch Systems
             </span>
             <span className="text-3xs text-muted-foreground print:text-black/70">
               Emergency Medical Transport Services

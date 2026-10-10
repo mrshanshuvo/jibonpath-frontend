@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Direct emergency trauma coordination network and ICU availability across Dhaka metropolitan hospitals.",
   openGraph: {
-    title: "Partner Hospitals & Trauma Centers | PulsePoint",
+    title: "Partner Hospitals & Trauma Centers | JibonPath",
     description:
       "Direct emergency trauma coordination network and ICU availability across Dhaka metropolitan hospitals.",
   },

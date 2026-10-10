@@ -121,7 +121,7 @@ export default function ContactPage() {
                     Hospital Liaison
                   </div>
                   <div className="font-mono text-xs text-primary font-medium">
-                    liaison@pulsepoint.dev
+                    liaison@jibonpath.dev
                   </div>
                   <p className="text-3xs text-muted-foreground">
                     Inter-facility transfer desk

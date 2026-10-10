@@ -17,13 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pulsepoint-emergency.vercel.app"),
+  metadataBase: new URL("https://jibonpath.vercel.app"),
   title: {
-    default: "PulsePoint — Rapid Emergency Ambulance Dispatch System",
-    template: "%s | PulsePoint Dispatch",
+    default:
+      "JibonPath — Emergency Ambulance Dispatch & Hospital Telemetry Platform",
+    template: "%s | JibonPath Dispatch",
   },
   description:
-    "Real-time GPS ambulance dispatch, emergency triage, hospital tracking, and telemetry response platform.",
+    "Emergency ambulance dispatch and hospital telemetry platform for metropolitan trauma response.",
   keywords: [
     "Ambulance",
     "Emergency",
@@ -32,22 +33,27 @@ export const metadata: Metadata = {
     "Hospital",
     "Healthcare",
     "Dhaka",
+    "Trauma",
+    "Telemetry",
+    "JibonPath",
   ],
-  authors: [{ name: "PulsePoint Operations" }],
+  authors: [{ name: "JibonPath Operations" }],
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://pulsepoint-emergency.vercel.app",
-    title: "PulsePoint — Rapid Emergency Ambulance Dispatch System",
+    url: "https://jibonpath.vercel.app",
+    title:
+      "JibonPath — Emergency Ambulance Dispatch & Hospital Telemetry Platform",
     description:
-      "Real-time GPS ambulance dispatch, emergency triage, hospital tracking, and telemetry response platform.",
-    siteName: "PulsePoint Emergency Dispatch",
+      "Emergency ambulance dispatch and hospital telemetry platform for metropolitan trauma response.",
+    siteName: "JibonPath Emergency Dispatch",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PulsePoint — Rapid Emergency Ambulance Dispatch System",
+    title:
+      "JibonPath — Emergency Ambulance Dispatch & Hospital Telemetry Platform",
     description:
-      "Real-time GPS ambulance dispatch, emergency triage, hospital tracking, and telemetry response platform.",
+      "Emergency ambulance dispatch and hospital telemetry platform for metropolitan trauma response.",
   },
 };
 

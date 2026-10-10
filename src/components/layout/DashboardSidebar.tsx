@@ -6,6 +6,7 @@ import { useAuthUser } from "@/stores/auth.store";
 import { ROUTES } from "@/config/routes";
 import { Role } from "@/types/entities.types";
 import { cn } from "@/lib/utils";
+import { JibonPathLogo } from "@/components/brand";
 import {
   LayoutDashboard,
   PlusCircle,
@@ -19,7 +20,6 @@ import {
   Radio,
   FileText,
   Activity,
-  Ambulance,
 } from "lucide-react";
 
 interface NavItem {
@@ -76,18 +76,19 @@ export function DashboardSidebar() {
   return (
     <aside className="w-64 h-full border-r border-border bg-surface shrink-0 flex flex-col">
       {/* Brand Header */}
-      <div className="h-16 flex items-center gap-2.5 px-6 border-b border-border/80">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <Ambulance className="h-4 w-4" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-bold text-foreground leading-tight">
-            PulsePoint
-          </span>
-          <span className="text-3xs text-muted-foreground uppercase font-medium tracking-wider">
-            {roleTitle}
-          </span>
-        </div>
+      <div className="h-16 flex items-center px-5 border-b border-border/80">
+        <JibonPathLogo
+          size="sm"
+          showTagline={true}
+          tagline={roleTitle}
+          href={
+            user?.role === Role.ADMIN
+              ? ROUTES.ADMIN.DASHBOARD
+              : user?.role === Role.DRIVER
+                ? ROUTES.DRIVER.DASHBOARD
+                : ROUTES.PATIENT.DASHBOARD
+          }
+        />
       </div>
 
       {/* Nav List */}

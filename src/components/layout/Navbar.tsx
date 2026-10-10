@@ -7,8 +7,10 @@ import { ROUTES } from "@/config/routes";
 import { UserMenu } from "./UserMenu";
 import { Button } from "@/components/shared/Button";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { Ambulance, PhoneCall, Menu, X, ShieldAlert } from "lucide-react";
+import { PhoneCall, Menu, X, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+import { JibonPathLogo } from "@/components/brand";
 
 const NAV_LINKS = [
   { href: ROUTES.PUBLIC.HOME, label: "Home" },
@@ -27,22 +29,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
-        <Link
-          href={ROUTES.PUBLIC.HOME}
-          className="flex items-center gap-2.5 group"
-        >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-150">
-            <Ambulance className="h-5 w-5" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-base font-bold tracking-tight text-foreground flex items-center gap-1.5">
-              PulsePoint
-            </span>
-            <span className="text-3xs uppercase tracking-widest text-muted-foreground font-medium -mt-1">
-              Ambulance Dispatch
-            </span>
-          </div>
-        </Link>
+        <JibonPathLogo size="md" tagline="Ambulance Dispatch & Telemetry" />
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-1">

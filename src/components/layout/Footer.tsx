@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
-import { Ambulance, Phone, MapPin, Mail, ShieldCheck } from "lucide-react";
+import { Phone, MapPin, Mail, ShieldCheck } from "lucide-react";
+
+import { JibonPathLogo } from "@/components/brand";
 
 export function Footer() {
   return (
@@ -9,17 +11,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Col */}
           <div className="space-y-4 md:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Ambulance className="h-4 w-4" />
-              </div>
-              <span className="text-base font-bold text-foreground">
-                PulsePoint
-              </span>
-            </div>
+            <JibonPathLogo size="md" tagline="Ambulance Dispatch & Telemetry" />
             <p className="text-xs leading-relaxed text-muted-foreground">
-              Critical care emergency ambulance dispatch and hospital telemetry
-              tracking network operating 24 hours, 7 days a week.
+              Emergency ambulance dispatch and hospital telemetry platform for
+              metropolitan trauma response operating 24 hours, 7 days a week.
             </p>
             <div className="flex items-center gap-2 text-xs text-success-ink dark:text-success font-medium">
               <span className="flex h-2 w-2 rounded-full bg-success" />
@@ -114,7 +109,7 @@ export function Footer() {
             </div>
             <div className="flex items-center gap-2.5 text-xs">
               <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
-              <span>dispatch@pulsepoint.dev</span>
+              <span>dispatch@jibonpath.dev</span>
             </div>
             <div className="flex items-start gap-2.5 text-xs">
               <MapPin className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
@@ -124,7 +119,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© 2026 PulsePoint Operations. All rights reserved.</p>
+          <p>© 2026 JibonPath Operations. All rights reserved.</p>
           <div className="flex items-center gap-2 text-2xs">
             <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
             <span>ISO 9001:2015 Emergency Healthcare Certified</span>

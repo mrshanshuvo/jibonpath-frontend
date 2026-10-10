@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Answers about emergency booking triage, paramedic credentials, response times, and fare tariffs.",
   openGraph: {
-    title: "Frequently Asked Questions & Dispatch Guidelines | PulsePoint",
+    title: "Frequently Asked Questions & Dispatch Guidelines | JibonPath",
     description:
       "Answers about emergency booking triage, paramedic credentials, response times, and fare tariffs.",
   },

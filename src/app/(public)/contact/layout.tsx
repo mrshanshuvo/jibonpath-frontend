@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Direct phone hotlines, hospital triage transfer coordinators, and urgent paramedic dispatch contacts.",
   openGraph: {
-    title: "24/7 Central Emergency Dispatch Hotline | PulsePoint",
+    title: "24/7 Central Emergency Dispatch Hotline | JibonPath",
     description:
       "Direct phone hotlines, hospital triage transfer coordinators, and urgent paramedic dispatch contacts.",
   },

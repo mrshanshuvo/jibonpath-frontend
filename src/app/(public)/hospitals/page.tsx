@@ -314,7 +314,7 @@ function HospitalsContent() {
             Direct Hospital Pre-Arrival Notification
           </h3>
           <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-            When you request an ambulance via PulsePoint, the destination
+            When you request an ambulance via JibonPath, the destination
             hospital receives live telemetry and estimated arrival time,
             ensuring the ER trauma team is scrubbed and prepared at the bay.
           </p>

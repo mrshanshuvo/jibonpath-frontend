@@ -131,7 +131,7 @@ const PALETTES = {
 };
 
 console.log("\n=======================================================");
-console.log("  PulsePoint Lifeline Palette Contrast Audit (WCAG 2.1)");
+console.log("  JibonPath Lifeline Palette Contrast Audit (WCAG 2.1)");
 console.log("=======================================================\n");
 
 let failedPairs = 0;

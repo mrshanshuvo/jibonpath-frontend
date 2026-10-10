@@ -18,7 +18,7 @@ const FAQS: FaqItem[] = [
   {
     category: "Emergency Dispatch",
     question:
-      "How does PulsePoint achieve under 10-minute metropolitan response times?",
+      "How does JibonPath achieve under 10-minute metropolitan response times?",
     answer:
       "Our system uses intelligent geo-spatial routing that tracks real-time traffic density, driver availability, and vehicle proximity. When a request is triggered, our dispatch engine assigns the closest suitable ambulance and provides turn-by-turn routing with Dhaka traffic congestion avoidance.",
   },
@@ -55,7 +55,7 @@ const FAQS: FaqItem[] = [
   },
   {
     category: "Hospital Coordination",
-    question: "Does PulsePoint notify the receiving hospital before arrival?",
+    question: "Does JibonPath notify the receiving hospital before arrival?",
     answer:
       "Yes. Once a destination hospital is confirmed, our pre-arrival telemetry system transmits patient vitals, oxygen saturation, and estimated time of arrival (ETA) directly to the emergency department, ensuring trauma teams are scrubbed and prepared at the emergency bay.",
   },

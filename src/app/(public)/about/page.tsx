@@ -15,11 +15,11 @@ import { ROUTES } from "@/config/routes";
 export const metadata: Metadata = {
   title: "About Our Emergency Dispatch Network",
   description:
-    "Learn how PulsePoint coordinates rapid ambulance dispatch, specialized paramedic teams, and hospital telemetry across Dhaka.",
+    "Learn how JibonPath coordinates rapid ambulance dispatch, specialized paramedic teams, and hospital telemetry across Dhaka.",
   openGraph: {
-    title: "About Our Emergency Dispatch Network | PulsePoint",
+    title: "About Our Emergency Dispatch Network | JibonPath",
     description:
-      "Learn how PulsePoint coordinates rapid ambulance dispatch, specialized paramedic teams, and hospital telemetry across Dhaka.",
+      "Learn how JibonPath coordinates rapid ambulance dispatch, specialized paramedic teams, and hospital telemetry across Dhaka.",
   },
 };
 
@@ -93,7 +93,7 @@ export default function AboutPage() {
               Reinventing Pre-Hospital Care in Bangladesh
             </h1>
             <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
-              PulsePoint was founded with a singular, uncompromising mission: to
+              JibonPath was founded with a singular, uncompromising mission: to
               eliminate preventable transit delays during acute medical crises.
               By bridging automated dispatch algorithms with certified paramedic
               crews, we ensure immediate intervention when seconds decide life.

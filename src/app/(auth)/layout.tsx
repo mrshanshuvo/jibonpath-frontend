@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Ambulance, ShieldCheck, PhoneCall } from "lucide-react";
+import { ShieldCheck, PhoneCall } from "lucide-react";
 import { ROUTES } from "@/config/routes";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { JibonPathLogo } from "@/components/brand";
 
 export const metadata: Metadata = {
-  title: "Authentication | PulsePoint Dispatch",
+  title: "Authentication | JibonPath Dispatch",
   description:
-    "Secure role-based access portal for PulsePoint Emergency Ambulance Dispatch.",
+    "Secure role-based access portal for JibonPath Emergency Ambulance Dispatch and Telemetry.",
 };
 
 export default function AuthLayout({
@@ -24,22 +25,7 @@ export default function AuthLayout({
       {/* Top minimal bar */}
       <header className="relative z-10 w-full border-b border-border/40 bg-background/60 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link
-            href={ROUTES.PUBLIC.HOME}
-            className="flex items-center gap-2.5 group"
-          >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-150">
-              <Ambulance className="h-5 w-5" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base font-bold tracking-tight text-foreground flex items-center gap-1.5">
-                PulsePoint
-              </span>
-              <span className="text-3xs uppercase tracking-widest text-muted-foreground font-medium -mt-1">
-                Emergency Dispatch Portal
-              </span>
-            </div>
-          </Link>
+          <JibonPathLogo size="md" tagline="Emergency Dispatch Portal" />
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground font-medium border border-border/60 bg-surface/50 rounded-full px-3 py-1">
@@ -69,7 +55,7 @@ export default function AuthLayout({
       <footer className="relative z-10 w-full border-t border-border/40 py-4 text-center text-3xs text-muted-foreground">
         <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>
-            &copy; {new Date().getFullYear()} PulsePoint Dispatch Systems. All
+            &copy; {new Date().getFullYear()} JibonPath Dispatch Systems. All
             rights reserved.
           </span>
           <div className="flex items-center gap-4">

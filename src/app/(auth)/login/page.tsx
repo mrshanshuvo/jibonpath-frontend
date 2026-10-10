@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui";
 export const metadata: Metadata = {
   title: "Sign In",
   description:
-    "Access the PulsePoint Emergency Ambulance Dispatch command and booking portal.",
+    "Access the JibonPath Emergency Ambulance Dispatch and telemetry command portal.",
 };
 
 function LoginLoadingSkeleton() {
@@ -35,7 +35,7 @@ function LoginContent() {
     <div className="relative rounded-2xl border border-border/60 bg-card/80 p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
       <div className="text-center space-y-1.5">
         <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          Welcome to PulsePoint
+          Welcome to JibonPath
         </h1>
         <p className="text-sm text-muted-foreground">
           Sign in to dispatch, monitor, or request emergency medical transport.

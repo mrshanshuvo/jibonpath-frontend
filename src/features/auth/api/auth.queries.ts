@@ -112,7 +112,7 @@ export function useRegister() {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(authKeys.me(), data.user);
-      toast.success("Account created successfully! Welcome to PulsePoint.");
+      toast.success("Account created successfully! Welcome to JibonPath.");
       router.replace(ROLE_DEFAULT_REDIRECT[data.user.role]);
     },
     onError: (error) => {

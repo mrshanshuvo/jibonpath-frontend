@@ -237,6 +237,7 @@ export default function DriverEarningsPage() {
                     dataKey="amount"
                     fill="var(--primary)"
                     radius={[4, 4, 0, 0]}
+                    isAnimationActive={false}
                   />
                 </BarChart>
               </ResponsiveContainer>

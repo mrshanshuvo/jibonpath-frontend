@@ -93,7 +93,7 @@ export function AuditLogsTable() {
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
             }`}
           >
-            {act === "ALL" ? "All Actions" : act}
+            {act === "ALL" ? "All Actions" : act.replace(/_/g, " ")}
           </button>
         ))}
       </div>
@@ -191,7 +191,7 @@ export function AuditLogsTable() {
                     <td className="px-5 py-4 text-right">
                       {log.metadata ? (
                         <span
-                          className="font-mono text-3xs text-muted-foreground max-w-40 truncate inline-block"
+                          className="font-mono text-3xs text-muted-foreground max-w-xs sm:max-w-md truncate inline-block"
                           title={JSON.stringify(log.metadata)}
                         >
                           {JSON.stringify(log.metadata)}

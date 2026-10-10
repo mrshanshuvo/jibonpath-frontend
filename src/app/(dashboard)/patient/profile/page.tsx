@@ -44,7 +44,7 @@ export default function PatientProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       <div className="border-b border-border/60 pb-5">
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
           Patient Account & Profile

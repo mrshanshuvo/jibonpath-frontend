@@ -30,7 +30,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
             PAID & SETTLED
           </span>
           <p className="text-3xs font-mono text-muted-foreground print:text-black/70 mt-1">
-            INV-{payment.id.slice(0, 8).toUpperCase()}
+            INV-{payment.id.toUpperCase()}
           </p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
             Gateway Reference TXN
           </span>
           <span className="font-mono text-3xs text-muted-foreground print:text-black/70 mt-0.5 block truncate">
-            {payment.gatewayTxnId || `TXN-${payment.id.slice(0, 12)}`}
+            {payment.gatewayTxnId || `TXN-${payment.id}`}
           </span>
         </div>
 
@@ -69,7 +69,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
             Associated Request ID
           </span>
           <span className="font-mono text-3xs text-muted-foreground print:text-black/70 mt-0.5 block">
-            #{payment.requestId.slice(0, 8)}
+            #{payment.requestId}
           </span>
         </div>
       </div>

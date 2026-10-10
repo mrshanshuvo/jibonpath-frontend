@@ -222,11 +222,11 @@ export function UserManagementTable() {
                           onChange={(e) =>
                             handleRoleChange(u.id, e.target.value as Role)
                           }
-                          className="h-7 rounded border border-border bg-surface px-1.5 text-3xs font-medium text-foreground focus-visible:outline-none cursor-pointer"
+                          className="h-6 rounded-md border border-border bg-surface/60 px-1.5 text-3xs text-muted-foreground hover:text-foreground focus-visible:outline-none cursor-pointer"
                         >
-                          <option value={Role.PATIENT}>PATIENT</option>
-                          <option value={Role.DRIVER}>DRIVER</option>
-                          <option value={Role.ADMIN}>ADMIN</option>
+                          <option value={Role.PATIENT}>Patient</option>
+                          <option value={Role.DRIVER}>Driver</option>
+                          <option value={Role.ADMIN}>Admin</option>
                         </select>
                       </div>
                     </td>
@@ -254,7 +254,7 @@ export function UserManagementTable() {
                       </button>
                     </td>
 
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground">
+                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground whitespace-nowrap">
                       {formatDateTime(u.createdAt)}
                     </td>
 

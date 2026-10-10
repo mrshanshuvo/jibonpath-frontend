@@ -117,19 +117,19 @@ export function FleetTable() {
     switch (type) {
       case AmbulanceType.BASIC:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20 whitespace-nowrap">
             BLS (Basic)
           </span>
         );
       case AmbulanceType.ADVANCED_LIFE_SUPPORT:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
             ACLS (Cardiac)
           </span>
         );
       case AmbulanceType.INTENSIVE_CARE:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20">
+          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20 whitespace-nowrap">
             ICU (Ventilator)
           </span>
         );
@@ -296,7 +296,7 @@ export function FleetTable() {
                       )}
                     </td>
 
-                    <td className="px-5 py-4 text-3xs font-mono text-muted-foreground">
+                    <td className="px-5 py-4 text-3xs font-mono text-muted-foreground whitespace-nowrap">
                       {formatDateTime(amb.updatedAt)}
                     </td>
 

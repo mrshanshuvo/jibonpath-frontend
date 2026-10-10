@@ -350,7 +350,11 @@ export function AdminAnalyticsOverview() {
                     return null;
                   }}
                 />
-                <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                <Bar
+                  dataKey="count"
+                  radius={[6, 6, 0, 0]}
+                  isAnimationActive={false}
+                >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}

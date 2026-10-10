@@ -183,9 +183,7 @@ test.describe("Authoritative Visual UI Regression Suite (Every Single Page)", ()
     await page.waitForLoadState("networkidle");
     await expect(page).toHaveScreenshot("15-driver-earnings.png", {
       fullPage: true,
-      mask: [
-        page.locator(".recharts-responsive-container, #next-route-announcer"),
-      ],
+      mask: [page.locator("#next-route-announcer")],
     });
   });
 
@@ -211,9 +209,7 @@ test.describe("Authoritative Visual UI Regression Suite (Every Single Page)", ()
     await page.waitForLoadState("networkidle");
     await expect(page).toHaveScreenshot("17-admin-console.png", {
       fullPage: true,
-      mask: [
-        page.locator(".recharts-responsive-container, #next-route-announcer"),
-      ],
+      mask: [page.locator("#next-route-announcer")],
     });
   });
 

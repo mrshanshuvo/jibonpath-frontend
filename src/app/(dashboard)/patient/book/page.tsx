@@ -12,7 +12,7 @@ function BookingContent() {
   const initialDestination = searchParams.get("destination") || undefined;
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       <div className="border-b border-border/60 pb-5">
         <div className="inline-flex items-center gap-1.5 rounded-full border border-emergency/30 bg-emergency/10 px-3 py-0.5 text-3xs font-bold text-destructive-ink dark:text-emergency mb-2">
           <HeartPulse className="h-3 w-3" />
@@ -83,7 +83,7 @@ export default function BookAmbulancePage() {
   return (
     <Suspense
       fallback={
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="w-full space-y-4">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-40 w-full rounded-2xl" />
           <Skeleton className="h-40 w-full rounded-2xl" />

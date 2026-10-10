@@ -18,7 +18,7 @@ export default function PatientInvoicePage({
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto py-8">
+      <div className="w-full py-8">
         <TableSkeleton showHeader={true} rowCount={3} />
       </div>
     );
@@ -26,7 +26,7 @@ export default function PatientInvoicePage({
 
   if (error || !payment) {
     return (
-      <div className="max-w-md mx-auto text-center py-16 space-y-4">
+      <div className="w-full max-w-md mx-auto text-center py-16 space-y-4">
         <h2 className="text-xl font-bold text-foreground">Invoice Not Found</h2>
         <p className="text-sm text-muted-foreground">
           We couldn&apos;t find an invoice matching reference ID #{id}.
@@ -42,7 +42,7 @@ export default function PatientInvoicePage({
   }
 
   return (
-    <div className="max-w-2xl mx-auto py-6 space-y-6">
+    <div className="w-full py-6 space-y-6">
       {/* Top action navigation */}
       <div className="flex items-center justify-between print:hidden">
         <Link href="/patient/payments">

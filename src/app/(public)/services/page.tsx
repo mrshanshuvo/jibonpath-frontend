@@ -101,6 +101,12 @@ const SPECIALIZED_SERVICES = [
   },
 ];
 
+const TIER_TYPE_LABELS: Record<AmbulanceType, string> = {
+  [AmbulanceType.BASIC]: "BLS Tier",
+  [AmbulanceType.ADVANCED_LIFE_SUPPORT]: "ACLS Tier",
+  [AmbulanceType.INTENSIVE_CARE]: "ICU / MICU Tier",
+};
+
 export default function ServicesPage() {
   return (
     <div className="flex flex-col">
@@ -133,15 +139,15 @@ export default function ServicesPage() {
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <Badge variant={tier.badgeVariant}>{tier.badge}</Badge>
-                    <span className="font-mono text-2xs font-semibold text-muted-foreground">
-                      {tier.type}
+                    <span className="font-sans text-2xs font-bold tracking-wider text-muted-foreground uppercase">
+                      {TIER_TYPE_LABELS[tier.type]}
                     </span>
                   </div>
 
                   <h2 className="text-xl font-bold text-foreground">
                     {tier.title}
                   </h2>
-                  <div className="mt-2 font-mono text-sm font-bold text-primary">
+                  <div className="mt-2 font-heading text-base font-extrabold text-primary tabular-nums tracking-tight">
                     {tier.pricing}
                   </div>
 

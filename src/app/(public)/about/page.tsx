@@ -128,7 +128,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {METRICS.map((metric, idx) => (
               <div key={idx} className="flex flex-col items-center text-center">
-                <span className="font-mono text-3xl sm:text-4xl font-extrabold text-foreground">
+                <span className="font-heading text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight tabular-nums">
                   {metric.value}
                 </span>
                 <span className="mt-2 text-xs sm:text-sm font-medium text-muted-foreground">

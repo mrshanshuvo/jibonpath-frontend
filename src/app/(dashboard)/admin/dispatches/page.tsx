@@ -49,6 +49,15 @@ export default function AdminDispatchesPage() {
     DispatchStatus.COMPLETED,
   ];
 
+  const statusLabels: Record<DispatchStatus, string> = {
+    [DispatchStatus.DISPATCHED]: "Dispatched",
+    [DispatchStatus.EN_ROUTE]: "En Route",
+    [DispatchStatus.PATIENT_PICKUP]: "Patient Pickup",
+    [DispatchStatus.HOSPITAL_SELECTED]: "Hospital Selected",
+    [DispatchStatus.HOSPITAL_ARRIVAL]: "Hospital Arrival",
+    [DispatchStatus.COMPLETED]: "Completed",
+  };
+
   return (
     <div className="space-y-6">
       <div className="border-b border-border/60 pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -87,7 +96,7 @@ export default function AdminDispatchesPage() {
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
             }`}
           >
-            {status === "ALL" ? "All Dispatches" : status}
+            {status === "ALL" ? "All Dispatches" : statusLabels[status]}
           </button>
         ))}
       </div>

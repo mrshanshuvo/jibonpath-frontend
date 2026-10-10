@@ -135,7 +135,7 @@ export default function AdminDriversPage() {
                       </span>
                     </td>
 
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground">
+                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground whitespace-nowrap">
                       {formatDateTime(driver.createdAt)}
                     </td>
 

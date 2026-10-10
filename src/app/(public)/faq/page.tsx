@@ -139,7 +139,7 @@ function FaqContent() {
 
       {/* Accordion List */}
       <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-4">
+        <div className="w-full px-4 sm:px-6 lg:px-8 space-y-4">
           {filteredFaqs.map((faq, idx) => {
             const isOpen = openIndices.includes(idx);
 

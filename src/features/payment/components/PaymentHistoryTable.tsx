@@ -78,7 +78,13 @@ export function PaymentHistoryTable() {
                 : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
             }`}
           >
-            {status === "ALL" ? "All Payments" : status}
+            {status === "ALL"
+              ? "All Payments"
+              : status === PaymentStatus.SUCCESS
+                ? "Successful"
+                : status === PaymentStatus.PENDING
+                  ? "Pending"
+                  : "Failed"}
           </button>
         ))}
       </div>

@@ -371,3 +371,8 @@ body {
     animation: emergency-pulse 2s infinite ease-in-out;
   }
 }
+
+/* Suppress Next.js floating dev indicator overlay during testing and development */
+nextjs-portal {
+  display: none !important;
+}

@@ -115,7 +115,7 @@ function FaqContent() {
 
       {/* Category Pills */}
       <section className="py-6 border-b border-border/60 bg-surface/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -184,7 +184,7 @@ function FaqContent() {
 
       {/* Need more help banner */}
       <section className="py-12 border-t border-border/60 bg-surface/50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div>
             <h3 className="text-lg font-bold text-foreground">
               Have an unanswered question?

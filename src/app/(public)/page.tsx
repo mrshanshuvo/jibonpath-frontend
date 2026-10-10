@@ -39,7 +39,7 @@ export default function HomePage() {
     <div className="flex-1 flex flex-col">
       {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 border-b border-border/60">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative w-full px-4 sm:px-6 lg:px-8 text-center">
           {/* Live Status Indicator */}
           <div className="inline-flex items-center gap-3 mb-6 flex-wrap justify-center">
             <Badge variant="info" size="md">
@@ -144,7 +144,7 @@ export default function HomePage() {
 
       {/* METRICS STRIP */}
       <section className="border-b border-border/60 bg-surface/50 py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="space-y-1">
               <p className="text-3xl font-extrabold text-foreground">8.2 min</p>
@@ -178,7 +178,7 @@ export default function HomePage() {
 
       {/* 3 CORE PILLARS */}
       <section className="py-20 border-b border-border/60">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <Badge variant="default" size="sm">
               Next-Gen Dispatch Network

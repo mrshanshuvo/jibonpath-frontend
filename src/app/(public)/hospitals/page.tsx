@@ -180,7 +180,7 @@ function HospitalsContent() {
 
       {/* Search & Zone Filters */}
       <section className="py-8 border-b border-border/60 bg-surface/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="w-full md:max-w-md">
               <Input
@@ -216,7 +216,7 @@ function HospitalsContent() {
 
       {/* Hospital Directory Cards */}
       <section className="py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {filteredHospitals.map((hospital) => (
               <div

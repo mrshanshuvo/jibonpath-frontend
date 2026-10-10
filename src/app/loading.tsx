@@ -13,7 +13,7 @@ export default function RootLoading() {
       </div>
 
       {/* Main Content Skeleton */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-10 space-y-8">
+      <main className="flex-1 w-full p-6 md:p-10 space-y-8">
         <div className="space-y-4 max-w-2xl">
           <Skeleton className="h-6 w-32" />
           <Skeleton className="h-12 w-full" />

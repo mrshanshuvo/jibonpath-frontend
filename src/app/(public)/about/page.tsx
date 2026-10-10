@@ -83,7 +83,7 @@ export default function AboutPage() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border/60 bg-surface">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-6 shadow-xs">
               <ShieldAlert className="h-3.5 w-3.5" />
@@ -124,7 +124,7 @@ export default function AboutPage() {
 
       {/* Real Metrics Banner */}
       <section className="border-b border-border/60 bg-surface/50 py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {METRICS.map((metric, idx) => (
               <div key={idx} className="flex flex-col items-center text-center">
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
       {/* Core Operational Values */}
       <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
               Clinical Quality & Safety Standards
@@ -184,7 +184,7 @@ export default function AboutPage() {
 
       {/* Medical Governance & Leadership */}
       <section className="py-16 border-t border-border/60 bg-surface/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
               Medical Governance
@@ -229,7 +229,7 @@ export default function AboutPage() {
 
       {/* Emergency CTA */}
       <section className="py-16 border-t border-border/60 bg-surface">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
             Facing a Life-Threatening Situation?
           </h2>

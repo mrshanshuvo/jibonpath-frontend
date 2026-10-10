@@ -123,7 +123,7 @@ export default function ServicesPage() {
 
       {/* Fleet Tiers Grid */}
       <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {FLEET_TIERS.map((tier) => (
               <div
@@ -202,7 +202,7 @@ export default function ServicesPage() {
 
       {/* Specialized Services */}
       <section className="py-16 border-t border-border/60 bg-surface/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
               Beyond Emergency Dispatch
@@ -238,7 +238,7 @@ export default function ServicesPage() {
 
       {/* Emergency Assurance Banner */}
       <section className="py-12 border-t border-border/60 bg-card">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25">
               <Clock className="h-6 w-6" />

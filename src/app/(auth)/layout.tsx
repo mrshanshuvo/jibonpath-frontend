@@ -24,7 +24,7 @@ export default function AuthLayout({
 
       {/* Top minimal bar */}
       <header className="relative z-10 w-full border-b border-border/40 bg-background/60 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="w-full flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <JibonPathLogo size="md" />
 
           <div className="flex items-center gap-3">
@@ -53,7 +53,7 @@ export default function AuthLayout({
 
       {/* Bottom minimal footer */}
       <footer className="relative z-10 w-full border-t border-border/40 py-4 text-center text-3xs text-muted-foreground">
-        <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="w-full px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>
             &copy; {new Date().getFullYear()} JibonPath Dispatch Systems. All
             rights reserved.

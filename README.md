@@ -12,10 +12,12 @@ A state-of-the-art emergency medical dispatch and fleet telemetry frontend engin
 
 ---
 
-## 🚀 Live Production Backend API
+## 🌐 Live Deployments
 
-- **Base URL:** `https://ambulance-dispatch-backend-66f2.onrender.com/api/v1`
-- **Architecture:** Express.js + Prisma ORM + PostgreSQL + Redis Telemetry Caching
+- **Live Frontend:** [https://jibonpath.vercel.app](https://jibonpath.vercel.app)
+- **Live Backend API Base:** `https://ambulance-dispatch-backend-66f2.onrender.com/api/v1`
+- **Backend Health Check:** `https://ambulance-dispatch-backend-66f2.onrender.com/health`
+- **API Documentation:** [Postman Published Docs](https://documenter.getpostman.com/view/47434753/2sBYAvwWcJ)
 - **Integration Policy:** Zero mock data; all views, queries, and mutations reflect live database records.
 
 ---

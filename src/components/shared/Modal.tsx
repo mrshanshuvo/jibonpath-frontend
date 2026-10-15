@@ -16,6 +16,8 @@ export interface ModalProps {
   description?: string;
   children: ReactNode;
   className?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
   /** Prevents backdrop click from closing the modal. */
   preventBackdropClose?: boolean;
 }
@@ -27,6 +29,8 @@ export function Modal({
   description,
   children,
   className,
+  titleClassName,
+  descriptionClassName,
 }: ModalProps) {
   return (
     <Dialog
@@ -38,9 +42,13 @@ export function Modal({
       <DialogContent className={className}>
         {(title || description) && (
           <DialogHeader>
-            {title && <DialogTitle>{title}</DialogTitle>}
+            {title && (
+              <DialogTitle className={titleClassName}>{title}</DialogTitle>
+            )}
             {description && (
-              <DialogDescription>{description}</DialogDescription>
+              <DialogDescription className={descriptionClassName}>
+                {description}
+              </DialogDescription>
             )}
           </DialogHeader>
         )}

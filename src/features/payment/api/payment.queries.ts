@@ -34,6 +34,7 @@ export function useMyPayments(params?: PaymentQueryParams) {
   if (params?.limit) queryParams.limit = params.limit;
   if (params?.status && params.status !== "ALL")
     queryParams.status = params.status;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: paymentKeys.myPayments(params),

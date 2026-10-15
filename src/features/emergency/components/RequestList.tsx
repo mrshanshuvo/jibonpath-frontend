@@ -1,13 +1,15 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { PlusCircle, AlertCircle, Ambulance } from "lucide-react";
+import { PlusCircle, AlertCircle, Ambulance, Search, X } from "lucide-react";
 import { Button, EmptyState, Skeleton, Pagination } from "@/components/ui";
 import { RequestCard } from "./RequestCard";
 import { ROUTES } from "@/config/routes";
 import { RequestStatus, type EmergencyRequest } from "@/types/entities.types";
 import { useMyRequests } from "../api/emergency.queries";
 import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 
 interface RequestListProps {
@@ -40,13 +42,27 @@ export function RequestList({ onPay }: RequestListProps) {
   const selectedStatus: RequestStatus | "ALL" =
     rawStatus && isRequestStatus(rawStatus) ? rawStatus : "ALL";
 
+  const rawSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(rawSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
   const parsedPage = Number(params.get("page") ?? "1");
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+        page: "1",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
 
   const { data, isLoading, isError, refetch } = useMyRequests({
     page,
     limit: 6,
     status: selectedStatus,
+    search: debouncedSearch.trim() || undefined,
   });
 
   const handleStatusChange = (status: RequestStatus | "ALL") => {
@@ -90,15 +106,37 @@ export function RequestList({ onPay }: RequestListProps) {
           })}
         </div>
 
-        <Link href={ROUTES.PATIENT.BOOK} className="shrink-0">
-          <Button
-            variant="emergency"
-            size="sm"
-            leftIcon={<PlusCircle className="h-4 w-4" aria-hidden="true" />}
-          >
-            Request Ambulance
-          </Button>
-        </Link>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search address, notes..."
+              className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-border bg-surface text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+
+          <Link href={ROUTES.PATIENT.BOOK} className="shrink-0">
+            <Button
+              variant="emergency"
+              size="sm"
+              leftIcon={<PlusCircle className="h-4 w-4" aria-hidden="true" />}
+            >
+              Request Ambulance
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {isLoading && (

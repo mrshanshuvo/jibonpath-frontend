@@ -1,6 +1,7 @@
 "use client";
 
-import { FileText, AlertCircle, Tag } from "lucide-react";
+import { useState, useEffect } from "react";
+import { FileText, AlertCircle, Tag, Search, X } from "lucide-react";
 import {
   Button,
   Badge,
@@ -9,6 +10,7 @@ import {
   EmptyState,
 } from "@/components/shared";
 import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useAuditLogs } from "../api/admin.queries";
 import { formatDateTime } from "@/lib/utils";
 
@@ -18,13 +20,27 @@ export function AuditLogsTable() {
   const rawAction = params.get("action");
   const selectedAction = rawAction && rawAction !== "" ? rawAction : "ALL";
 
+  const rawSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(rawSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
   const parsedPage = Number(params.get("page") ?? "1");
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+        page: "1",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
 
   const { data, isLoading, isError, refetch } = useAuditLogs({
     page,
     limit: 10,
     action: selectedAction === "ALL" ? undefined : selectedAction,
+    search: debouncedSearch.trim() || undefined,
   });
 
   const actions = [
@@ -76,26 +92,48 @@ export function AuditLogsTable() {
 
   return (
     <div className="space-y-6">
-      {/* Action Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
-        {actions.map((act) => (
-          <button
-            key={act}
-            onClick={() => {
-              setParams({
-                action: act === "ALL" ? "" : act,
-                page: "1",
-              });
-            }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
-              selectedAction === act
-                ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
-            }`}
-          >
-            {act === "ALL" ? "All Actions" : act.replace(/_/g, " ")}
-          </button>
-        ))}
+      {/* Action Filter Pills & Search */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+          {actions.map((act) => (
+            <button
+              key={act}
+              onClick={() => {
+                setParams({
+                  action: act === "ALL" ? "" : act,
+                  page: "1",
+                });
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                selectedAction === act
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                  : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
+              }`}
+            >
+              {act === "ALL" ? "All Actions" : act.replace(/_/g, " ")}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full sm:w-64 shrink-0">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search action, actor, entity..."
+            className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-border bg-surface text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Table Card */}

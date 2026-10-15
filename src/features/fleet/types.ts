@@ -30,9 +30,11 @@ export interface FleetQueryParams {
   limit?: number;
   status?: AmbulanceStatus | "ALL";
   type?: AmbulanceType | "ALL";
+  search?: string;
 }
 
 export interface FleetApiResponse {
+  data: Ambulance[];
   ambulances: Ambulance[];
   meta: {
     page: number;
@@ -40,5 +42,8 @@ export interface FleetApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
 }

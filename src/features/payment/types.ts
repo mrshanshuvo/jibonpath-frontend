@@ -17,9 +17,11 @@ export interface PaymentQueryParams {
   page?: number;
   limit?: number;
   status?: PaymentStatus | "ALL";
+  search?: string;
 }
 
 export interface PaymentsApiResponse {
+  data: Payment[];
   payments: Payment[];
   meta: {
     page: number;
@@ -27,7 +29,10 @@ export interface PaymentsApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
 }
 
 export interface FareEstimate {

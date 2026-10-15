@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { Card, Button, StatusBadge, Skeleton } from "@/components/shared";
 import {
   Siren,
@@ -346,16 +347,31 @@ export function PendingRequestsTriage({
                   </div>
                 )}
 
-                {/* Mobilization Trigger Button */}
-                <div className="pt-2 border-t border-border/60">
+                {/* Mobilization Trigger Action */}
+                <div className="pt-2 border-t border-border/60 flex items-center gap-2">
+                  <Link
+                    href={`/admin/dispatches/${req.id}/mobilize`}
+                    className="flex-1"
+                  >
+                    <Button
+                      type="button"
+                      variant="emergency"
+                      className="w-full gap-2 font-bold text-sm py-2.5 shadow-sm shadow-emergency/20"
+                    >
+                      <Zap className="h-4 w-4" />
+                      <span>⚡ Open Dispatch Command Terminal</span>
+                    </Button>
+                  </Link>
+
                   <Button
                     type="button"
-                    variant="emergency"
+                    variant="outline"
+                    size="icon"
+                    title="Quick Mobilize Modal"
                     onClick={() => setSelectedRequest(req)}
-                    className="w-full gap-2 font-bold text-sm py-2.5 shadow-sm shadow-emergency/20"
+                    className="h-10 w-10 shrink-0 text-muted-foreground hover:text-foreground"
                   >
-                    <Zap className="h-4 w-4" />
-                    <span>⚡ Mobilize Ambulance Unit</span>
+                    <Siren className="h-4 w-4" />
                   </Button>
                 </div>
               </div>

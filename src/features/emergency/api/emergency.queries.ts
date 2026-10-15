@@ -34,6 +34,7 @@ export function useMyRequests(params?: RequestQueryParams) {
     queryParams.status = params.status;
   if (params?.priority && params.priority !== "ALL")
     queryParams.priority = params.priority;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: emergencyKeys.myRequests(params),
@@ -68,6 +69,9 @@ export function useAdminRequests(
   if (params?.limit) queryParams.limit = params.limit;
   if (params?.status && params.status !== "ALL")
     queryParams.status = params.status;
+  if (params?.priority && params.priority !== "ALL")
+    queryParams.priority = params.priority;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: emergencyKeys.adminRequests(params),

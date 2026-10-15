@@ -35,6 +35,7 @@ export function useAmbulances(
   if (params?.status && params.status !== "ALL")
     queryParams.status = params.status;
   if (params?.type && params.type !== "ALL") queryParams.type = params.type;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: fleetKeys.list(params),

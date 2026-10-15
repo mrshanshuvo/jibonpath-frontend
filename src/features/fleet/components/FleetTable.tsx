@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Ambulance,
   Plus,
@@ -9,6 +9,8 @@ import {
   Wrench,
   CheckCircle,
   AlertCircle,
+  Search,
+  X,
 } from "lucide-react";
 import {
   Button,
@@ -19,6 +21,7 @@ import {
 } from "@/components/shared";
 import { AmbulanceFormModal } from "./AmbulanceFormModal";
 import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import {
   AmbulanceStatus,
   AmbulanceType,
@@ -47,8 +50,21 @@ export function FleetTable() {
       ? (rawType as AmbulanceType)
       : "ALL";
 
+  const rawSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(rawSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
   const parsedPage = Number(params.get("page") ?? "1");
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+        page: "1",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingAmbulance, setEditingAmbulance] =
@@ -59,6 +75,7 @@ export function FleetTable() {
     limit: 8,
     status: statusFilter,
     type: typeFilter,
+    search: debouncedSearch.trim() || undefined,
   });
 
   const handleStatusFilterChange = (status: AmbulanceStatus | "ALL") => {
@@ -194,14 +211,36 @@ export function FleetTable() {
           ))}
         </div>
 
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={handleCreate}
-          leftIcon={<Plus className="h-4 w-4" />}
-        >
-          Add Ambulance
-        </Button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search plate or vehicle..."
+              className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-border bg-surface text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={handleCreate}
+            leftIcon={<Plus className="h-4 w-4" />}
+          >
+            Add Ambulance
+          </Button>
+        </div>
       </div>
 
       {/* Table Card */}

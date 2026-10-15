@@ -40,9 +40,11 @@ export interface RequestQueryParams {
   limit?: number;
   status?: RequestStatus | "ALL";
   priority?: Priority | "ALL";
+  search?: string;
 }
 
 export interface RequestsApiResponse {
+  data: EmergencyRequest[];
   requests: EmergencyRequest[];
   meta: {
     page: number;
@@ -50,5 +52,8 @@ export interface RequestsApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
 }

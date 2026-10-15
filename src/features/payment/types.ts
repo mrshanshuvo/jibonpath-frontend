@@ -41,9 +41,13 @@ export interface FareEstimate {
 }
 
 export interface CheckoutResponse {
-  url?: string; // Stripe checkout URL
+  url?: string; // Stripe or generic checkout URL
   bkashURL?: string; // bKash payment URL
   paymentID?: string;
   GatewayPageURL?: string; // SSLCommerz gateway URL
+  gatewayUrl?: string; // SSLCommerz camelCase gateway URL
+  gatewayPageURL?: string;
+  checkoutUrl?: string;
+  redirectUrl?: string;
   sessionId?: string;
 }

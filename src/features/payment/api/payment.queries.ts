@@ -134,14 +134,21 @@ export function useInitiatePayment() {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: paymentKeys.all });
 
-      // Handle redirect to external payment page
-      const redirectTarget = data.url || data.bkashURL || data.GatewayPageURL;
+      // Handle redirect to external payment page (Stripe, bKash, or SSLCommerz)
+      const redirectTarget =
+        data.url ||
+        data.bkashURL ||
+        data.gatewayUrl ||
+        data.gatewayPageURL ||
+        data.GatewayPageURL ||
+        data.checkoutUrl ||
+        data.redirectUrl;
 
       if (redirectTarget) {
         toast.info(`Redirecting to secure ${variables.gateway} portal...`);
         window.location.href = redirectTarget;
       } else {
-        toast.success("Payment session generated successfully");
+        toast.error("Payment session created, but gateway URL was not found.");
       }
     },
     onError: (error) => {

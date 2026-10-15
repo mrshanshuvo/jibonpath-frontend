@@ -148,19 +148,19 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="space-y-1">
               <p className="text-3xl font-extrabold text-foreground">8.2 min</p>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Average Response Time
               </p>
             </div>
             <div className="space-y-1">
               <p className="text-3xl font-extrabold text-success">100%</p>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Licensed Paramedics
               </p>
             </div>
             <div className="space-y-1">
               <p className="text-3xl font-extrabold text-primary">50+</p>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Hospitals Connected
               </p>
             </div>
@@ -168,7 +168,7 @@ export default function HomePage() {
               <p className="text-3xl font-extrabold text-foreground">
                 24/7/365
               </p>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Continuous Operations
               </p>
             </div>
@@ -210,7 +210,7 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-xs text-muted-foreground">
+                <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <Clock className="h-3.5 w-3.5 text-primary" />
                     <span>Instant automated driver alert</span>
@@ -239,7 +239,7 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-xs text-muted-foreground">
+                <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <HeartPulse className="h-3.5 w-3.5 text-success-ink dark:text-success" />
                     <span>Pre-arrival trauma bed preparation</span>
@@ -268,7 +268,7 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-xs text-muted-foreground">
+                <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                     <span>No surprise surge fees or hidden costs</span>

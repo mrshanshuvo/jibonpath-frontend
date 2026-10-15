@@ -85,8 +85,8 @@ export default function AboutPage() {
       <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border/60 bg-surface">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-6 shadow-xs">
-              <ShieldAlert className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-6 shadow-xs">
+              <ShieldAlert className="h-4 w-4" />
               <span>Dhaka Emergency Medical Operations</span>
             </div>
             <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl sm:leading-tight">
@@ -214,7 +214,7 @@ export default function AboutPage() {
                   <p className="text-xs font-medium text-primary mt-0.5">
                     {leader.role}
                   </p>
-                  <p className="text-3xs text-muted-foreground uppercase tracking-wider mt-0.5">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mt-0.5">
                     {leader.department}
                   </p>
                 </div>

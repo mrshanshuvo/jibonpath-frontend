@@ -7,7 +7,7 @@ export default function AdminAuditLogsPage() {
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
           System Audit Trail & Security Logs
         </h1>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Immutable audit record of all administrative actions, emergency
           dispatches, user updates, and status transitions.
         </p>

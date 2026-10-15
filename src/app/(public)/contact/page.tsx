@@ -70,8 +70,8 @@ export default function ContactPage() {
       {/* Hero Header */}
       <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
         <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-4">
-            <ShieldAlert className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
+            <ShieldAlert className="h-4 w-4" />
             <span>24/7 Central Command & Control</span>
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
@@ -106,7 +106,7 @@ export default function ContactPage() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-emergency-foreground">
                     <PhoneCall className="h-6 w-6" />
                   </div>
-                  <span className="text-3xs font-mono font-bold uppercase rounded-full bg-emergency text-emergency-foreground px-3 py-1">
+                  <span className="text-xs font-mono font-bold uppercase rounded-full bg-emergency text-emergency-foreground px-3 py-1">
                     Zero Delay
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export default function ContactPage() {
                   <div className="font-mono text-xs text-primary font-medium">
                     +880 1700-000999
                   </div>
-                  <p className="text-3xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     Direct dispatcher switchboard
                   </p>
                 </div>
@@ -158,7 +158,7 @@ export default function ContactPage() {
                   <div className="font-mono text-xs text-primary font-medium">
                     liaison@jibonpath.dev
                   </div>
-                  <p className="text-3xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     Inter-facility transfer desk
                   </p>
                 </div>
@@ -177,7 +177,7 @@ export default function ContactPage() {
                     Level 4, Medical Telematics Tower, Mohakhali C/A, Dhaka
                     1212, Bangladesh
                   </p>
-                  <div className="flex items-center gap-2 mt-2 text-3xs text-muted-foreground">
+                  <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3 text-success-ink dark:text-success" />
                     <span>
                       Control Room: 24 Hours / 7 Days / 365 Days continuous

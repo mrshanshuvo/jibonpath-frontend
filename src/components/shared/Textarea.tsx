@@ -95,7 +95,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={textareaId}
-            className="block text-xs font-medium uppercase tracking-wider text-muted-foreground"
+            className="block text-xs font-bold uppercase tracking-wider text-muted-foreground"
           >
             {label}
             {required && (

@@ -271,12 +271,12 @@ export function EmergencyBookingWizard({
                 }`}
               />
               {i < 3 && (
-                <span className="text-3xs text-muted-foreground">→</span>
+                <span className="text-xs text-muted-foreground font-bold">→</span>
               )}
             </div>
           ))}
         </div>
-        <div className="flex justify-between text-3xs text-muted-foreground px-1 mb-4">
+        <div className="flex justify-between text-xs font-semibold text-muted-foreground px-1 mb-4">
           <span>Severity</span>
           <span>Location</span>
           <span>Hospital</span>
@@ -480,7 +480,7 @@ export function EmergencyBookingWizard({
             {["Defibrillator", "Ventilator", "O2", "ECG"].map((item) => (
               <span
                 key={item}
-                className="text-3xs px-2 py-0.5 rounded-full bg-primary-soft text-primary font-medium"
+                className="text-xs px-2.5 py-0.5 rounded-full bg-primary-soft text-primary font-semibold"
               >
                 {item}
               </span>

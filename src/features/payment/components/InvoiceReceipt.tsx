@@ -18,18 +18,18 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
             <span className="font-bold text-sm text-foreground print:text-black leading-tight block">
               JibonPath Dispatch Systems
             </span>
-            <span className="text-3xs text-muted-foreground print:text-black/70">
+            <span className="text-xs text-muted-foreground print:text-black/70">
               Emergency Medical Transport Services
             </span>
           </div>
         </div>
 
         <div className="text-right">
-          <span className="inline-flex items-center gap-1 rounded-md bg-success-tint px-2 py-0.5 text-2xs font-bold text-success-ink dark:text-success border border-success/30">
-            <CheckCircle className="h-3 w-3" />
+          <span className="inline-flex items-center gap-1 rounded-md bg-success-tint px-2.5 py-0.5 text-xs font-bold text-success-ink dark:text-success border border-success/30">
+            <CheckCircle className="h-3.5 w-3.5" />
             PAID & SETTLED
           </span>
-          <p className="text-3xs font-mono text-muted-foreground print:text-black/70 mt-1">
+          <p className="text-xs font-mono text-muted-foreground print:text-black/70 mt-1">
             INV-{payment.id.toUpperCase()}
           </p>
         </div>
@@ -38,7 +38,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
       {/* Meta Details Grid */}
       <div className="grid grid-cols-2 gap-4 text-xs">
         <div>
-          <span className="text-3xs font-semibold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
+          <span className="text-xs font-bold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
             Billing Date & Time
           </span>
           <span className="font-mono text-foreground print:text-black mt-0.5 block">
@@ -47,7 +47,7 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
         </div>
 
         <div>
-          <span className="text-3xs font-semibold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
+          <span className="text-xs font-bold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
             Payment Gateway & Channel
           </span>
           <span className="font-medium text-foreground print:text-black mt-0.5 block">
@@ -56,19 +56,19 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
         </div>
 
         <div>
-          <span className="text-3xs font-semibold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
+          <span className="text-xs font-bold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
             Gateway Reference TXN
           </span>
-          <span className="font-mono text-3xs text-muted-foreground print:text-black/70 mt-0.5 block truncate">
+          <span className="font-mono text-xs text-muted-foreground print:text-black/70 mt-0.5 block truncate">
             {payment.gatewayTxnId || `TXN-${payment.id}`}
           </span>
         </div>
 
         <div>
-          <span className="text-3xs font-semibold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
+          <span className="text-xs font-bold text-muted-foreground print:text-black/70 uppercase tracking-wider block">
             Associated Request ID
           </span>
-          <span className="font-mono text-3xs text-muted-foreground print:text-black/70 mt-0.5 block">
+          <span className="font-mono text-xs text-muted-foreground print:text-black/70 mt-0.5 block">
             #{payment.requestId}
           </span>
         </div>
@@ -100,8 +100,8 @@ export function InvoicePaper({ payment }: { payment: Payment }) {
         </span>
       </div>
 
-      <div className="flex items-center gap-1.5 text-3xs text-muted-foreground print:text-black/70 justify-center pt-2">
-        <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
+      <div className="flex items-center gap-1.5 text-xs text-muted-foreground print:text-black/70 justify-center pt-2">
+        <ShieldCheck className="h-4 w-4 text-success-ink dark:text-success" />
         <span>
           Electronically verified digital tax receipt. Valid for health
           insurance claims.

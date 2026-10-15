@@ -108,8 +108,8 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
             />
           </div>
 
-          <div className="flex items-center gap-1 text-3xs font-mono text-muted-foreground">
-            <Clock className="h-3 w-3" aria-hidden="true" />
+          <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground">
+            <Clock className="h-3.5 w-3.5" aria-hidden="true" />
             <span>{formatRelativeTime(request.createdAt)}</span>
           </div>
         </header>
@@ -129,7 +129,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
               {/* Symptoms / Clinical Notes Callout */}
               {parsedDesc.notes && (
                 <div className="rounded-lg bg-surface/70 border border-border/60 p-2.5 text-xs text-foreground/90 font-medium leading-relaxed">
-                  <span className="text-3xs uppercase tracking-wider font-bold text-muted-foreground block mb-0.5">
+                  <span className="text-xs uppercase tracking-wider font-bold text-muted-foreground block mb-0.5">
                     Medical Notes &amp; Symptoms
                   </span>
                   <p className="line-clamp-3">{parsedDesc.notes}</p>
@@ -140,9 +140,9 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
               {(parsedDesc.phone || parsedDesc.hospital) && (
                 <div className="flex flex-wrap items-center gap-2 pt-0.5">
                   {parsedDesc.phone && (
-                    <div className="inline-flex items-center gap-1.5 rounded-md bg-surface border border-border/80 px-2.5 py-1 text-2xs font-mono text-muted-foreground shadow-2xs">
+                    <div className="inline-flex items-center gap-1.5 rounded-md bg-surface border border-border/80 px-2.5 py-1 text-xs font-mono text-muted-foreground shadow-2xs">
                       <Phone
-                        className="h-3 w-3 text-primary shrink-0"
+                        className="h-3.5 w-3.5 text-primary shrink-0"
                         aria-hidden="true"
                       />
                       <span className="text-foreground font-semibold">
@@ -152,9 +152,9 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
                   )}
 
                   {parsedDesc.hospital && (
-                    <div className="inline-flex items-center gap-1.5 rounded-md bg-surface border border-border/80 px-2.5 py-1 text-2xs text-muted-foreground shadow-2xs">
+                    <div className="inline-flex items-center gap-1.5 rounded-md bg-surface border border-border/80 px-2.5 py-1 text-xs text-muted-foreground shadow-2xs">
                       <Building2
-                        className="h-3 w-3 text-emergency shrink-0"
+                        className="h-3.5 w-3.5 text-emergency shrink-0"
                         aria-hidden="true"
                       />
                       <span
@@ -176,7 +176,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
             aria-label="Active dispatch information"
             className="mt-4 rounded-lg border border-border/60 bg-surface/50 p-3.5 space-y-2.5"
           >
-            <div className="flex items-center justify-between text-2xs font-semibold text-primary">
+            <div className="flex items-center justify-between text-xs font-bold text-primary">
               <span className="flex items-center gap-1.5">
                 <Radio
                   className="h-3.5 w-3.5 text-success"
@@ -218,7 +218,7 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
       </div>
 
       <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3 mt-2">
-        <div className="text-3xs font-mono text-muted-foreground">
+        <div className="text-xs font-mono text-muted-foreground">
           ID: {request.id.slice(0, 8)}…
         </div>
 

@@ -25,12 +25,38 @@ import { parseRequestDescription } from "./RequestCard";
 import { DispatchModal } from "@/features/dispatch";
 import { cn } from "@/lib/utils";
 
-const subscribeTicker = (callback: () => void) => {
-  const timer = setInterval(callback, 1000);
-  return () => clearInterval(timer);
-};
-const getTickerSnapshot = () => Date.now();
-const getServerTickerSnapshot = () => 0;
+let currentTimestamp = 0;
+const tickerListeners = new Set<() => void>();
+let tickerIntervalId: ReturnType<typeof setInterval> | null = null;
+
+function subscribeTicker(callback: () => void) {
+  tickerListeners.add(callback);
+  if (!tickerIntervalId) {
+    currentTimestamp = Date.now();
+    tickerIntervalId = setInterval(() => {
+      currentTimestamp = Date.now();
+      tickerListeners.forEach((listener) => listener());
+    }, 1000);
+  }
+  return () => {
+    tickerListeners.delete(callback);
+    if (tickerListeners.size === 0 && tickerIntervalId) {
+      clearInterval(tickerIntervalId);
+      tickerIntervalId = null;
+    }
+  };
+}
+
+function getTickerSnapshot() {
+  if (currentTimestamp === 0 && typeof window !== "undefined") {
+    currentTimestamp = Date.now();
+  }
+  return currentTimestamp;
+}
+
+function getServerTickerSnapshot() {
+  return 0;
+}
 
 function formatElapsedTime(
   createdAt: string,
@@ -109,7 +135,7 @@ export function PendingRequestsTriage({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold tracking-tight text-foreground">
+              <h2 className="text-base sm:text-lg font-bold tracking-tight text-foreground">
                 Live Emergency Incoming Queue
               </h2>
               {pendingCount > 0 && (
@@ -119,7 +145,7 @@ export function PendingRequestsTriage({
                 </span>
               )}
             </div>
-            <p className="text-3xs text-muted-foreground mt-0.5">
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
               Dhaka metropolitan central triage • High-priority caller dispatch
               board
             </p>
@@ -128,14 +154,14 @@ export function PendingRequestsTriage({
 
         <div className="flex items-center gap-2">
           {pendingCount > 0 ? (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emergency/10 border border-emergency/30 text-danger-ink dark:text-emergency text-xs font-bold shadow-xs">
+            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emergency/10 border border-emergency/30 text-danger-ink dark:text-emergency text-xs sm:text-sm font-bold shadow-xs">
               <span className="tabular-nums">{pendingCount}</span>
               <span>
                 {pendingCount === 1 ? "Caller Waiting" : "Callers Waiting"}
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/30 text-success-ink dark:text-success text-xs font-semibold">
+            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-success/10 border border-success/30 text-success-ink dark:text-success text-xs sm:text-sm font-semibold">
               <Radio className="h-3.5 w-3.5" />
               <span>Triage Clear • Standby</span>
             </div>
@@ -174,10 +200,10 @@ export function PendingRequestsTriage({
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success/10 text-success-ink dark:text-success mx-auto">
               <ShieldCheck className="h-6 w-6" />
             </div>
-            <h3 className="text-sm font-bold text-foreground">
+            <h3 className="text-base font-bold text-foreground">
               Dhaka Central Triage Clear
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Zero emergency callers currently waiting in queue. All incoming
               trips have been mobilized or resolved. Telemetry monitors remain
               live.
@@ -217,9 +243,9 @@ export function PendingRequestsTriage({
                     <StatusBadge
                       domain="priority"
                       value={req.priority}
-                      size="sm"
+                      size="default"
                     />
-                    <span className="font-mono text-3xs text-muted-foreground">
+                    <span className="font-mono text-xs font-semibold text-muted-foreground">
                       #{req.id.slice(0, 8)}
                     </span>
                   </div>
@@ -228,19 +254,19 @@ export function PendingRequestsTriage({
                     {/* Wait Time Indicator */}
                     <div
                       className={cn(
-                        "flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-3xs font-mono font-semibold border",
+                        "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold border",
                         isSlaExceeded
                           ? "bg-warning/15 text-warning-ink border-warning/30 animate-pulse"
                           : "bg-surface text-muted-foreground border-border",
                       )}
                       title={`Request created at ${new Date(req.createdAt).toLocaleTimeString()}`}
                     >
-                      <Clock className="h-3 w-3" />
+                      <Clock className="h-3.5 w-3.5" />
                       <span>Waiting: {waitTimeText}</span>
                     </div>
 
                     {isSlaExceeded && (
-                      <span className="text-3xs font-extrabold uppercase tracking-wider text-warning-ink bg-warning/10 px-2 py-0.5 rounded border border-warning/20">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-warning-ink bg-warning/10 px-2.5 py-1 rounded border border-warning/20">
                         SLA Alert
                       </span>
                     )}
@@ -248,29 +274,29 @@ export function PendingRequestsTriage({
                 </div>
 
                 {/* Patient / Caller info */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div className="flex items-start gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-start gap-2.5">
                     <User className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-3xs uppercase tracking-wider text-muted-foreground block font-semibold">
+                      <span className="text-xs uppercase tracking-wider text-muted-foreground block font-bold">
                         Caller
                       </span>
-                      <span className="font-medium text-foreground">
+                      <span className="font-semibold text-sm text-foreground">
                         {req.caller?.name || "Anonymous Patient"}
                       </span>
                     </div>
                   </div>
 
                   {contactPhone ? (
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-2.5">
                       <Phone className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                       <div>
-                        <span className="text-3xs uppercase tracking-wider text-muted-foreground block font-semibold">
+                        <span className="text-xs uppercase tracking-wider text-muted-foreground block font-bold">
                           Callback Phone
                         </span>
                         <a
                           href={`tel:${contactPhone.replace(/\s+/g, "")}`}
-                          className="font-mono font-bold text-primary hover:underline"
+                          className="font-mono font-bold text-sm text-primary hover:underline"
                         >
                           {contactPhone}
                         </a>
@@ -280,13 +306,13 @@ export function PendingRequestsTriage({
                 </div>
 
                 {/* Pickup Address */}
-                <div className="flex items-start gap-2 text-xs bg-surface/50 p-2.5 rounded-xl border border-border/40">
+                <div className="flex items-start gap-2.5 text-sm bg-surface/50 p-3 rounded-xl border border-border/40">
                   <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
                   <div className="min-w-0">
-                    <span className="text-3xs uppercase tracking-wider text-muted-foreground block font-semibold">
+                    <span className="text-xs uppercase tracking-wider text-muted-foreground block font-bold">
                       Pickup Location
                     </span>
-                    <span className="font-medium text-foreground wrap-break-word">
+                    <span className="font-semibold text-sm text-foreground wrap-break-word">
                       {req.pickupAddress}
                     </span>
                   </div>
@@ -294,10 +320,10 @@ export function PendingRequestsTriage({
 
                 {/* Target Hospital & Medical condition */}
                 {(parsed.hospital || parsed.notes) && (
-                  <div className="space-y-1.5 text-xs">
+                  <div className="space-y-2 text-sm">
                     {parsed.hospital && (
-                      <div className="flex items-center gap-2 text-3xs text-muted-foreground">
-                        <Building2 className="h-3.5 w-3.5 text-info-ink dark:text-info shrink-0" />
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Building2 className="h-4 w-4 text-info-ink dark:text-info shrink-0" />
                         <span>
                           Target Hospital:{" "}
                           <strong className="text-foreground">
@@ -307,10 +333,10 @@ export function PendingRequestsTriage({
                       </div>
                     )}
                     {parsed.notes && (
-                      <div className="flex items-start gap-2 text-3xs text-muted-foreground bg-background/80 p-2 rounded-lg border border-border/40">
-                        <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
-                        <span className="line-clamp-2">
-                          <strong className="text-foreground">
+                      <div className="flex items-start gap-2.5 text-xs text-muted-foreground bg-background/80 p-2.5 rounded-lg border border-border/40">
+                        <FileText className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                        <span className="line-clamp-2 leading-relaxed">
+                          <strong className="text-foreground font-semibold">
                             Condition:
                           </strong>{" "}
                           {parsed.notes}
@@ -326,7 +352,7 @@ export function PendingRequestsTriage({
                     type="button"
                     variant="emergency"
                     onClick={() => setSelectedRequest(req)}
-                    className="w-full gap-2 font-bold text-xs py-2.5 shadow-sm shadow-emergency/20"
+                    className="w-full gap-2 font-bold text-sm py-2.5 shadow-sm shadow-emergency/20"
                   >
                     <Zap className="h-4 w-4" />
                     <span>⚡ Mobilize Ambulance Unit</span>

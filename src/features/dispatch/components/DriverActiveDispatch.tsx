@@ -146,15 +146,15 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
           <div className="grid grid-cols-3 gap-2 text-center">
             <div>
               <div className="text-lg font-bold text-foreground">72</div>
-              <div className="text-3xs text-muted-foreground">HR</div>
+              <div className="text-xs font-semibold text-muted-foreground">HR</div>
             </div>
             <div>
               <div className="text-lg font-bold text-foreground">120/80</div>
-              <div className="text-3xs text-muted-foreground">BP</div>
+              <div className="text-xs font-semibold text-muted-foreground">BP</div>
             </div>
             <div>
               <div className="text-lg font-bold text-foreground">98%</div>
-              <div className="text-3xs text-muted-foreground">SpO2</div>
+              <div className="text-xs font-semibold text-muted-foreground">SpO2</div>
             </div>
           </div>
         </Card>
@@ -216,7 +216,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
             <div className="flex items-start gap-3 rounded-xl bg-surface p-3.5 border border-border/60">
               <Navigation className="h-5 w-5 shrink-0 text-emergency mt-0.5" />
               <div>
-                <span className="text-3xs font-semibold uppercase tracking-wider text-emergency">
+                <span className="text-xs font-bold uppercase tracking-wider text-emergency">
                   Patient Pickup Location
                 </span>
                 <p className="text-sm font-bold text-foreground mt-0.5">
@@ -234,7 +234,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
             <div className="flex items-start gap-3 rounded-xl bg-surface p-3.5 border border-border/60">
               <Building2 className="h-5 w-5 shrink-0 text-primary mt-0.5" />
               <div>
-                <span className="text-3xs font-semibold uppercase tracking-wider text-primary">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary">
                   Destination Emergency Department
                 </span>
                 <p className="text-sm font-bold text-foreground mt-0.5">
@@ -257,25 +257,25 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl bg-surface p-3.5 border border-border/60">
-              <span className="text-3xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Ambulance Reg
               </span>
               <p className="text-sm font-bold text-foreground mt-1">
                 {dispatch.ambulance?.vehicleNumber || "DHAKA-EM-104"}
               </p>
-              <span className="text-3xs text-primary font-mono mt-0.5 block">
+              <span className="text-xs text-primary font-mono mt-0.5 block">
                 {dispatch.ambulance?.type || "ADVANCED_LIFE_SUPPORT"}
               </span>
             </div>
 
             <div className="rounded-xl bg-surface p-3.5 border border-border/60">
-              <span className="text-3xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Assigned Driver
               </span>
               <p className="text-sm font-bold text-foreground mt-1">
                 {dispatch.driver?.user?.name || "Paramedic Crew"}
               </p>
-              <span className="text-3xs text-success font-mono mt-0.5 block">
+              <span className="text-xs text-success font-mono mt-0.5 block">
                 License: {dispatch.driver?.licenseNumber || "N/A"}
               </span>
             </div>
@@ -284,7 +284,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
           {/* Quick Note Input */}
           {nextStep && (
             <div className="space-y-1.5 pt-2">
-              <label className="block text-3xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Telemetry Log / Note for this transition (optional):
               </label>
               <input
@@ -304,7 +304,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
         <Card className="p-6 bg-surface-raised border-primary/30">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="text-3xs font-bold uppercase tracking-wider text-primary">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 Next Operational Checkpoint
               </span>
               <h4 className="text-lg font-bold text-foreground mt-0.5">

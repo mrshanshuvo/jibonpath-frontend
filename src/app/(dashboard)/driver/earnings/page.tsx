@@ -120,7 +120,7 @@ export default function DriverEarningsPage() {
             <span className="font-mono text-2xl font-black text-foreground">
               {formatCurrency(totalEarned)}
             </span>
-            <p className="text-3xs text-success-ink dark:text-success font-medium flex items-center gap-1 mt-1">
+            <p className="text-xs text-success-ink dark:text-success font-medium flex items-center gap-1 mt-1">
               <TrendingUp className="h-3 w-3" />
               +14% from last period
             </p>
@@ -140,7 +140,7 @@ export default function DriverEarningsPage() {
             <span className="font-mono text-2xl font-black text-foreground">
               {completedCount}
             </span>
-            <p className="text-3xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               100% successful patient handovers
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function DriverEarningsPage() {
             <span className="font-mono text-2xl font-black text-foreground">
               {formatCurrency(avgPerTrip)}
             </span>
-            <p className="text-3xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Base fare + emergency allowance
             </p>
           </div>
@@ -178,7 +178,7 @@ export default function DriverEarningsPage() {
             <span className="font-mono text-2xl font-black text-foreground">
               4.95 ★
             </span>
-            <p className="text-3xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Based on 28 hospital evaluations
             </p>
           </div>
@@ -198,7 +198,11 @@ export default function DriverEarningsPage() {
         <CardContent className="p-0">
           <div className="h-64 w-full">
             {isClient ? (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer
+                width="100%"
+                height={256}
+                initialDimension={{ width: 500, height: 256 }}
+              >
                 <BarChart
                   data={MOCK_DAILY_CHART}
                   margin={{ top: 10, right: 10, left: -20, bottom: 0 }}

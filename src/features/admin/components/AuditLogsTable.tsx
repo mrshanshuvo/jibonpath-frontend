@@ -140,7 +140,7 @@ export function AuditLogsTable() {
             className="overflow-x-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40"
           >
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Timestamp</th>
                   <th className="px-5 py-3.5">Action</th>
@@ -155,7 +155,7 @@ export function AuditLogsTable() {
                     key={log.id}
                     className="hover:bg-surface-raised/40 transition-colors"
                   >
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground whitespace-nowrap">
+                    <td className="px-5 py-4 font-mono text-xs text-muted-foreground whitespace-nowrap">
                       {formatDateTime(log.createdAt)}
                     </td>
 
@@ -165,7 +165,7 @@ export function AuditLogsTable() {
                       <div className="flex items-center gap-1.5 font-medium text-foreground">
                         <Tag className="h-3.5 w-3.5 text-muted-foreground" />
                         <span>{log.entityType}</span>
-                        <span className="font-mono text-3xs text-muted-foreground">
+                        <span className="font-mono text-xs text-muted-foreground">
                           (#{log.entityId.slice(0, 6)})
                         </span>
                       </div>
@@ -177,12 +177,12 @@ export function AuditLogsTable() {
                           <span className="font-medium text-foreground block">
                             {log.actor.name}
                           </span>
-                          <span className="text-3xs font-mono text-muted-foreground">
+                          <span className="text-xs font-mono text-muted-foreground">
                             {log.actor.email}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           System Automated
                         </span>
                       )}
@@ -191,13 +191,13 @@ export function AuditLogsTable() {
                     <td className="px-5 py-4 text-right">
                       {log.metadata ? (
                         <span
-                          className="font-mono text-3xs text-muted-foreground max-w-xs sm:max-w-md truncate inline-block"
+                          className="font-mono text-xs text-muted-foreground max-w-xs sm:max-w-md truncate inline-block"
                           title={JSON.stringify(log.metadata)}
                         >
                           {JSON.stringify(log.metadata)}
                         </span>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           None
                         </span>
                       )}

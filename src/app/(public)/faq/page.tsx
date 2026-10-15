@@ -98,8 +98,8 @@ function FaqContent() {
       {/* Hero Header */}
       <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
         <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-4">
-            <HelpCircle className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
+            <HelpCircle className="h-4 w-4" />
             <span>Operational FAQ & Guidelines</span>
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
@@ -154,7 +154,7 @@ function FaqContent() {
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-raised/40 transition-colors"
                 >
                   <div className="pr-4">
-                    <span className="text-3xs font-semibold uppercase tracking-wider text-primary">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary">
                       {faq.category}
                     </span>
                     <h2 className="text-base sm:text-lg font-semibold text-foreground mt-1">

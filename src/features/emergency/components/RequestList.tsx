@@ -78,9 +78,9 @@ export function RequestList({ onPay }: RequestListProps) {
                 aria-checked={isSelected}
                 onClick={() => handleStatusChange(filter.value)}
                 className={cn(
-                  "px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors cursor-pointer",
+                  "px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer",
                   isSelected
-                    ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                    ? "bg-primary text-primary-foreground shadow-sm"
                     : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised",
                 )}
               >
@@ -135,7 +135,7 @@ export function RequestList({ onPay }: RequestListProps) {
           <h3 className="text-base font-bold text-foreground">
             Failed to Load Requests
           </h3>
-          <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
             We couldn&apos;t fetch your emergency requests from the dispatch
             server.
           </p>

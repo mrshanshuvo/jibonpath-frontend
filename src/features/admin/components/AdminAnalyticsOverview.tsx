@@ -95,7 +95,7 @@ export function AdminAnalyticsOverview() {
         {/* Total Revenue */}
         <Card className="p-6 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Total Revenue Settled
             </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10 text-success-ink">
@@ -106,7 +106,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-foreground">
               {formatCurrency(revenue)}
             </span>
-            <p className="text-3xs text-muted-foreground mt-1 flex items-center gap-1">
+            <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1.5">
               <span className="text-success-ink font-semibold">
                 100% Digital
               </span>{" "}
@@ -118,7 +118,7 @@ export function AdminAnalyticsOverview() {
         {/* Active Dispatches */}
         <Card className="p-6 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Active Dispatches
             </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emergency/10 text-emergency">
@@ -133,7 +133,7 @@ export function AdminAnalyticsOverview() {
               Units
             </span>
           </div>
-          <p className="text-3xs text-muted-foreground mt-1">
+          <p className="text-xs text-muted-foreground mt-1.5">
             {pendingRequests} pending triage calls waiting
           </p>
         </Card>
@@ -141,7 +141,7 @@ export function AdminAnalyticsOverview() {
         {/* Available Fleet */}
         <Card className="p-6 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Available Response Fleet
             </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-info/10 text-info-ink">
@@ -152,7 +152,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-foreground">
               {availableFleet} / {totalFleet}
             </span>
-            <p className="text-3xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1.5">
               Ready for immediate metropolitan dispatch
             </p>
           </div>
@@ -161,7 +161,7 @@ export function AdminAnalyticsOverview() {
         {/* Total Users */}
         <Card className="p-6 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-3xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Registered Accounts
             </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -172,7 +172,7 @@ export function AdminAnalyticsOverview() {
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-foreground">
               {usersCount}
             </span>
-            <p className="text-3xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1.5">
               {driversCount} certified paramedic drivers
             </p>
           </div>
@@ -188,10 +188,10 @@ export function AdminAnalyticsOverview() {
         <Card className="p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-foreground">
+              <h3 className="text-base font-bold text-foreground">
                 Fleet Capacity Utilization
               </h3>
-              <p className="text-3xs text-muted-foreground mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Current allocation across Dhaka emergency sectors
               </p>
             </div>
@@ -232,19 +232,19 @@ export function AdminAnalyticsOverview() {
           <div className="flex flex-wrap items-center justify-between text-xs pt-2">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-emergency" />
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground font-medium">
                 Dispatched ({dispatchedFleet})
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-success" />
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground font-medium">
                 Available ({availableFleet})
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-warning" />
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground font-medium">
                 Maintenance ({maintenanceFleet})
               </span>
             </div>
@@ -254,10 +254,10 @@ export function AdminAnalyticsOverview() {
         {/* Request Fulfillment Metrics */}
         <Card className="p-6 space-y-4">
           <div>
-            <h3 className="text-sm font-bold text-foreground">
+            <h3 className="text-base font-bold text-foreground">
               Emergency Request Life-Cycle
             </h3>
-            <p className="text-3xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Cumulative patient triage request resolution
             </p>
           </div>
@@ -267,7 +267,7 @@ export function AdminAnalyticsOverview() {
               <span className="font-mono text-2xl font-bold text-foreground block">
                 {totalRequests}
               </span>
-              <span className="text-3xs font-semibold text-muted-foreground uppercase tracking-wider mt-1 block">
+              <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1.5 block">
                 Total Received
               </span>
             </div>
@@ -276,7 +276,7 @@ export function AdminAnalyticsOverview() {
               <span className="font-mono text-2xl font-bold text-warning-ink block">
                 {pendingRequests}
               </span>
-              <span className="text-3xs font-semibold text-warning-ink uppercase tracking-wider mt-1 block">
+              <span className="text-xs font-bold text-warning-ink uppercase tracking-wider mt-1.5 block">
                 Awaiting Dispatch
               </span>
             </div>
@@ -285,7 +285,7 @@ export function AdminAnalyticsOverview() {
               <span className="font-mono text-2xl font-bold text-success-ink block">
                 {completedRequests}
               </span>
-              <span className="text-3xs font-semibold text-success-ink uppercase tracking-wider mt-1 block">
+              <span className="text-xs font-bold text-success-ink uppercase tracking-wider mt-1.5 block">
                 Safely Delivered
               </span>
             </div>
@@ -301,10 +301,10 @@ export function AdminAnalyticsOverview() {
               <Activity className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-foreground">
+              <h3 className="text-base font-bold text-foreground">
                 Fleet & Mission Operations Distribution
               </h3>
-              <p className="text-3xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Real-time operational distribution across active emergency units
               </p>
             </div>
@@ -315,9 +315,13 @@ export function AdminAnalyticsOverview() {
           </div>
         </div>
 
-        <div className="h-56 w-full pt-4">
+        <div className="h-56 w-full pt-4 min-w-0">
           {mounted ? (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer
+              width="100%"
+              height={224}
+              initialDimension={{ width: 500, height: 224 }}
+            >
               <BarChart
                 data={chartData}
                 margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
@@ -325,13 +329,13 @@ export function AdminAnalyticsOverview() {
                 <XAxis
                   dataKey="name"
                   stroke="currentColor"
-                  className="text-3xs text-muted-foreground"
+                  className="text-xs text-muted-foreground font-medium"
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   stroke="currentColor"
-                  className="text-3xs text-muted-foreground"
+                  className="text-xs text-muted-foreground font-medium"
                   tickLine={false}
                   axisLine={false}
                   allowDecimals={false}
@@ -345,7 +349,7 @@ export function AdminAnalyticsOverview() {
                           <p className="text-xs font-semibold text-foreground">
                             {data.name}
                           </p>
-                          <p className="text-3xs font-mono font-bold text-primary">
+                          <p className="text-xs font-mono font-bold text-primary">
                             {data.count} units / cases
                           </p>
                         </div>

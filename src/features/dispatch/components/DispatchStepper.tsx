@@ -125,7 +125,7 @@ export function DispatchStepper({
                 <div className="flex flex-col">
                   <span
                     className={cn(
-                      "text-xs font-bold transition-colors leading-tight",
+                      "text-sm font-bold transition-colors leading-tight",
                       isCurrent && "text-emergency",
                       isCompleted && "text-foreground",
                       isUpcoming && "text-muted-foreground",
@@ -133,7 +133,7 @@ export function DispatchStepper({
                   >
                     {step.label}
                   </span>
-                  <span className="text-3xs text-muted-foreground font-medium leading-tight mt-0.5">
+                  <span className="text-xs text-muted-foreground font-medium leading-tight mt-0.5">
                     {step.desc}
                   </span>
                 </div>

@@ -117,19 +117,19 @@ export function FleetTable() {
     switch (type) {
       case AmbulanceType.BASIC:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20 whitespace-nowrap">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20 whitespace-nowrap">
             BLS (Basic)
           </span>
         );
       case AmbulanceType.ADVANCED_LIFE_SUPPORT:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
             ACLS (Cardiac)
           </span>
         );
       case AmbulanceType.INTENSIVE_CARE:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20 whitespace-nowrap">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20 whitespace-nowrap">
             ICU (Ventilator)
           </span>
         );
@@ -177,9 +177,9 @@ export function FleetTable() {
               onClick={() =>
                 handleTypeFilterChange(type as AmbulanceType | "ALL")
               }
-              className={`px-2.5 py-1 rounded-md text-3xs font-medium transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                 typeFilter === type
-                  ? "bg-foreground text-background font-bold"
+                  ? "bg-foreground text-background font-bold shadow-xs"
                   : "bg-surface/50 border border-border/60 text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -243,7 +243,7 @@ export function FleetTable() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Registration & Vehicle</th>
                   <th className="px-5 py-3.5">Equipment Tier</th>
@@ -268,7 +268,7 @@ export function FleetTable() {
                           <span className="font-bold text-xs sm:text-sm font-mono block text-foreground">
                             {amb.vehicleNumber}
                           </span>
-                          <span className="text-3xs text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {amb.make || "Toyota HiAce Emergency"}
                           </span>
                         </div>
@@ -285,18 +285,18 @@ export function FleetTable() {
                           <span className="font-medium text-foreground block">
                             {amb.driver.user.name}
                           </span>
-                          <span className="text-3xs font-mono text-muted-foreground">
+                          <span className="text-xs font-mono text-muted-foreground">
                             Lic: {amb.driver.licenseNumber}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           Unassigned
                         </span>
                       )}
                     </td>
 
-                    <td className="px-5 py-4 text-3xs font-mono text-muted-foreground whitespace-nowrap">
+                    <td className="px-5 py-4 text-xs font-mono text-muted-foreground whitespace-nowrap">
                       {formatDateTime(amb.updatedAt)}
                     </td>
 

@@ -92,8 +92,8 @@ export default function AdminDispatchesPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-success/30 bg-success-tint px-3 py-1 text-3xs font-semibold text-success-ink dark:text-success">
-          <Radio className="h-3 w-3" />
+        <div className="flex items-center gap-2 rounded-full border border-success/30 bg-success-tint px-3.5 py-1.5 text-xs font-semibold text-success-ink dark:text-success">
+          <Radio className="h-3.5 w-3.5" />
           <span>RADAR TELEMETRY POLLING ACTIVE</span>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function AdminDispatchesPage() {
             setParams({ tab: "queue", page: "1" });
           }}
           className={cn(
-            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer relative",
+            "flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer relative",
             activeTab === "queue"
               ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25"
               : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised",
@@ -118,7 +118,7 @@ export default function AdminDispatchesPage() {
           {pendingCount > 0 ? (
             <span
               className={cn(
-                "px-2 py-0.5 rounded-full text-3xs font-extrabold",
+                "px-2 py-0.5 rounded-full text-xs font-bold",
                 activeTab === "queue"
                   ? "bg-emergency text-emergency-foreground animate-pulse"
                   : "bg-emergency/20 text-danger-ink dark:text-emergency",
@@ -127,7 +127,7 @@ export default function AdminDispatchesPage() {
               {pendingCount}
             </span>
           ) : (
-            <span className="px-2 py-0.5 rounded-full text-3xs font-medium bg-surface-raised text-muted-foreground">
+            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-raised text-muted-foreground">
               0
             </span>
           )}
@@ -140,7 +140,7 @@ export default function AdminDispatchesPage() {
             setParams({ tab: "telemetry", page: "1" });
           }}
           className={cn(
-            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
+            "flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer",
             activeTab === "telemetry"
               ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25"
               : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised",
@@ -150,7 +150,7 @@ export default function AdminDispatchesPage() {
           <span>Active Fleet Telemetry</span>
           <span
             className={cn(
-              "px-2 py-0.5 rounded-full text-3xs font-medium",
+              "px-2 py-0.5 rounded-full text-xs font-bold",
               activeTab === "telemetry"
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-surface-raised text-muted-foreground",
@@ -250,15 +250,15 @@ export default function AdminDispatchesPage() {
                             }
                           />
                         </div>
-                        <span className="text-3xs text-muted-foreground font-mono">
+                        <span className="text-xs text-muted-foreground font-mono">
                           Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-102"} •
                           Driver: {d.driver?.user?.name || "Paramedic"}
                         </span>
                       </div>
                     </div>
 
-                    <div className="text-3xs font-mono text-muted-foreground flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
+                    <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" />
                       <span>Dispatched: {formatDateTime(d.dispatchedAt)}</span>
                     </div>
                   </div>
@@ -271,10 +271,10 @@ export default function AdminDispatchesPage() {
                     <div className="flex items-start gap-2">
                       <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
                       <div>
-                        <span className="text-3xs text-muted-foreground uppercase tracking-wider block">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wider block font-bold">
                           Pickup Address
                         </span>
-                        <span className="font-medium text-foreground">
+                        <span className="font-semibold text-foreground">
                           {d.request?.pickupAddress ||
                             "Pickup location not provided"}
                         </span>
@@ -284,10 +284,10 @@ export default function AdminDispatchesPage() {
                     <div className="flex items-start gap-2">
                       <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                       <div>
-                        <span className="text-3xs text-muted-foreground uppercase tracking-wider block">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wider block font-bold">
                           Receiving Trauma Bay
                         </span>
-                        <span className="font-medium text-foreground">
+                        <span className="font-semibold text-foreground">
                           {d.hospital?.name || "Dhaka Medical College Hospital"}
                         </span>
                       </div>

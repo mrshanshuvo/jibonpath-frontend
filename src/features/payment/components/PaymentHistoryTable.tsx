@@ -49,7 +49,7 @@ export function PaymentHistoryTable() {
 
   const getGatewayBadge = (gateway: string) => {
     return (
-      <span className="text-3xs font-medium px-2 py-0.5 rounded-full border border-border bg-surface-raised text-foreground">
+      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full border border-border bg-surface-raised text-foreground">
         {gateway}
       </span>
     );
@@ -127,7 +127,7 @@ export function PaymentHistoryTable() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Transaction Date</th>
                   <th className="px-5 py-3.5">Request Reference</th>
@@ -143,7 +143,7 @@ export function PaymentHistoryTable() {
                     key={p.id}
                     className="hover:bg-surface-raised/40 transition-colors"
                   >
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground">
+                    <td className="px-5 py-4 font-mono text-xs text-muted-foreground">
                       {formatDateTime(p.createdAt)}
                     </td>
 
@@ -187,7 +187,7 @@ export function PaymentHistoryTable() {
                           </Link>
                         </div>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           No receipt
                         </span>
                       )}

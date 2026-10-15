@@ -87,7 +87,7 @@ export default function DashboardLayout({
             </button>
 
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-xs sm:text-sm text-foreground">
+              <span className="font-bold text-sm text-foreground">
                 {getBreadcrumbTitle()}
               </span>
             </div>
@@ -99,10 +99,10 @@ export default function DashboardLayout({
             {isAdmin && pendingCount > 0 && (
               <Link
                 href={`${ROUTES.ADMIN.DISPATCHES}?tab=queue`}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/40 bg-emergency/15 text-danger-ink dark:text-emergency text-3xs font-extrabold animate-pulse hover:bg-emergency/25 transition-all shadow-xs"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/40 bg-emergency/15 text-danger-ink dark:text-emergency text-xs font-bold animate-pulse hover:bg-emergency/25 transition-all shadow-xs"
                 title="View incoming emergency queue"
               >
-                <Siren className="h-3 w-3 shrink-0" />
+                <Siren className="h-3.5 w-3.5 shrink-0" />
                 <span>
                   🚨 {pendingCount}{" "}
                   {pendingCount === 1 ? "Caller Waiting" : "Callers Waiting"}
@@ -111,8 +111,8 @@ export default function DashboardLayout({
             )}
 
             {/* Real-time telemetry status indicator */}
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-success/25 bg-success-tint px-3 py-1 text-3xs font-medium text-success-ink dark:text-success">
-              <Radio className="h-3 w-3" />
+            <div className="hidden sm:flex items-center gap-2 rounded-full border border-success/25 bg-success-tint px-3 py-1 text-xs font-semibold text-success-ink dark:text-success">
+              <Radio className="h-3.5 w-3.5" />
               <span>DISPATCH TELEMETRY ONLINE</span>
             </div>
 

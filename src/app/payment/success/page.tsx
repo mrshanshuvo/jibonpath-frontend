@@ -29,13 +29,13 @@ function PaymentSuccessContent() {
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-center gap-2">
-            <span className="text-3xs font-bold uppercase tracking-wider text-success-ink dark:text-success">
+            <span className="text-xs font-bold uppercase tracking-wider text-success-ink dark:text-success">
               Payment Completed
             </span>
             {gateway && (
               <Badge
                 variant="outline"
-                className="text-3xs font-mono border-success/30 text-success"
+                className="text-xs font-mono border-success/30 text-success"
               >
                 {gateway === "BKASH"
                   ? "bKash Verified"
@@ -48,7 +48,7 @@ function PaymentSuccessContent() {
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Emergency Fee Settled
           </h1>
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             Your emergency ambulance transportation charge has been confirmed
             and settled. An electronic tax receipt has been generated.
           </p>
@@ -58,30 +58,30 @@ function PaymentSuccessContent() {
           <div className="rounded-lg bg-surface p-3 border border-border/50 text-left space-y-2">
             {trxId && (
               <div>
-                <span className="text-3xs text-muted-foreground uppercase font-mono block">
+                <span className="text-xs text-muted-foreground uppercase font-mono font-bold block">
                   Transaction ID (TRX):
                 </span>
-                <span className="font-mono text-xs font-semibold text-foreground truncate block">
+                <span className="font-mono text-sm font-semibold text-foreground truncate block">
                   {trxId}
                 </span>
               </div>
             )}
             {sessionId && (
               <div>
-                <span className="text-3xs text-muted-foreground uppercase font-mono block">
+                <span className="text-xs text-muted-foreground uppercase font-mono font-bold block">
                   Payment Reference:
                 </span>
-                <span className="font-mono text-xs text-foreground truncate block">
+                <span className="font-mono text-sm text-foreground truncate block">
                   {sessionId}
                 </span>
               </div>
             )}
             {requestId && (
               <div>
-                <span className="text-3xs text-muted-foreground uppercase font-mono block">
+                <span className="text-xs text-muted-foreground uppercase font-mono font-bold block">
                   Emergency Request ID:
                 </span>
-                <span className="font-mono text-xs text-foreground truncate block">
+                <span className="font-mono text-sm text-foreground truncate block">
                   {requestId}
                 </span>
               </div>
@@ -89,8 +89,8 @@ function PaymentSuccessContent() {
           </div>
         )}
 
-        <div className="flex items-center gap-1.5 justify-center text-3xs text-muted-foreground">
-          <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
+        <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground font-medium">
+          <ShieldCheck className="h-4 w-4 text-success-ink dark:text-success" />
           <span>SSL 256-Bit Encrypted Settlement</span>
         </div>
 

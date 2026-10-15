@@ -58,14 +58,14 @@ export default function DriverDashboardPage() {
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               Paramedic Driver Cockpit
             </h1>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-sm text-muted-foreground mt-1.5">
               Real-time telemetry and navigation console for active emergency
               assignments.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full border border-success/20 bg-success-tint px-3 py-1 text-3xs font-medium text-success-ink dark:text-success">
-            <Radio className="h-3 w-3" />
+          <div className="flex items-center gap-2 rounded-full border border-success/20 bg-success-tint px-3.5 py-1.5 text-xs font-semibold text-success-ink dark:text-success">
+            <Radio className="h-3.5 w-3.5" />
             <span>STANDBY READY ON ROTATION</span>
           </div>
         </div>

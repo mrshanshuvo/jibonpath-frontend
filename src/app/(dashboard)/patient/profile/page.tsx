@@ -86,10 +86,10 @@ export default function PatientProfilePage() {
                 {user.role}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground font-mono mt-0.5">
+            <p className="text-sm text-muted-foreground font-mono mt-0.5">
               {user.email}
             </p>
-            <span className="text-3xs text-muted-foreground mt-1 block">
+            <span className="text-xs text-muted-foreground font-medium mt-1 block">
               Member since: {formatDateTime(user.createdAt)}
             </span>
           </div>

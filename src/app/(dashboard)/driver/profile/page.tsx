@@ -34,12 +34,12 @@ export default function DriverProfilePage() {
                 PARAMEDIC DRIVER
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground font-mono mt-0.5">
+            <p className="text-sm text-muted-foreground font-mono mt-0.5">
               {user.email}
             </p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="inline-flex items-center gap-1 text-3xs text-success-ink dark:text-success font-semibold bg-success-tint px-2 py-0.5 rounded-full border border-success/20">
-                <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              <span className="inline-flex items-center gap-1.5 text-xs text-success-ink dark:text-success font-bold bg-success-tint px-2.5 py-0.5 rounded-full border border-success/20">
+                <span className="h-2 w-2 rounded-full bg-success" />
                 Active on Dhaka Duty Rotation
               </span>
             </div>
@@ -48,33 +48,33 @@ export default function DriverProfilePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
           <div className="rounded-xl bg-surface p-4 border border-border/60 space-y-1">
-            <span className="text-3xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
               <CreditCard className="h-3.5 w-3.5 text-primary" />
               BRTA Heavy License
             </span>
             <p className="font-mono font-bold text-foreground text-sm">
               BRTA-DHAKA-2022-7718
             </p>
-            <span className="text-3xs text-success font-medium">
+            <span className="text-xs text-success font-semibold">
               Verified & Active
             </span>
           </div>
 
           <div className="rounded-xl bg-surface p-4 border border-border/60 space-y-1">
-            <span className="text-3xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
               <Shield className="h-3.5 w-3.5 text-emergency" />
               Medical Certifications
             </span>
             <p className="font-bold text-foreground text-sm">
               ACLS / BLS / Trauma Resuscitation
             </p>
-            <span className="text-3xs text-muted-foreground font-mono">
+            <span className="text-xs text-muted-foreground font-mono">
               Issued by DGHS Dhaka
             </span>
           </div>
 
           <div className="rounded-xl bg-surface p-4 border border-border/60 space-y-1">
-            <span className="text-3xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
               <Phone className="h-3.5 w-3.5 text-muted-foreground" />
               Direct Emergency Hotline
             </span>
@@ -84,11 +84,11 @@ export default function DriverProfilePage() {
           </div>
 
           <div className="rounded-xl bg-surface p-4 border border-border/60 space-y-1">
-            <span className="text-3xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
               <Clock className="h-3.5 w-3.5 text-muted-foreground" />
               Account Commissioned
             </span>
-            <p className="font-mono text-xs text-foreground">
+            <p className="font-mono text-sm text-foreground">
               {formatDateTime(user.createdAt)}
             </p>
           </div>

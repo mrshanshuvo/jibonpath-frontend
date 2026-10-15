@@ -139,7 +139,7 @@ export default function ServicesPage() {
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <Badge variant={tier.badgeVariant}>{tier.badge}</Badge>
-                    <span className="font-sans text-2xs font-bold tracking-wider text-muted-foreground uppercase">
+                    <span className="font-sans text-xs font-bold tracking-wider text-muted-foreground uppercase">
                       {TIER_TYPE_LABELS[tier.type]}
                     </span>
                   </div>
@@ -156,7 +156,7 @@ export default function ServicesPage() {
                   </p>
 
                   <div className="mt-6 border-t border-border/60 pt-4">
-                    <h3 className="text-3xs font-bold uppercase tracking-wider text-foreground mb-3">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground mb-3">
                       Onboard Medical Equipment:
                     </h3>
                     <ul className="space-y-2">
@@ -173,7 +173,7 @@ export default function ServicesPage() {
                   </div>
 
                   <div className="mt-5 rounded-lg bg-surface p-3 border border-border/40">
-                    <span className="text-3xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                       Recommended For:
                     </span>
                     <p className="text-xs text-foreground mt-0.5 font-medium">

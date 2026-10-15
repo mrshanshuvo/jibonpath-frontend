@@ -71,12 +71,15 @@ async function refreshAccessToken(): Promise<string | null> {
       });
 
       if (!res.ok) {
-        await handleLogout();
+        if (useAuthStore.getState().accessToken) {
+          await handleLogout();
+        }
         return null;
       }
 
       const json = (await res.json()) as {
         success: boolean;
+        authenticated?: boolean;
         accessToken?: string;
       };
       if (json.success && json.accessToken) {
@@ -84,10 +87,14 @@ async function refreshAccessToken(): Promise<string | null> {
         return json.accessToken;
       }
 
-      await handleLogout();
+      if (useAuthStore.getState().accessToken) {
+        await handleLogout();
+      }
       return null;
     } catch {
-      await handleLogout();
+      if (useAuthStore.getState().accessToken) {
+        await handleLogout();
+      }
       return null;
     } finally {
       isRefreshing = false;

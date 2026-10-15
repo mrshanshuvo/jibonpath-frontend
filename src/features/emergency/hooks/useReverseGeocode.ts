@@ -32,7 +32,7 @@ export function useReverseGeocode() {
     try {
       const result = await api.get<ReverseGeocodeResult>(
         "/api/geocode/reverse",
-        { params: { lat: coords.lat, lng: coords.lng } },
+        { params: { lat: coords.lat, lng: coords.lng }, skipAuth: true },
       );
       if (!result?.address) throw new Error("Empty geocode response");
       return result;

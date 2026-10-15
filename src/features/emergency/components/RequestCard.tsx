@@ -12,7 +12,11 @@ import {
 } from "lucide-react";
 import { Button, Badge, StatusBadge } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
-import { RequestStatus, type EmergencyRequest } from "@/types/entities.types";
+import {
+  RequestStatus,
+  PaymentStatus,
+  type EmergencyRequest,
+} from "@/types/entities.types";
 import { formatRelativeTime } from "@/lib/utils";
 import { useCancelRequest } from "../api/emergency.queries";
 
@@ -27,7 +31,13 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
   const isPending = request.status === RequestStatus.PENDING;
   const isDispatched = request.status === RequestStatus.DISPATCHED;
   const isCompleted = request.status === RequestStatus.COMPLETED;
-  const canPay = isCompleted && !request.payment && Boolean(onPay);
+
+  const isPaid = request.payment?.status === PaymentStatus.SUCCESS;
+  const isPaymentFailed = request.payment?.status === PaymentStatus.FAILED;
+  const isPaymentPending = request.payment?.status === PaymentStatus.PENDING;
+
+  const canPay = (isCompleted || isDispatched) && !isPaid && Boolean(onPay);
+
 
   return (
     <article className="rounded-lg border border-border/80 bg-card p-5 sm:p-6 shadow-sm hover:border-border transition-colors duration-200 flex flex-col justify-between gap-4">
@@ -147,23 +157,35 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
             </Link>
           )}
 
+          {isPaid && (
+            <Badge variant="success" size="sm">
+              PAID ৳ {request.payment?.amount}
+            </Badge>
+          )}
+
+          {isPaymentFailed && (
+            <Badge variant="destructive" size="sm">
+              Payment Failed
+            </Badge>
+          )}
+
+          {isPaymentPending && (
+            <Badge variant="warning" size="sm">
+              Payment Pending
+            </Badge>
+          )}
+
           {canPay && (
             <Button
-              variant="primary"
+              variant={isPaymentFailed ? "destructive" : "primary"}
               size="sm"
               onClick={() => onPay?.(request)}
               leftIcon={
                 <CreditCard className="h-3.5 w-3.5" aria-hidden="true" />
               }
             >
-              Settle Fee
+              {isPaymentFailed ? "Retry Payment" : "Settle Fee"}
             </Button>
-          )}
-
-          {isCompleted && request.payment && (
-            <Badge variant="success" size="sm">
-              PAID ৳ {request.payment.amount}
-            </Badge>
           )}
         </div>
       </footer>

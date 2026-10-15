@@ -3,18 +3,27 @@
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { AlertCircle, ArrowLeft, RefreshCw, Info, Loader2 } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  RefreshCw,
+  Info,
+  Loader2,
+  CreditCard,
+} from "lucide-react";
 import { Badge, Button, Card, Skeleton } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
 import {
   useRequest,
   useMyRequests,
 } from "@/features/emergency/api/emergency.queries";
-import { PaymentGatewayModal } from "@/features/payment";
+import { PaymentGatewayModal, useInitiatePayment } from "@/features/payment";
+import { PaymentGateway } from "@/types/entities.types";
+import { cn } from "@/lib/utils";
 
 function PaymentCancelContent() {
   const searchParams = useSearchParams();
-  const gateway = (searchParams.get("gateway") || "").toUpperCase();
+  const rawGateway = (searchParams.get("gateway") || "").toUpperCase();
   const status = (searchParams.get("status") || "").toLowerCase();
   const paymentID =
     searchParams.get("paymentID") ||
@@ -23,6 +32,22 @@ function PaymentCancelContent() {
   const requestIdParam = searchParams.get("requestId");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [useSandboxFastTest, setUseSandboxFastTest] = useState(false);
+
+  // Determine which gateway failed
+  const failedGateway: PaymentGateway =
+    rawGateway === "SSLCOMMERZ"
+      ? PaymentGateway.SSLCOMMERZ
+      : rawGateway === "STRIPE"
+        ? PaymentGateway.STRIPE
+        : PaymentGateway.BKASH;
+
+  const gatewayDisplayName =
+    failedGateway === PaymentGateway.BKASH
+      ? "bKash"
+      : failedGateway === PaymentGateway.SSLCOMMERZ
+        ? "SSLCommerz"
+        : "Stripe";
 
   // 1. Fetch direct request if requestId is in query params
   const { data: directRequest, isLoading: isDirectLoading } = useRequest(
@@ -52,8 +77,16 @@ function PaymentCancelContent() {
     isDirectLoading || (isMyRequestsLoading && !resolvedRequest);
   const isFailure = status === "failure" || status === "failed";
 
-  const handleRetry = () => {
-    setIsModalOpen(true);
+  // Mutation for direct 1-click retry
+  const initiateMutation = useInitiatePayment();
+
+  const handleDirectRetry = () => {
+    if (!resolvedRequest) return;
+    initiateMutation.mutate({
+      requestId: resolvedRequest.id,
+      gateway: failedGateway,
+      amount: useSandboxFastTest ? 10 : undefined,
+    });
   };
 
   return (
@@ -80,16 +113,12 @@ function PaymentCancelContent() {
             >
               {isFailure ? "Transaction Failed" : "Transaction Interrupted"}
             </span>
-            {gateway && (
+            {rawGateway && (
               <Badge
                 variant="outline"
                 className="text-xs sm:text-sm font-mono font-bold px-2.5 py-0.5"
               >
-                {gateway === "BKASH"
-                  ? "bKash"
-                  : gateway === "SSLCOMMERZ"
-                    ? "SSLCommerz"
-                    : gateway}
+                {gatewayDisplayName}
               </Badge>
             )}
           </div>
@@ -99,8 +128,8 @@ function PaymentCancelContent() {
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-lg mx-auto">
             {isFailure
-              ? "The payment attempt was declined or interrupted. No charges were made to your account."
-              : "The checkout session was cancelled or timed out. Your emergency request record is preserved and can be settled anytime."}
+              ? `The payment attempt via ${gatewayDisplayName} was declined or interrupted. No charges were made to your account.`
+              : `The ${gatewayDisplayName} checkout session was cancelled or timed out. Your emergency request record is preserved and can be settled anytime.`}
           </p>
         </div>
 
@@ -131,11 +160,16 @@ function PaymentCancelContent() {
         )}
 
         {/* bKash Sandbox Simulator Credentials - Solid, high-contrast, readable */}
-        {gateway === "BKASH" && (
+        {failedGateway === PaymentGateway.BKASH && (
           <div className="rounded-xl border border-sky-500/30 bg-sky-500/10 p-5 text-left space-y-3.5">
-            <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-sky-400">
-              <Info className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-              <span>bKash Sandbox Simulator Credentials</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-sky-400">
+                <Info className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                <span>bKash Sandbox Simulator Credentials</span>
+              </div>
+              <span className="text-xs font-mono font-semibold text-sky-300">
+                Sandbox Mode
+              </span>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
               Personal bKash numbers do not work in Sandbox mode. Use the
@@ -147,7 +181,7 @@ function PaymentCancelContent() {
                   Primary Wallet
                 </span>
                 <span className="text-sm sm:text-base font-bold text-foreground select-all mt-1 block">
-                  01770618575
+                  01770618576
                 </span>
               </div>
               <div className="bg-background p-3 rounded-lg border border-border">
@@ -167,63 +201,104 @@ function PaymentCancelContent() {
                 </span>
               </div>
             </div>
-            <div className="pt-2.5 border-t border-border/60 space-y-2">
-              <span className="text-xs sm:text-sm text-muted-foreground font-medium block">
-                If the primary wallet is locked or has insufficient balance, try
-                alternative test numbers:
-              </span>
-              <div className="flex flex-wrap gap-2.5 font-mono text-xs sm:text-sm">
-                <span className="bg-background px-3 py-1.5 rounded-md border border-border font-bold text-sky-300 select-all">
-                  01770618576
-                </span>
-                <span className="bg-background px-3 py-1.5 rounded-md border border-border font-bold text-sky-300 select-all">
+            <div className="pt-2.5 border-t border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs sm:text-sm">
+              <div className="text-muted-foreground">
+                <span>Alternative Wallet: </span>
+                <span className="font-mono text-sky-300 font-bold select-all">
                   01619777282
                 </span>
-                <span className="bg-background px-3 py-1.5 rounded-md border border-border font-bold text-sky-300 select-all">
-                  01619777283
+              </div>
+
+              {/* Fast Test Toggle for Direct Retry */}
+              <div className="flex items-center gap-2 font-mono">
+                <span className="text-muted-foreground text-xs font-sans">
+                  Direct Retry Amount:
                 </span>
+                <button
+                  type="button"
+                  onClick={() => setUseSandboxFastTest(false)}
+                  className={cn(
+                    "px-2.5 py-1 rounded-md text-xs font-semibold transition-all border cursor-pointer",
+                    !useSandboxFastTest
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "border-border text-muted-foreground hover:bg-surface-raised",
+                  )}
+                >
+                  Full Fare
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUseSandboxFastTest(true)}
+                  className={cn(
+                    "px-2.5 py-1 rounded-md text-xs font-semibold transition-all border cursor-pointer",
+                    useSandboxFastTest
+                      ? "bg-sky-500 text-white border-sky-500"
+                      : "border-border text-muted-foreground hover:bg-surface-raised",
+                  )}
+                >
+                  Fast Test (৳10)
+                </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Action Buttons - Solid, no glow shadows, comfortable height */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-2">
-          <Button
-            variant="primary"
-            size="lg"
-            className="flex-1 justify-center font-bold h-12 sm:h-13 text-sm sm:text-base cursor-pointer"
-            leftIcon={
-              isLoadingRequest ? (
-                <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-              ) : (
-                <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
-              )
-            }
-            onClick={handleRetry}
-            disabled={isLoadingRequest}
-          >
-            {isLoadingRequest ? "Loading Request..." : "Retry Payment Now"}
-          </Button>
+        {/* Split Action Buttons: Direct Retry vs Change Gateway */}
+        <div className="space-y-3 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Primary Button: Direct 1-Click Gateway Re-initiation */}
+            <Button
+              variant="primary"
+              size="lg"
+              className="flex-1 justify-center font-bold h-12 sm:h-13 text-sm sm:text-base cursor-pointer"
+              leftIcon={
+                initiateMutation.isPending ? (
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+                ) : (
+                  <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
+                )
+              }
+              onClick={handleDirectRetry}
+              disabled={isLoadingRequest || initiateMutation.isPending}
+            >
+              {initiateMutation.isPending
+                ? `Connecting to ${gatewayDisplayName}...`
+                : `Retry with ${gatewayDisplayName}`}
+            </Button>
 
-          <Link href={ROUTES.PATIENT.DASHBOARD} className="flex-1">
+            {/* Secondary Button: Open Modal to switch gateways */}
             <Button
               variant="outline"
               size="lg"
-              className="w-full justify-center font-medium h-12 sm:h-13 text-sm sm:text-base cursor-pointer"
-              leftIcon={<ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />}
+              className="flex-1 justify-center font-semibold h-12 sm:h-13 text-sm sm:text-base cursor-pointer"
+              leftIcon={<CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />}
+              onClick={() => setIsModalOpen(true)}
+              disabled={isLoadingRequest || initiateMutation.isPending}
             >
-              Back to Dashboard
+              Change Payment Method
             </Button>
-          </Link>
+          </div>
+
+          {/* Tertiary Subtle Navigation */}
+          <div>
+            <Link
+              href={ROUTES.PATIENT.DASHBOARD}
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-1"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>Back to Patient Dashboard</span>
+            </Link>
+          </div>
         </div>
 
-        {/* Modal opens directly on this page without redirecting to dashboard */}
+        {/* Modal opens when user chooses to change payment method */}
         {resolvedRequest && (
           <PaymentGatewayModal
+            key={failedGateway}
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             request={resolvedRequest}
+            defaultGateway={failedGateway}
           />
         )}
       </Card>

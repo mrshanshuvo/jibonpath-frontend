@@ -19,6 +19,7 @@ interface PaymentGatewayModalProps {
   isOpen: boolean;
   onClose: () => void;
   request: EmergencyRequest | null;
+  defaultGateway?: PaymentGateway;
 }
 
 const GATEWAYS = [
@@ -49,9 +50,10 @@ export function PaymentGatewayModal({
   isOpen,
   onClose,
   request,
+  defaultGateway,
 }: PaymentGatewayModalProps) {
   const [selectedGateway, setSelectedGateway] = useState<PaymentGateway>(
-    PaymentGateway.BKASH,
+    defaultGateway || PaymentGateway.BKASH,
   );
   const [useSandboxFastTest, setUseSandboxFastTest] = useState(false);
 
@@ -67,13 +69,15 @@ export function PaymentGatewayModal({
   const distanceKm = fareData?.estimatedDistanceKm || 12;
   const perKmRate = fareData?.perKmRate || 55;
 
-  const payableAmount = useSandboxFastTest ? 10 : estimatedTotal;
+  const isFastTest =
+    selectedGateway === PaymentGateway.BKASH && useSandboxFastTest;
+  const payableAmount = isFastTest ? 10 : estimatedTotal;
 
   const handlePay = () => {
     initiateMutation.mutate({
       requestId: request.id,
       gateway: selectedGateway,
-      amount: useSandboxFastTest ? 10 : undefined,
+      amount: isFastTest ? 10 : undefined,
     });
   };
 
@@ -84,13 +88,13 @@ export function PaymentGatewayModal({
       onClose={onClose}
       title="Settle Emergency Transport Fee"
       description="Choose your preferred payment gateway for immediate automated billing settlement."
-      className="max-w-4xl lg:max-w-5xl w-full p-6 sm:p-7"
+      className="sm:max-w-4xl lg:max-w-5xl w-full p-6 sm:p-7"
       titleClassName="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
       descriptionClassName="text-sm text-muted-foreground mt-0.5 leading-normal"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 pt-1">
         {/* Left Column: Gateway Selection & Credentials (7 cols) */}
-        <div className="md:col-span-7 space-y-3.5 flex flex-col justify-between">
+        <div className="md:col-span-7 flex flex-col gap-3.5">
           <div className="space-y-2">
             <label className="block text-xs sm:text-sm font-bold uppercase tracking-wider text-muted-foreground">
               Select Payment Method:
@@ -105,6 +109,8 @@ export function PaymentGatewayModal({
                   <button
                     key={gw.id}
                     type="button"
+                    role="radio"
+                    aria-checked={isSelected}
                     onClick={() => setSelectedGateway(gw.id)}
                     className={cn(
                       "w-full flex items-center gap-3.5 rounded-xl border p-3 text-left transition-all duration-150 cursor-pointer bg-card",
@@ -279,8 +285,8 @@ export function PaymentGatewayModal({
                 <span className="text-xs uppercase font-bold text-muted-foreground block">
                   Total Payable
                 </span>
-                <span className="text-2xs text-muted-foreground">
-                  {useSandboxFastTest ? "৳10 Test Override" : "Standard Fare"}
+                <span className="text-[10px] text-muted-foreground">
+                  {isFastTest ? "৳10 Test Override" : "Standard Fare"}
                 </span>
               </div>
               <span className="font-mono text-xl sm:text-2xl text-primary font-extrabold">
@@ -301,10 +307,18 @@ export function PaymentGatewayModal({
               size="lg"
               className="w-full font-bold h-12 text-sm sm:text-base justify-center cursor-pointer"
               isLoading={initiateMutation.isPending}
+              disabled={
+                fareLoading ||
+                initiateMutation.isPending ||
+                !payableAmount ||
+                payableAmount <= 0
+              }
               onClick={handlePay}
               rightIcon={<ArrowRight className="h-5 w-5" />}
             >
-              Pay {formatCurrency(payableAmount)} via {selectedGateway}
+              {fareLoading
+                ? "Calculating Fare..."
+                : `Pay ${formatCurrency(payableAmount)} via ${selectedGateway}`}
             </Button>
 
             <Button

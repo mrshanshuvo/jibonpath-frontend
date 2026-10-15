@@ -114,7 +114,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           disabled={registerMutation.isPending}
           {...register("password")}
         />
-        <p className="text-3xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Must include at least 1 uppercase letter, 1 lowercase letter, and 1
           number.
         </p>
@@ -164,7 +164,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         Complete Registration
       </Button>
 
-      <div className="pt-2 text-center text-xs text-muted-foreground">
+      <div className="pt-2 text-center text-sm text-muted-foreground">
         <span>Already registered? </span>
         <Link
           href={ROUTES.AUTH.LOGIN}

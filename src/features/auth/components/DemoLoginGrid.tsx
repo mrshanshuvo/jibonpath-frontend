@@ -68,17 +68,17 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3.5">
       <div className="flex items-center justify-between">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           One-Click Demo Credentials
         </h3>
-        <span className="text-3xs rounded bg-muted/60 px-1.5 py-0.5 font-mono text-muted-foreground">
+        <span className="text-xs rounded-full bg-muted/70 px-2.5 py-0.5 font-mono text-muted-foreground border border-border/40">
           Instant Switch
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
         {DEMO_ACCOUNTS.map((account) => {
           const isCurrentLoading =
             loginMutation.isPending && selectedRole === account.role;
@@ -90,8 +90,8 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
               disabled={loginMutation.isPending}
               onClick={() => handleQuickLogin(account)}
               className={cn(
-                "group relative flex flex-col justify-between rounded-xl border p-3.5 text-left transition-all duration-200",
-                "bg-card/60 backdrop-blur-sm",
+                "group relative flex flex-col justify-between rounded-xl border p-4 sm:p-4.5 text-left transition-all duration-200 cursor-pointer",
+                "bg-card/75 hover:bg-card hover:shadow-lg backdrop-blur-sm",
                 getRoleAccent(account.role),
                 isCurrentLoading &&
                   "ring-2 ring-primary ring-offset-2 ring-offset-background",
@@ -100,14 +100,14 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
                   "opacity-60 cursor-not-allowed",
               )}
             >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/80 border border-border/40 shadow-xs">
+              <div className="w-full">
+                <div className="flex items-center justify-between mb-3 gap-2">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-background/90 border border-border/50 shadow-xs">
                     {getRoleIcon(account.role)}
                   </div>
                   <span
                     className={cn(
-                      "text-3xs font-medium rounded-full border px-2 py-0.5",
+                      "text-xs font-bold rounded-full border px-2.5 py-0.5 whitespace-nowrap shrink-0",
                       getBadgeStyle(account.role),
                     )}
                   >
@@ -115,25 +115,28 @@ export function DemoLoginGrid({ onSelectAccount }: DemoLoginGridProps) {
                   </span>
                 </div>
 
-                <div className="font-medium text-xs text-foreground group-hover:text-primary transition-colors">
+                <div className="font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors">
                   {account.name}
                 </div>
-                <div className="mt-0.5 font-mono text-3xs text-muted-foreground truncate">
+                <div
+                  className="mt-1 font-mono text-xs text-muted-foreground select-all break-all group-hover:text-foreground/90 transition-colors"
+                  title={account.email}
+                >
                   {account.email}
                 </div>
               </div>
 
-              <div className="mt-3 flex items-center justify-between border-t border-border/30 pt-2">
-                <span className="text-3xs text-muted-foreground font-mono">
+              <div className="mt-4 flex items-center justify-between border-t border-border/40 pt-2.5 gap-2 w-full">
+                <span className="font-mono text-xs text-muted-foreground/90 bg-muted/50 px-2 py-0.5 rounded border border-border/40 select-all shrink-0">
                   {account.password}
                 </span>
-                <div className="flex items-center text-3xs font-medium text-muted-foreground group-hover:text-foreground">
+                <div className="flex items-center text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors whitespace-nowrap shrink-0">
                   {isCurrentLoading ? (
-                    <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
                   ) : (
-                    <span className="flex items-center gap-1">
-                      Sign in{" "}
-                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                    <span className="inline-flex items-center gap-1">
+                      Sign in
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </span>
                   )}
                 </div>

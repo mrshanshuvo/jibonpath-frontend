@@ -102,7 +102,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         Sign In to Portal
       </Button>
 
-      <div className="pt-2 text-center text-xs text-muted-foreground">
+      <div className="pt-2 text-center text-sm text-muted-foreground">
         <span>Need an emergency response account? </span>
         <Link
           href={ROUTES.AUTH.REGISTER}

@@ -48,11 +48,11 @@ export default function AuthLayout({
 
       {/* Main content centered */}
       <main className="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <div className="w-full max-w-xl">{children}</div>
+        <div className="w-full max-w-2xl lg:max-w-3xl">{children}</div>
       </main>
 
       {/* Bottom minimal footer */}
-      <footer className="relative z-10 w-full border-t border-border/40 py-4 text-center text-3xs text-muted-foreground">
+      <footer className="relative z-10 w-full border-t border-border/40 py-4 text-center text-xs text-muted-foreground">
         <div className="w-full px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>
             &copy; {new Date().getFullYear()} JibonPath Dispatch Systems. All

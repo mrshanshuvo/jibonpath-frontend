@@ -15,6 +15,7 @@ import { InvoiceReceipt } from "./InvoiceReceipt";
 import { PaymentStatus, type Payment } from "@/types/entities.types";
 import { useMyPayments } from "../api/payment.queries";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
+import { ROUTES } from "@/config/routes";
 
 export function PaymentHistoryTable() {
   const { params, setParams } = useUrlParams();
@@ -172,7 +173,7 @@ export function PaymentHistoryTable() {
                             Invoice
                           </Button>
                           <Link
-                            href={`/patient/invoice/${p.id}`}
+                            href={ROUTES.PATIENT.INVOICE(p.requestId || p.id)}
                             title="Open standalone invoice page"
                           >
                             <Button

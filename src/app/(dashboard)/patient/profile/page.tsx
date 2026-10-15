@@ -32,8 +32,7 @@ export default function PatientProfilePage() {
       ? "Enter a valid phone number (e.g. 017XXXXXXXX or +8801XXXXXXXXX)"
       : "";
 
-  const isFormValid =
-    name.trim().length >= 2 && !phoneError;
+  const isFormValid = name.trim().length >= 2 && !phoneError;
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();

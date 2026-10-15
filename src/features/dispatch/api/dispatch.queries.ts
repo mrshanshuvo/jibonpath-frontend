@@ -10,6 +10,7 @@ import type {
   CreateDispatchInput,
   DispatchQueryParams,
   DispatchesApiResponse,
+  DriversApiResponse,
   UpdateDispatchStatusInput,
 } from "../types";
 
@@ -19,6 +20,8 @@ export const dispatchKeys = {
     [...dispatchKeys.all, "list", params] as const,
   activeDriver: () => [...dispatchKeys.all, "activeDriver"] as const,
   detail: (id: string) => [...dispatchKeys.all, "detail", id] as const,
+  availableDrivers: (isAvailable?: boolean) =>
+    [...dispatchKeys.all, "availableDrivers", isAvailable] as const,
 };
 
 /**
@@ -87,6 +90,35 @@ export function useDispatch(id?: string) {
 }
 
 /**
+ * useAvailableDrivers:
+ * Lists certified paramedic drivers filtered by availability for dispatch pairing
+ */
+export function useAvailableDrivers(
+  params?: {
+    isAvailable?: boolean;
+    limit?: number;
+  },
+  options?: { enabled?: boolean },
+) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isAvailable =
+    params?.isAvailable !== undefined ? params.isAvailable : true;
+  const limit = params?.limit || 50;
+
+  return useQuery({
+    queryKey: dispatchKeys.availableDrivers(isAvailable),
+    queryFn: async () => {
+      const res = await api.get<ApiResponse<DriversApiResponse>>("/drivers", {
+        params: { isAvailable, limit },
+      });
+      return res.data;
+    },
+    enabled: Boolean(isAuthenticated && (options?.enabled ?? true)),
+    refetchInterval: 10000,
+  });
+}
+
+/**
  * useCreateDispatch:
  * Admin assigns an ambulance and driver to an emergency request
  */
@@ -100,6 +132,9 @@ export function useCreateDispatch() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: dispatchKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["emergency"] });
+      queryClient.invalidateQueries({ queryKey: ["fleet"] });
+      queryClient.invalidateQueries({ queryKey: ["admin"] });
       toast.success("Ambulance unit dispatched successfully!");
       return data;
     },

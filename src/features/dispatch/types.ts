@@ -36,3 +36,14 @@ export interface DispatchesApiResponse {
     hasMore: boolean;
   };
 }
+
+export interface DriversApiResponse {
+  drivers: import("@/types/entities.types").Driver[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
+}

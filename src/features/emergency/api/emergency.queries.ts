@@ -55,8 +55,14 @@ export function useMyRequests(params?: RequestQueryParams) {
  * useAdminRequests:
  * Fetches all requests across the system for administrator dispatch control
  */
-export function useAdminRequests(params?: RequestQueryParams) {
+export function useAdminRequests(
+  params?: RequestQueryParams,
+  options?: { enabled?: boolean },
+) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.role === "ADMIN";
+
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
@@ -71,7 +77,7 @@ export function useAdminRequests(params?: RequestQueryParams) {
       });
       return res.data;
     },
-    enabled: isAuthenticated,
+    enabled: Boolean(isAuthenticated && isAdmin && (options?.enabled ?? true)),
     refetchInterval: 10000,
   });
 }

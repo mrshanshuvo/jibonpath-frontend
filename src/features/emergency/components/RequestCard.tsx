@@ -22,13 +22,15 @@ import {
 import { formatRelativeTime } from "@/lib/utils";
 import { useCancelRequest } from "../api/emergency.queries";
 
-interface ParsedDescription {
+export interface ParsedDescription {
   notes?: string;
   phone?: string;
   hospital?: string;
 }
 
-function parseRequestDescription(raw?: string | null): ParsedDescription {
+export function parseRequestDescription(
+  raw?: string | null,
+): ParsedDescription {
   if (!raw?.trim()) return {};
 
   let text = raw.trim();

@@ -81,7 +81,6 @@ export function PaymentGatewayModal({
     });
   };
 
-
   return (
     <Modal
       isOpen={isOpen}
@@ -227,7 +226,9 @@ export function PaymentGatewayModal({
                 <span>SSLCommerz Multi-Gateway Engine</span>
               </div>
               <p className="leading-relaxed">
-                Supports all Bangladeshi debit/credit cards, Visa, MasterCard, Amex, Nagad, Rocket, Upay, and 30+ domestic online banking portals.
+                Supports all Bangladeshi debit/credit cards, Visa, MasterCard,
+                Amex, Nagad, Rocket, Upay, and 30+ domestic online banking
+                portals.
               </p>
             </div>
           )}
@@ -239,7 +240,8 @@ export function PaymentGatewayModal({
                 <span>Stripe Global Encrypted Checkout</span>
               </div>
               <p className="leading-relaxed">
-                Supports all international debit and credit cards with 256-bit bank-grade encryption and automated SCA authentication.
+                Supports all international debit and credit cards with 256-bit
+                bank-grade encryption and automated SCA authentication.
               </p>
             </div>
           )}

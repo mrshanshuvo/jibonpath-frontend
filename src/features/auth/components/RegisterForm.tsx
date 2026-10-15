@@ -78,7 +78,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         leftIcon={<Mail className="h-4 w-4" />}
         error={errors.email?.message}
         helperText={
-          !errors.email && emailValue && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
+          !errors.email &&
+          emailValue &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
             ? "✓ Valid email format"
             : undefined
         }
@@ -129,7 +131,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           helperText={
             !errors.phone &&
             phoneValue &&
-            /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phoneValue)
+            /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(
+              phoneValue,
+            )
               ? "✓ Valid contact number"
               : undefined
           }

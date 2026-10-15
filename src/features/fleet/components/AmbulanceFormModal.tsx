@@ -105,7 +105,9 @@ export function AmbulanceFormModal({
           leftIcon={<AmbulanceIcon className="h-4 w-4" />}
           error={errors.vehicleNumber?.message}
           helperText={
-            !errors.vehicleNumber && vehicleNumberValue && vehicleNumberValue.length >= 3
+            !errors.vehicleNumber &&
+            vehicleNumberValue &&
+            vehicleNumberValue.length >= 3
               ? "✓ Valid registration plate format"
               : "Official BRTA commercial vehicle registration plate"
           }

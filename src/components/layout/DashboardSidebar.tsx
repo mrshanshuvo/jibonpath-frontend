@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthUser } from "@/stores/auth.store";
 import { ROUTES } from "@/config/routes";
-import { Role } from "@/types/entities.types";
+import { Role, RequestStatus } from "@/types/entities.types";
 import { cn } from "@/lib/utils";
 import { JibonPathLogo } from "@/components/brand";
+import { useAdminRequests } from "@/features/emergency";
 import {
   LayoutDashboard,
   PlusCircle,
@@ -59,6 +60,13 @@ export function DashboardSidebar() {
   const pathname = usePathname();
   const user = useAuthUser();
 
+  const isAdmin = user?.role === Role.ADMIN;
+  const { data: pendingData } = useAdminRequests(
+    { status: RequestStatus.PENDING, limit: 50 },
+    { enabled: isAdmin },
+  );
+  const pendingCount = isAdmin ? (pendingData?.requests?.length ?? 0) : 0;
+
   const navItems: NavItem[] =
     user?.role === Role.ADMIN
       ? ADMIN_NAV
@@ -96,6 +104,7 @@ export function DashboardSidebar() {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
+          const isDispatchesNav = item.href === ROUTES.ADMIN.DISPATCHES;
 
           return (
             <Link
@@ -116,7 +125,21 @@ export function DashboardSidebar() {
                     : "text-muted-foreground",
                 )}
               />
-              <span>{item.label}</span>
+              <span className="flex-1">{item.label}</span>
+
+              {/* Live Incident Alert Badge */}
+              {isDispatchesNav && pendingCount > 0 && (
+                <span
+                  className={cn(
+                    "px-2 py-0.5 rounded-full text-3xs font-extrabold shadow-xs",
+                    isActive
+                      ? "bg-emergency text-emergency-foreground animate-pulse"
+                      : "bg-emergency/20 text-danger-ink dark:text-emergency animate-pulse",
+                  )}
+                >
+                  {pendingCount}
+                </span>
+              )}
             </Link>
           );
         })}

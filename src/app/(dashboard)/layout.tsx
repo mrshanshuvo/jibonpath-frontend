@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DashboardSidebar, UserMenu } from "@/components/layout";
 import { Button, ThemeToggle } from "@/components/shared";
-import { Menu, X, PhoneCall, Radio } from "lucide-react";
+import { Menu, X, PhoneCall, Radio, Siren } from "lucide-react";
+import { useAuthUser } from "@/stores/auth.store";
+import { Role, RequestStatus } from "@/types/entities.types";
+import { useAdminRequests } from "@/features/emergency";
+import { ROUTES } from "@/config/routes";
 
 export default function DashboardLayout({
   children,
@@ -13,6 +18,14 @@ export default function DashboardLayout({
 }) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const user = useAuthUser();
+
+  const isAdmin = user?.role === Role.ADMIN;
+  const { data: pendingData } = useAdminRequests(
+    { status: RequestStatus.PENDING, limit: 50 },
+    { enabled: isAdmin },
+  );
+  const pendingCount = isAdmin ? (pendingData?.requests?.length ?? 0) : 0;
 
   // Helper to format breadcrumb from pathname
   const getBreadcrumbTitle = () => {
@@ -82,6 +95,21 @@ export default function DashboardLayout({
 
           {/* Right Header Badges & Actions */}
           <div className="flex items-center gap-3">
+            {/* Real-time emergency queue alert chip for Admin */}
+            {isAdmin && pendingCount > 0 && (
+              <Link
+                href={`${ROUTES.ADMIN.DISPATCHES}?tab=queue`}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-emergency/40 bg-emergency/15 text-danger-ink dark:text-emergency text-3xs font-extrabold animate-pulse hover:bg-emergency/25 transition-all shadow-xs"
+                title="View incoming emergency queue"
+              >
+                <Siren className="h-3 w-3 shrink-0" />
+                <span>
+                  🚨 {pendingCount}{" "}
+                  {pendingCount === 1 ? "Caller Waiting" : "Callers Waiting"}
+                </span>
+              </Link>
+            )}
+
             {/* Real-time telemetry status indicator */}
             <div className="hidden sm:flex items-center gap-2 rounded-full border border-success/25 bg-success-tint px-3 py-1 text-3xs font-medium text-success-ink dark:text-success">
               <Radio className="h-3 w-3" />

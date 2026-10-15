@@ -12,6 +12,7 @@ import {
 import { Card, Skeleton } from "@/components/ui";
 import { useAdminStats } from "../api/admin.queries";
 import { formatCurrency } from "@/lib/utils";
+import { PendingRequestsTriage } from "@/features/emergency";
 import {
   ResponsiveContainer,
   BarChart,
@@ -177,6 +178,9 @@ export function AdminAnalyticsOverview() {
           </div>
         </Card>
       </div>
+
+      {/* Central Incident Command & Dispatch Triage Board */}
+      <PendingRequestsTriage />
 
       {/* Fleet Utilization & Operations Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

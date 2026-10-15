@@ -29,7 +29,9 @@ export default function ContactPage() {
         : "";
 
   const phoneError =
-    touched.phone && (!phone || !/^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone))
+    touched.phone &&
+    (!phone ||
+      !/^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone))
       ? "Enter a valid phone number (e.g. 017XXXXXXXX)"
       : "";
 
@@ -244,7 +246,9 @@ export default function ContactPage() {
                       helperText={
                         !phoneError &&
                         phone &&
-                        /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone)
+                        /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(
+                          phone,
+                        )
                           ? "✓ Valid phone number"
                           : undefined
                       }

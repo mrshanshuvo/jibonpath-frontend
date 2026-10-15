@@ -8,6 +8,7 @@ import {
 export const initiatePaymentSchema = z.object({
   requestId: z.string().min(1, "Request ID is required"),
   gateway: z.nativeEnum(PaymentGateway),
+  amount: z.number().positive().optional(),
 });
 
 export type InitiatePaymentInput = z.infer<typeof initiatePaymentSchema>;

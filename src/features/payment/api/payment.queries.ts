@@ -116,6 +116,7 @@ export function useInitiatePayment() {
     mutationFn: async ({
       requestId,
       gateway,
+      amount,
     }: InitiatePaymentInput): Promise<CheckoutResponse> => {
       let endpoint = "/payments/stripe/checkout";
       if (gateway === PaymentGateway.BKASH) {
@@ -126,6 +127,7 @@ export function useInitiatePayment() {
 
       const res = await api.post<ApiResponse<CheckoutResponse>>(endpoint, {
         requestId,
+        ...(amount ? { amount } : {}),
       });
       return res.data;
     },

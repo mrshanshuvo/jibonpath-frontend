@@ -90,6 +90,8 @@ export function AmbulanceFormModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      size="xl"
+      className="p-6 sm:p-7"
       title={isEditing ? "Edit Fleet Vehicle" : "Register New Ambulance"}
       description={
         isEditing
@@ -125,11 +127,11 @@ export function AmbulanceFormModal({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Equipment Tier
             </label>
             <select
-              className="w-full h-10 rounded-md border border-border bg-surface px-3 py-2 text-xs sm:text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="w-full h-10 rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               disabled={isPending}
               {...register("type")}
             >
@@ -151,11 +153,11 @@ export function AmbulanceFormModal({
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Operational Status
             </label>
             <select
-              className="w-full h-10 rounded-md border border-border bg-surface px-3 py-2 text-xs sm:text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="w-full h-10 rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               disabled={isPending}
               {...register("status")}
             >

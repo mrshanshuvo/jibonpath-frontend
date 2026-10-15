@@ -85,9 +85,10 @@ export function PaymentGatewayModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      size="4xl"
       title="Settle Emergency Transport Fee"
       description="Choose your preferred payment gateway for immediate automated billing settlement."
-      className="sm:max-w-4xl lg:max-w-5xl w-full p-6 sm:p-7"
+      className="p-6 sm:p-7"
       titleClassName="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
       descriptionClassName="text-sm text-muted-foreground mt-0.5 leading-normal"
     >
@@ -287,7 +288,7 @@ export function PaymentGatewayModal({
                 <span className="text-xs uppercase font-bold text-muted-foreground block">
                   Total Payable
                 </span>
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-xs font-medium text-muted-foreground">
                   {isFastTest ? "৳10 Test Override" : "Standard Fare"}
                 </span>
               </div>

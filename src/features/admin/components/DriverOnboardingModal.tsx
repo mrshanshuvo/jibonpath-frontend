@@ -53,6 +53,8 @@ export function DriverOnboardingModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      size="xl"
+      className="p-6 sm:p-7"
       title="Commission Paramedic Driver"
       description="Create a certified driver account with BRTA heavy commercial license validation."
     >

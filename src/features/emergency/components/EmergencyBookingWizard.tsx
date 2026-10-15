@@ -12,15 +12,20 @@ import {
   Send,
   Building2,
   Ambulance,
+  AlertTriangle,
 } from "lucide-react";
-import { Button, Card, Input, Select, Textarea } from "@/components/ui";
+import { Button, Card, Input, Select, Textarea, Badge } from "@/components/ui";
 import { ROUTES } from "@/config/routes";
-import { Priority } from "@/types/entities.types";
+import { Priority, RequestStatus } from "@/types/entities.types";
 import {
   createEmergencyRequestSchema,
   type CreateEmergencyRequestInput,
 } from "../types";
-import { useCreateRequest } from "../api/emergency.queries";
+import {
+  useCreateRequest,
+  useMyRequests,
+  useCancelRequest,
+} from "../api/emergency.queries";
 import { useReverseGeocode } from "../hooks/useReverseGeocode";
 import { SeveritySelector } from "./SeveritySelector";
 import { ReviewStep } from "./ReviewStep";
@@ -56,7 +61,14 @@ export function EmergencyBookingWizard({
 }: BookingWizardProps) {
   const router = useRouter();
   const createMutation = useCreateRequest();
+  const cancelMutation = useCancelRequest();
   const { resolve: reverseGeocode, isResolving } = useReverseGeocode();
+
+  const { data: myPendingData } = useMyRequests({
+    status: RequestStatus.PENDING,
+    limit: 1,
+  });
+  const activePendingRequest = myPendingData?.requests?.[0];
 
   const [detectingGps, setDetectingGps] = useState(false);
   const [pendingData, setPendingData] =
@@ -74,6 +86,7 @@ export function EmergencyBookingWizard({
     control,
     formState: { errors },
   } = useForm<CreateEmergencyRequestInput>({
+    mode: "onChange",
     resolver: zodResolver(createEmergencyRequestSchema),
     defaultValues: {
       priority: Priority.CRITICAL,
@@ -86,8 +99,19 @@ export function EmergencyBookingWizard({
 
   const priority = useWatch({ control, name: "priority" });
   const pickupAddress = useWatch({ control, name: "pickupAddress" });
+  const contactPhone = useWatch({ control, name: "contactPhone" });
   const isBusy = createMutation.isPending || detectingGps || isResolving;
   const gpsLoading = detectingGps || isResolving;
+
+  const handleCancelActiveRequest = (requestId: string) => {
+    cancelMutation.mutate(requestId, {
+      onSuccess: () => {
+        toast.success(
+          "Previous pending request cancelled. You can now dispatch your new ambulance request.",
+        );
+      },
+    });
+  };
 
   const handleDetectGps = () => {
     if (!navigator.geolocation) {
@@ -175,6 +199,63 @@ export function EmergencyBookingWizard({
           </div>
         </div>
 
+        {/* Active Pending Request Warning Card */}
+        {activePendingRequest && (
+          <div className="rounded-xl border border-warning/50 bg-warning/10 p-4 sm:p-5 text-warning-foreground space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-warning/20 text-warning">
+                  <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-foreground">
+                      Active Emergency Dispatch in Progress
+                    </h3>
+                    <Badge variant="warning" size="sm">
+                      PENDING DISPATCH
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    You currently have an active pending ambulance request (
+                    <span className="font-mono text-foreground font-semibold">
+                      #{activePendingRequest.id.slice(0, 8)}
+                    </span>
+                    ) for{" "}
+                    <span className="font-semibold text-foreground">
+                      {activePendingRequest.pickupAddress}
+                    </span>
+                    . To prevent duplicate ambulances, only one pending dispatch
+                    is allowed per account at a time.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-warning/20">
+              <Button
+                type="button"
+                size="sm"
+                variant="primary"
+                onClick={() => router.push(ROUTES.PATIENT.DASHBOARD)}
+              >
+                Track Active Ambulance
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCancelActiveRequest(activePendingRequest.id)
+                }
+                isLoading={cancelMutation.isPending}
+                loadingText="Cancelling Request..."
+              >
+                Cancel Previous Request to Book New One
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Visual Step Progress Bar */}
         <div className="flex items-center gap-2 mb-2">
           {[
@@ -245,6 +326,13 @@ export function EmergencyBookingWizard({
             placeholder="e.g. House 42, Road 9/A, Dhanmondi, Dhaka"
             leftIcon={<MapPin className="h-4 w-4" />}
             error={errors.pickupAddress?.message}
+            helperText={
+              !errors.pickupAddress &&
+              pickupAddress &&
+              pickupAddress.trim().length >= 5
+                ? "✓ Valid pickup location"
+                : "Enter street address, building, or road (min. 5 characters)"
+            }
             required
             {...register("pickupAddress")}
           />
@@ -293,8 +381,17 @@ export function EmergencyBookingWizard({
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="+880 1XXX-XXXXXX"
+            placeholder="+880 1XXX-XXXXXX or 01XXXXXXXXX"
             error={errors.contactPhone?.message}
+            helperText={
+              !errors.contactPhone &&
+              contactPhone &&
+              /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(
+                contactPhone,
+              )
+                ? "✓ Valid callback phone number"
+                : "Dispatcher will call this number to verify location"
+            }
             required
             {...register("contactPhone")}
           />
@@ -303,6 +400,7 @@ export function EmergencyBookingWizard({
             label="Receiving hospital"
             leftIcon={<Building2 className="h-4 w-4" />}
             error={errors.hospitalName?.message}
+            helperText="Emergency paramedics will transport patient to this facility"
             required
             {...register("hospitalName")}
           >
@@ -329,10 +427,14 @@ export function EmergencyBookingWizard({
           variant="emergency"
           size="lg"
           className="w-full"
-          disabled={isBusy}
+          disabled={
+            isBusy || cancelMutation.isPending || !!activePendingRequest
+          }
           leftIcon={<Send className="h-5 w-5" aria-hidden="true" />}
         >
-          Review &amp; Dispatch Ambulance
+          {activePendingRequest
+            ? "Active Dispatch Pending (Cancel Above to Dispatch Again)"
+            : "Review & Dispatch Ambulance"}
         </Button>
       </form>
 

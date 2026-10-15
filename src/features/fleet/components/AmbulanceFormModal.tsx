@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal, Button, Input } from "@/components/ui";
 import {
@@ -32,8 +32,10 @@ export function AmbulanceFormModal({
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<CreateAmbulanceInput>({
+    mode: "onChange",
     resolver: zodResolver(createAmbulanceSchema),
     defaultValues: {
       vehicleNumber: "",
@@ -42,6 +44,8 @@ export function AmbulanceFormModal({
       status: AmbulanceStatus.AVAILABLE,
     },
   });
+
+  const vehicleNumberValue = useWatch({ control, name: "vehicleNumber" });
 
   useEffect(() => {
     if (ambulance) {
@@ -100,6 +104,11 @@ export function AmbulanceFormModal({
           required
           leftIcon={<AmbulanceIcon className="h-4 w-4" />}
           error={errors.vehicleNumber?.message}
+          helperText={
+            !errors.vehicleNumber && vehicleNumberValue && vehicleNumberValue.length >= 3
+              ? "✓ Valid registration plate format"
+              : "Official BRTA commercial vehicle registration plate"
+          }
           disabled={isPending}
           {...register("vehicleNumber")}
         />

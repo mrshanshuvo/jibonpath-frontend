@@ -16,14 +16,47 @@ import { toast } from "sonner";
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const nameError =
+    touched.name && name.trim().length === 0
+      ? "Your name is required"
+      : touched.name && name.trim().length < 2
+        ? "Name must be at least 2 characters"
+        : "";
+
+  const phoneError =
+    touched.phone && (!phone || !/^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone))
+      ? "Enter a valid phone number (e.g. 017XXXXXXXX)"
+      : "";
+
+  const emailError =
+    touched.email && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      ? "Enter a valid email address (e.g. you@domain.com)"
+      : "";
+
+  const isFormValid =
+    name.trim().length >= 2 &&
+    /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone) &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setTouched({ name: true, phone: true, email: true });
+    if (!isFormValid) return;
+
     setIsSubmitting(true);
 
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
+      setName("");
+      setPhone("");
+      setEmail("");
+      setTouched({});
       toast.success(
         "Inquiry received. Our dispatch liaison will respond promptly.",
       );
@@ -188,12 +221,33 @@ export default function ContactPage() {
                     <Input
                       label="Your Name"
                       placeholder="e.g. Dr. Kazi Rahman"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        setTouched((t) => ({ ...t, name: true }));
+                      }}
+                      onBlur={() => setTouched((t) => ({ ...t, name: true }))}
+                      error={nameError || undefined}
                       required
                     />
                     <Input
                       label="Contact Phone"
                       type="tel"
                       placeholder="017XXXXXXXX"
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        setTouched((t) => ({ ...t, phone: true }));
+                      }}
+                      onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+                      error={phoneError || undefined}
+                      helperText={
+                        !phoneError &&
+                        phone &&
+                        /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone)
+                          ? "✓ Valid phone number"
+                          : undefined
+                      }
                       required
                     />
                   </div>
@@ -202,6 +256,20 @@ export default function ContactPage() {
                     label="Email Address"
                     type="email"
                     placeholder="you@domain.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setTouched((t) => ({ ...t, email: true }));
+                    }}
+                    onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                    error={emailError || undefined}
+                    helperText={
+                      !emailError &&
+                      email &&
+                      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                        ? "✓ Valid email format"
+                        : undefined
+                    }
                     required
                   />
 

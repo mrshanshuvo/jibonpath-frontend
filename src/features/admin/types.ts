@@ -66,7 +66,16 @@ export const createDriverSchema = z.object({
   licenseNumber: z
     .string()
     .min(5, "Valid BRTA driver license number is required"),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .trim()
+    .optional()
+    .refine(
+      (val) =>
+        !val ||
+        /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(val),
+      "Enter a valid phone number (e.g. 017XXXXXXXX or +8801XXXXXXXXX)",
+    ),
   ambulanceId: z.string().optional(),
 });
 

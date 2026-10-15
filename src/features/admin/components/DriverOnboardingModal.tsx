@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal, Button, Input } from "@/components/ui";
 import { UserPlus, User, Mail, Lock, CreditCard, Phone } from "lucide-react";
@@ -22,8 +22,10 @@ export function DriverOnboardingModal({
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<CreateDriverInput>({
+    mode: "onChange",
     resolver: zodResolver(createDriverSchema),
     defaultValues: {
       name: "",
@@ -33,6 +35,10 @@ export function DriverOnboardingModal({
       phone: "",
     },
   });
+
+  const emailValue = useWatch({ control, name: "email" });
+  const phoneValue = useWatch({ control, name: "phone" });
+  const licenseValue = useWatch({ control, name: "licenseNumber" });
 
   const onSubmit = (data: CreateDriverInput) => {
     createMutation.mutate(data, {
@@ -68,6 +74,11 @@ export function DriverOnboardingModal({
           required
           leftIcon={<Mail className="h-4 w-4" />}
           error={errors.email?.message}
+          helperText={
+            !errors.email && emailValue && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
+              ? "✓ Valid driver email format"
+              : undefined
+          }
           disabled={createMutation.isPending}
           {...register("email")}
         />
@@ -90,6 +101,11 @@ export function DriverOnboardingModal({
             required
             leftIcon={<CreditCard className="h-4 w-4" />}
             error={errors.licenseNumber?.message}
+            helperText={
+              !errors.licenseNumber && licenseValue && licenseValue.length >= 5
+                ? "✓ Valid license format"
+                : undefined
+            }
             disabled={createMutation.isPending}
             {...register("licenseNumber")}
           />
@@ -100,6 +116,13 @@ export function DriverOnboardingModal({
             placeholder="017XXXXXXXX"
             leftIcon={<Phone className="h-4 w-4" />}
             error={errors.phone?.message}
+            helperText={
+              !errors.phone &&
+              phoneValue &&
+              /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phoneValue)
+                ? "✓ Valid contact number"
+                : undefined
+            }
             disabled={createMutation.isPending}
             {...register("phone")}
           />

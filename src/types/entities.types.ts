@@ -124,6 +124,16 @@ export interface TripStatusLog {
   updatedBy?: User;
 }
 
+export interface TelemetryTick {
+  dispatchId: string;
+  lat: number;
+  lng: number;
+  heading?: number;
+  speedKmh?: number;
+  stage?: string;
+  updatedAt: string;
+}
+
 export interface Dispatch {
   id: string;
   requestId: string;
@@ -139,6 +149,7 @@ export interface Dispatch {
   driver?: Driver;
   hospital?: Hospital | null;
   tripStatusLogs?: TripStatusLog[];
+  latestTelemetry?: TelemetryTick | null;
 }
 
 export interface Payment {

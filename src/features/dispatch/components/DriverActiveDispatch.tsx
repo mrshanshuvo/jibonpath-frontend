@@ -16,6 +16,7 @@ import { DispatchStepper } from "./DispatchStepper";
 import { TripLogsTimeline } from "./TripLogsTimeline";
 import { DispatchStatus, type Dispatch } from "@/types/entities.types";
 import { useUpdateDispatchStatus } from "../api/dispatch.queries";
+import { useDriverLocationBroadcast } from "../hooks/useDriverLocationBroadcast";
 
 interface DriverActiveDispatchProps {
   dispatch: Dispatch;
@@ -61,6 +62,25 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
   const [note, setNote] = useState("");
   const updateStatusMutation = useUpdateDispatchStatus();
 
+  const pickupCoords =
+    dispatch.request?.pickupLat && dispatch.request?.pickupLng
+      ? { lat: dispatch.request.pickupLat, lng: dispatch.request.pickupLng }
+      : null;
+
+  const hospitalCoords =
+    dispatch.hospital?.lat && dispatch.hospital?.lng
+      ? { lat: dispatch.hospital.lat, lng: dispatch.hospital.lng }
+      : null;
+
+  const { coords, isBroadcasting, isSimulated, toggleSimulated } =
+    useDriverLocationBroadcast({
+      dispatchId: dispatch.id,
+      isActive: dispatch.status !== DispatchStatus.COMPLETED,
+      stage: dispatch.status,
+      pickupCoords,
+      hospitalCoords,
+    });
+
   const nextStep = NEXT_STATUS_MAP[dispatch.status];
 
   const [swipeStart, setSwipeStart] = useState<number | null>(null);
@@ -103,20 +123,36 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
       {/* Live Telemetry Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card className="p-4 bg-surface border-border">
-          <div className="flex items-center gap-2 mb-3">
-            <Navigation className="h-4 w-4 text-info" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-              Live GPS
-            </h3>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Navigation className="h-4 w-4 text-info animate-pulse" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+                Live GPS
+              </h3>
+            </div>
+            <button
+              type="button"
+              onClick={toggleSimulated}
+              className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-raised border border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              title="Click to toggle between device GPS and simulated transit"
+            >
+              {isSimulated ? "SIMULATOR" : "DEVICE GPS"}
+            </button>
           </div>
-          <div className="text-2xl font-extrabold text-foreground">
-            23.8103° N
+          <div className="text-2xl font-extrabold text-foreground font-mono">
+            {coords.lat.toFixed(4)}° N
           </div>
-          <div className="text-sm text-muted-foreground">
-            90.4125° E · Dhaka
+          <div className="text-sm text-muted-foreground font-mono">
+            {coords.lng.toFixed(4)}° E · {coords.heading}°
           </div>
-          <div className="mt-2 text-xs text-success font-medium">
-            Moving · 42 km/h
+          <div className="mt-2 flex items-center justify-between text-xs">
+            <span className="text-success font-semibold flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-success animate-ping" />
+              {coords.speedKmh > 0 ? `Moving · ${coords.speedKmh} km/h` : "Stationary"}
+            </span>
+            <span className="text-muted-foreground font-mono text-[11px]">
+              {isBroadcasting ? "Broadcasting" : "Connecting..."}
+            </span>
           </div>
         </Card>
         <Card className="p-4 bg-surface border-border">

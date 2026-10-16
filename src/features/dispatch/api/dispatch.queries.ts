@@ -90,6 +90,27 @@ export function useDispatch(id?: string) {
   });
 }
 
+/**
+ * useDispatchByRequestId:
+ * Fetches dispatch details associated with an Emergency Request ID (for Patient Live Tracking Cockpit)
+ */
+export function useDispatchByRequestId(requestId?: string) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  return useQuery({
+    queryKey: [...dispatchKeys.all, "byRequest", requestId || ""],
+    queryFn: async () => {
+      if (!requestId) throw new Error("Request ID is required");
+      const res = await api.get<ApiResponse<Dispatch>>(
+        `/dispatches/by-request/${requestId}`,
+      );
+      return res.data;
+    },
+    enabled: Boolean(isAuthenticated && requestId),
+    refetchInterval: 8000,
+  });
+}
+
 export interface AvailableDriversParams {
   page?: number;
   limit?: number;

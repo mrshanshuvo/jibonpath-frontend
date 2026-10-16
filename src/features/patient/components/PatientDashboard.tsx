@@ -1,14 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { RequestList } from "@/features/emergency";
 import { PaymentGatewayModal } from "@/features/payment";
+import { LiveTrackingModal } from "@/features/dispatch";
 import type { EmergencyRequest } from "@/types/entities.types";
 
 export function PatientDashboard() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const activeRequestId = searchParams.get("active");
+
   const [paymentRequest, setPaymentRequest] = useState<EmergencyRequest | null>(
     null,
   );
+
+  const handleCloseTracking = () => {
+    // Clear active query parameter cleanly
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("active");
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname);
+  };
 
   return (
     <div className="space-y-6">
@@ -28,6 +44,12 @@ export function PatientDashboard() {
       </header>
 
       <RequestList onPay={setPaymentRequest} />
+
+      <LiveTrackingModal
+        isOpen={Boolean(activeRequestId)}
+        onClose={handleCloseTracking}
+        requestId={activeRequestId}
+      />
 
       <PaymentGatewayModal
         isOpen={Boolean(paymentRequest)}

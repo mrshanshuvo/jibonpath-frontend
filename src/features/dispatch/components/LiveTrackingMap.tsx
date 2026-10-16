@@ -186,7 +186,7 @@ export function LiveTrackingMap({
           <!-- Direction arrow ring -->
           <div class="ambulance-rotation-wrapper flex items-center justify-center h-10 w-10 rounded-full bg-slate-900 border-2 border-red-500 shadow-2xl text-white transition-transform duration-700 ease-out" style="transform: rotate(${heading}deg);">
             <!-- Direction pointer -->
-            <div class="absolute -top-1 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px] border-b-red-400"></div>
+            <div class="absolute -top-1 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-b-[6px] border-b-red-400"></div>
             <!-- Ambulance icon -->
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M10 17h4V5H2v12h3m11 0h2m-2-4h4.382a1 1 0 0 0 .894-.553l1.894-3.789A1 1 0 0 0 22 8.211V5h-6v8Z" />
@@ -320,7 +320,7 @@ export function LiveTrackingMap({
         "relative w-full overflow-hidden bg-surface",
         className
           ? className
-          : "h-[420px] sm:h-[480px] rounded-2xl border border-border shadow-2xl",
+          : "h-105 sm:h-120 rounded-2xl border border-border shadow-2xl",
       )}
     >
       <div ref={mapContainer} className="w-full h-full" />
@@ -379,7 +379,7 @@ export function LiveTrackingMap({
             showOverlays
               ? "bottom-3 left-3"
               : sidebarOpen
-                ? "bottom-4 left-4 sm:left-[436px]"
+                ? "bottom-4 left-4 sm:left-109"
                 : "bottom-4 left-4",
           )}
         >

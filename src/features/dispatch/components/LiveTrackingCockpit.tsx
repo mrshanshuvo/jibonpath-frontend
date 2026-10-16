@@ -290,7 +290,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
       <aside
         aria-label="Live Mission Radar Cockpit"
         className={cn(
-          "absolute top-0 left-0 bottom-0 z-30 w-full sm:w-[420px] h-full bg-card/95 backdrop-blur-2xl border-r border-border/90 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out",
+          "absolute top-0 left-0 bottom-0 z-30 w-full sm:w-105 h-full bg-card/95 backdrop-blur-2xl border-r border-border/90 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >

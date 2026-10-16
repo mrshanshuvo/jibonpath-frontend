@@ -20,6 +20,8 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Button, Badge, Card } from "@/components/ui";
+import { ThemeToggle } from "@/components/shared";
+import { UserMenu } from "@/components/layout";
 import { toast } from "sonner";
 import { DispatchStepper } from "./DispatchStepper";
 import { LiveTrackingMap } from "./LiveTrackingMap";
@@ -192,7 +194,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center p-6 bg-surface">
+      <div className="flex h-dvh w-screen items-center justify-center p-6 bg-surface">
         <div className="text-center space-y-4 max-w-sm">
           <div className="h-10 w-10 mx-auto rounded-full border-3 border-emergency border-t-transparent animate-spin" />
           <h3 className="text-base font-bold text-foreground">
@@ -209,7 +211,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
 
   if (!dispatch) {
     return (
-      <div className="flex h-[calc(100vh-4rem)] items-center justify-center p-6 bg-surface">
+      <div className="flex h-dvh w-screen items-center justify-center p-6 bg-surface">
         <div className="p-8 text-center space-y-4 max-w-md bg-card rounded-3xl border border-border shadow-2xl">
           <ShieldAlert className="h-12 w-12 text-emergency mx-auto" />
           <h2 className="text-lg font-bold text-foreground">
@@ -231,7 +233,27 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
   }
 
   return (
-    <div className="relative w-full h-[calc(100vh-4rem)] overflow-hidden bg-surface">
+    <div className="relative w-screen h-dvh overflow-hidden bg-surface">
+      {/* Floating Top-Right Utilities Bar (Glassmorphic Overlay on Map) */}
+      <div className="absolute top-3 right-16 sm:top-4 sm:right-16 z-20 flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 rounded-full border border-border/80 bg-card/90 backdrop-blur-xl px-3.5 py-1.5 text-xs font-semibold shadow-lg">
+          <Radio className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
+          <span className="text-foreground">DISPATCH TELEMETRY ONLINE</span>
+        </div>
+
+        <a
+          href="tel:999"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-emergency/40 bg-emergency/15 text-danger-ink dark:text-emergency hover:bg-emergency/25 text-xs font-bold transition-all shadow-lg backdrop-blur-xl"
+        >
+          <Phone className="h-3.5 w-3.5" />
+          <span>999 Hotline</span>
+        </a>
+
+        <div className="flex items-center gap-1.5 rounded-full border border-border/80 bg-card/90 backdrop-blur-xl px-2 py-1 shadow-lg">
+          <ThemeToggle />
+          <UserMenu />
+        </div>
+      </div>
       {/* 100% Full Viewport Mapbox Canvas (Industry Gold Standard) */}
       <LiveTrackingMap
         telemetry={telemetry}
@@ -256,7 +278,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
         vehicleNumber={dispatch.ambulance?.vehicleNumber}
         stage={liveStage || dispatch.status}
         showOverlays={false}
-        className="w-full h-full rounded-none border-none shadow-none"
+        className="absolute inset-0 w-full h-full rounded-none border-none shadow-none"
       />
 
       {/* Floating Tactical Cockpit Drawer (Desktop: Left Floating HUD, Mobile: Bottom Sheet) */}

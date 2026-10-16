@@ -42,6 +42,16 @@ export default function DashboardLayout({
       .join(" / ");
   };
 
+  // If on a dedicated live telemetry tracking cockpit, render full-screen edge-to-edge
+  const isFullScreenTracking = pathname?.includes("/track/");
+  if (isFullScreenTracking) {
+    return (
+      <div className="h-dvh w-screen overflow-hidden bg-background text-foreground">
+        {children}
+      </div>
+    );
+  }
+
   return (
     <div className="h-dvh flex overflow-hidden bg-background text-foreground">
       {/* Desktop Persistent Sidebar */}

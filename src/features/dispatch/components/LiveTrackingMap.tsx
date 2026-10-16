@@ -63,8 +63,14 @@ export function LiveTrackingMap({
 
       map.on("load", () => {
         mapRef.current = map;
+        map.resize();
         setMapReady(true);
       });
+
+      const handleResize = () => {
+        map.resize();
+      };
+      window.addEventListener("resize", handleResize);
 
       map.on("error", (e) => {
         // If webgl or style fails, log error
@@ -72,6 +78,7 @@ export function LiveTrackingMap({
       });
 
       return () => {
+        window.removeEventListener("resize", handleResize);
         map.remove();
         mapRef.current = null;
         ambulanceMarkerRef.current = null;
@@ -308,8 +315,10 @@ export function LiveTrackingMap({
   return (
     <div
       className={cn(
-        "relative w-full h-[420px] sm:h-[480px] rounded-2xl overflow-hidden border border-border shadow-2xl bg-surface",
-        className,
+        "relative w-full overflow-hidden bg-surface",
+        className
+          ? className
+          : "h-[420px] sm:h-[480px] rounded-2xl border border-border shadow-2xl",
       )}
     >
       <div ref={mapContainer} className="w-full h-full" />

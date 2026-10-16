@@ -31,8 +31,9 @@ import { DispatchStatus, RequestStatus } from "@/types/entities.types";
 
 export default function AdminDispatchesPage() {
   const { params, setParams } = useUrlParams();
-  const [selectedTrackingRequestId, setSelectedTrackingRequestId] =
-    useState<string | null>(null);
+  const [selectedTrackingRequestId, setSelectedTrackingRequestId] = useState<
+    string | null
+  >(null);
 
   // Tab state: "queue" (default) or "telemetry"
   const activeTab = params.get("tab") === "telemetry" ? "telemetry" : "queue";

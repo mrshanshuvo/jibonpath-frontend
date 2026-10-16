@@ -16,7 +16,6 @@ import {
   ArrowLeft,
   Banknote,
   Receipt,
-  CreditCard,
 } from "lucide-react";
 import { Button, Badge } from "@/components/ui";
 import { ThemeToggle } from "@/components/shared";
@@ -30,10 +29,7 @@ import {
 } from "@/types/entities.types";
 import { useUpdateDispatchStatus } from "../api/dispatch.queries";
 import { useDriverLocationBroadcast } from "../hooks/useDriverLocationBroadcast";
-import {
-  useConfirmCashPayment,
-  usePaymentStatus,
-} from "@/features/payment";
+import { useConfirmCashPayment, usePaymentStatus } from "@/features/payment";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/config/routes";
 
@@ -270,8 +266,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               className={cn(
                 "h-2 w-2 rounded-full",
                 isBroadcasting
-                  ? "bg-emerald-500 animate-ping"
-                  : "bg-amber-500 animate-pulse",
+                  ? "bg-success animate-ping"
+                  : "bg-warning animate-pulse",
               )}
             />
             <span className="hidden md:inline">
@@ -381,8 +377,8 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               )}
             </div>
 
-            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500 flex items-center gap-1">
+            <div className="rounded-2xl border border-success/30 bg-success/5 p-4 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-success flex items-center gap-1">
                 <Building2 className="h-3 w-3" />
                 Destination Trauma Bay
               </span>
@@ -413,19 +409,22 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               )}
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-xs text-muted-foreground font-medium">Authoritative Fare</span>
+              <span className="text-xs text-muted-foreground font-medium">
+                Authoritative Fare
+              </span>
               <span className="text-base font-extrabold text-foreground font-mono">
                 ৳ {fareAmount.toLocaleString()}
               </span>
             </div>
             <div className="text-[11px] text-muted-foreground pt-1.5 border-t border-border/40">
               {isPaid ? (
-                <span className="text-emerald-500 font-semibold flex items-center gap-1.5">
+                <span className="text-success font-semibold flex items-center gap-1.5">
                   <CheckCircle className="h-3.5 w-3.5" />
-                  Settled via {isCash ? "Cash at Hospital Bay" : "Stripe Digital Checkout"}
+                  Settled via{" "}
+                  {isCash ? "Cash at Hospital Bay" : "Stripe Digital Checkout"}
                 </span>
               ) : (
-                <span className="text-amber-500 font-medium">
+                <span className="text-warning font-medium">
                   Awaiting patient digital checkout or cash collection at ER bay
                 </span>
               )}
@@ -466,7 +465,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                 <span className="text-[10px] text-muted-foreground block uppercase font-medium">
                   SpO2 Sat
                 </span>
-                <span className="text-base font-extrabold text-emerald-500 mt-0.5 block">
+                <span className="text-base font-extrabold text-success mt-0.5 block">
                   98%
                 </span>
               </div>
@@ -520,7 +519,7 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                   variant="outline"
                   size="lg"
                   className="h-13 sm:h-14 px-4 text-xs font-bold rounded-2xl gap-2 cursor-pointer shadow-md"
-                  leftIcon={<Phone className="h-4 w-4 text-emerald-500" />}
+                  leftIcon={<Phone className="h-4 w-4 text-success" />}
                 >
                   <span className="hidden sm:inline">Call Caller</span>
                   <span className="sm:hidden">Call</span>
@@ -546,13 +545,17 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               <div className="flex flex-col gap-2.5 w-full">
                 {/* Live Bay Settlement Status Banner */}
                 {isPaid ? (
-                  <div className="flex items-center justify-between bg-emerald-500/15 border border-emerald-500/35 px-4 py-2 rounded-2xl shadow-sm">
+                  <div className="flex items-center justify-between bg-success/15 border border-success/35 px-4 py-2 rounded-2xl shadow-sm">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-emerald-500 shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-success shrink-0" />
                       <span className="text-xs font-bold text-foreground">
                         Payment Settled: ৳ {fareAmount.toLocaleString()}{" "}
-                        <span className="text-[11px] font-mono text-emerald-500 font-normal">
-                          ({isCash ? "CASH COLLECTED AT BAY" : "PAID ONLINE VIA STRIPE"})
+                        <span className="text-[11px] font-mono text-success font-normal">
+                          (
+                          {isCash
+                            ? "CASH COLLECTED AT BAY"
+                            : "PAID ONLINE VIA STRIPE"}
+                          )
                         </span>
                       </span>
                     </div>
@@ -561,25 +564,31 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
                     </Badge>
                   </div>
                 ) : (
-                  <div className="flex flex-col sm:flex-row items-center justify-between bg-amber-500/10 border border-amber-500/35 p-2.5 sm:px-4 sm:py-2 rounded-2xl gap-2 shadow-sm">
+                  <div className="flex flex-col sm:flex-row items-center justify-between bg-warning/10 border border-warning/35 p-2.5 sm:px-4 sm:py-2 rounded-2xl gap-2 shadow-sm">
                     <div className="flex items-center gap-2 text-xs font-bold text-foreground">
-                      <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                      <span className="h-2 w-2 rounded-full bg-warning animate-pulse shrink-0" />
                       <span>
-                        Fare Due: <span className="font-mono text-amber-500 font-extrabold">৳ {fareAmount.toLocaleString()}</span> · Awaiting Settlement
+                        Fare Due:{" "}
+                        <span className="font-mono text-warning font-extrabold">
+                          ৳ {fareAmount.toLocaleString()}
+                        </span>{" "}
+                        · Awaiting Settlement
                       </span>
                     </div>
                     <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8.5 px-3 text-xs font-bold bg-card border-emerald-500/40 text-emerald-600 hover:bg-emerald-500/10 cursor-pointer shadow-xs"
+                        className="h-8.5 px-3 text-xs font-bold bg-card border-success/40 text-success hover:bg-success/10 cursor-pointer shadow-xs"
                         isLoading={confirmCashMutation.isPending}
                         onClick={() =>
                           confirmCashMutation.mutate({
                             requestId: dispatch.requestId,
                           })
                         }
-                        leftIcon={<Banknote className="h-3.5 w-3.5 text-emerald-500" />}
+                        leftIcon={
+                          <Banknote className="h-3.5 w-3.5 text-success" />
+                        }
                       >
                         Confirm Cash (৳{fareAmount})
                       </Button>

@@ -72,7 +72,7 @@ export function PaymentGatewayModal({
     fareData?.distanceFare ?? Math.round(distanceKm * perKmRate);
   const prioritySurcharge = fareData?.prioritySurcharge ?? 0;
   const calculatedTotal =
-    fareData?.totalFare ?? (baseFare + distanceFare + prioritySurcharge);
+    fareData?.totalFare ?? baseFare + distanceFare + prioritySurcharge;
 
   const isFastTest =
     selectedGateway === PaymentGateway.BKASH && useSandboxFastTest;
@@ -149,13 +149,13 @@ export function PaymentGatewayModal({
 
           {/* Gateway-specific Details / Sandbox Credentials */}
           {selectedGateway === PaymentGateway.BKASH && (
-            <div className="rounded-xl border border-sky-500/30 bg-sky-500/10 p-3.5 space-y-2.5 animate-in fade-in duration-150">
+            <div className="rounded-xl border border-info/30 bg-info/10 p-3.5 space-y-2.5 animate-in fade-in duration-150">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-400">
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-info">
                   <Info className="h-4 w-4 shrink-0" />
                   <span>bKash Sandbox Simulator Credentials</span>
                 </div>
-                <span className="text-xs font-mono font-semibold text-sky-300">
+                <span className="text-xs font-mono font-semibold text-info">
                   Test Sandbox
                 </span>
               </div>
@@ -190,7 +190,7 @@ export function PaymentGatewayModal({
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-border/40 text-xs">
                 <div className="text-muted-foreground">
                   <span>Alt: </span>
-                  <span className="font-mono text-sky-300 font-bold select-all">
+                  <span className="font-mono text-info font-bold select-all">
                     01619777282
                   </span>
                 </div>
@@ -214,7 +214,7 @@ export function PaymentGatewayModal({
                     className={cn(
                       "px-2.5 py-1 rounded-md text-xs font-semibold transition-all border cursor-pointer",
                       useSandboxFastTest
-                        ? "bg-sky-500 text-white border-sky-500"
+                        ? "bg-info text-info-foreground border-info"
                         : "border-border text-muted-foreground hover:bg-surface-raised",
                     )}
                   >
@@ -242,7 +242,7 @@ export function PaymentGatewayModal({
           {selectedGateway === PaymentGateway.STRIPE && (
             <div className="rounded-xl border border-border bg-surface p-3.5 space-y-1.5 text-xs text-muted-foreground animate-in fade-in duration-150">
               <div className="font-bold text-foreground flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                <ShieldCheck className="h-4 w-4 text-success" />
                 <span>Stripe Global Encrypted Checkout</span>
               </div>
               <p className="leading-relaxed">
@@ -272,7 +272,8 @@ export function PaymentGatewayModal({
                   Base Activation
                   {fareData?.ambulanceType
                     ? ` (${fareData.ambulanceType.replace(/_/g, " ")})`
-                    : ""}:
+                    : ""}
+                  :
                 </span>
                 <span className="font-mono font-medium text-foreground">
                   {fareLoading ? "..." : formatCurrency(baseFare)}
@@ -318,7 +319,7 @@ export function PaymentGatewayModal({
             </div>
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+              <ShieldCheck className="h-4 w-4 text-success shrink-0" />
               <span>Instant automated dispatch release upon settlement.</span>
             </div>
           </div>

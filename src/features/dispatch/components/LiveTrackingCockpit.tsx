@@ -317,7 +317,10 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
 
         {/* Live 6-Stage Mission Stepper */}
         <div className="rounded-xl border border-border/70 bg-surface/80 p-3 shadow-2xs">
-          <DispatchStepper currentStatus={liveStage || dispatch.status} />
+          <DispatchStepper
+            currentStatus={liveStage || dispatch.status}
+            variant="compact"
+          />
         </div>
 
         {/* 1-Tap Emergency Hotlines */}

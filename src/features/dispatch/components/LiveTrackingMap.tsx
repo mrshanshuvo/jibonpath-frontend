@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Navigation, Compass, ShieldAlert, Building2 } from "lucide-react";
@@ -141,11 +141,25 @@ export function LiveTrackingMap({
     }
   }, [mapReady, pickup, hospital]);
 
+  // Fallback initial position so ambulance is immediately visible even before first SSE tick
+  const effectiveTelemetry: TelemetryTick = useMemo(() => {
+    if (telemetry) return telemetry;
+    return {
+      dispatchId: "",
+      lat: pickup ? pickup.lat - 0.009 : 23.7516,
+      lng: pickup ? pickup.lng - 0.007 : 90.3807,
+      heading: 45,
+      speedKmh: 42,
+      stage: stage || "EN_ROUTE",
+      updatedAt: new Date().toISOString(),
+    };
+  }, [telemetry, pickup, stage]);
+
   // Real-Time Vehicle Marker Repositioning (Pure WebGL - $0 Mapbox Cost)
   useEffect(() => {
-    if (!mapReady || !mapRef.current || !telemetry) return;
+    if (!mapReady || !mapRef.current) return;
     const map = mapRef.current;
-    const { lat, lng, heading = 0, speedKmh = 0 } = telemetry;
+    const { lat, lng, heading = 0, speedKmh = 0 } = effectiveTelemetry;
 
     if (!ambulanceMarkerRef.current) {
       // Create pulsing ambulance marker
@@ -185,10 +199,16 @@ export function LiveTrackingMap({
         )
         .addTo(map);
 
-      // Initial camera center
-      map.easeTo({ center: [lng, lat], zoom: 14, duration: 800 });
+      // Auto frame all mission points cleanly
+      const bounds = new mapboxgl.LngLatBounds();
+      bounds.extend([lng, lat]);
+      if (pickup?.lng && pickup?.lat) bounds.extend([pickup.lng, pickup.lat]);
+      if (hospital?.lng && hospital?.lat) bounds.extend([hospital.lng, hospital.lat]);
+      if (!bounds.isEmpty()) {
+        map.fitBounds(bounds, { padding: 75, maxZoom: 15, duration: 1000 });
+      }
     } else {
-      // Smoothly update location on existing marker (pure client translation)
+      // Smoothly update location on existing marker (pure client WebGL translation)
       ambulanceMarkerRef.current.setLngLat([lng, lat]);
 
       // Rotate heading orientation smoothly
@@ -196,22 +216,31 @@ export function LiveTrackingMap({
         ambulanceIconRef.current.style.transform = `rotate(${heading}deg)`;
       }
     }
-  }, [mapReady, telemetry, vehicleNumber]);
+  }, [mapReady, effectiveTelemetry, vehicleNumber, pickup, hospital]);
 
-  // Draw GeoJSON transit route line
+  // Draw GeoJSON transit route line (segmented by mission stage)
   useEffect(() => {
     if (!mapReady || !mapRef.current) return;
     const map = mapRef.current;
 
     const coords: [number, number][] = [];
-    if (telemetry?.lng && telemetry?.lat) {
-      coords.push([telemetry.lng, telemetry.lat]);
-    }
-    if (pickup?.lng && pickup?.lat) {
-      coords.push([pickup.lng, pickup.lat]);
-    }
-    if (hospital?.lng && hospital?.lat) {
-      coords.push([hospital.lng, hospital.lat]);
+    const ambPoint: [number, number] = [effectiveTelemetry.lng, effectiveTelemetry.lat];
+    const pickupPoint: [number, number] | null =
+      pickup?.lng && pickup?.lat ? [pickup.lng, pickup.lat] : null;
+    const hospitalPoint: [number, number] | null =
+      hospital?.lng && hospital?.lat ? [hospital.lng, hospital.lat] : null;
+
+    if (
+      stage === "HOSPITAL_SELECTED" ||
+      stage === "HOSPITAL_ARRIVAL" ||
+      stage === "COMPLETED"
+    ) {
+      coords.push(ambPoint);
+      if (hospitalPoint) coords.push(hospitalPoint);
+    } else {
+      coords.push(ambPoint);
+      if (pickupPoint) coords.push(pickupPoint);
+      if (hospitalPoint) coords.push(hospitalPoint);
     }
 
     if (coords.length >= 2) {
@@ -247,12 +276,12 @@ export function LiveTrackingMap({
         });
       }
     }
-  }, [mapReady, telemetry, pickup, hospital]);
+  }, [mapReady, effectiveTelemetry, pickup, hospital, stage]);
 
   const handleRecenter = () => {
-    if (!mapRef.current || !telemetry) return;
+    if (!mapRef.current) return;
     mapRef.current.flyTo({
-      center: [telemetry.lng, telemetry.lat],
+      center: [effectiveTelemetry.lng, effectiveTelemetry.lat],
       zoom: 14.5,
       essential: true,
     });

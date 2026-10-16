@@ -11,19 +11,29 @@ import {
   Clock,
   ExternalLink,
   ShieldAlert,
+  CheckCircle,
+  CreditCard,
+  MapPin,
+  Activity,
 } from "lucide-react";
 import { Button, Badge, Card } from "@/components/ui";
 import { DispatchStepper } from "./DispatchStepper";
 import { LiveTrackingMap } from "./LiveTrackingMap";
 import { useDispatchByRequestId } from "../api/dispatch.queries";
 import { useAuthStore } from "@/stores/auth.store";
-import { DispatchStatus, type TelemetryTick } from "@/types/entities.types";
+import {
+  DispatchStatus,
+  PaymentStatus,
+  type EmergencyRequest,
+  type TelemetryTick,
+} from "@/types/entities.types";
 import { api } from "@/lib/api-client";
 
 interface LiveTrackingModalProps {
   isOpen: boolean;
   onClose: () => void;
   requestId?: string | null;
+  onPay?: (request: EmergencyRequest) => void;
 }
 
 // Calculate distance in km between two GPS points using Haversine formula
@@ -50,6 +60,7 @@ export function LiveTrackingModal({
   isOpen,
   onClose,
   requestId,
+  onPay,
 }: LiveTrackingModalProps) {
   const accessToken = useAuthStore((s) => s.accessToken);
   const { data: dispatch, isLoading } = useDispatchByRequestId(
@@ -61,6 +72,12 @@ export function LiveTrackingModal({
   const [liveStage, setLiveStage] = useState<DispatchStatus | undefined>(
     undefined,
   );
+
+  const isPaid = dispatch?.request?.payment?.status === PaymentStatus.SUCCESS;
+  const isCompleted =
+    liveStage === DispatchStatus.COMPLETED ||
+    dispatch?.status === DispatchStatus.COMPLETED;
+  const canPay = isCompleted && !isPaid && Boolean(onPay);
 
   // Sync initial dispatch stage
   useEffect(() => {
@@ -279,6 +296,81 @@ export function LiveTrackingModal({
               vehicleNumber={dispatch.ambulance?.vehicleNumber}
               stage={liveStage || dispatch.status}
             />
+
+            {/* Payment Settlement Banner on Trip Completion */}
+            {canPay && dispatch?.request && (
+              <div className="rounded-xl border border-success/40 bg-success-tint p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-success text-success-foreground">
+                    <CheckCircle className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground">
+                      Mission Handover Finalized
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Patient has safely arrived at the emergency trauma bay. Please settle the transit fee.
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    onClose();
+                    onPay?.(dispatch.request!);
+                  }}
+                  leftIcon={<CreditCard className="h-4 w-4" />}
+                >
+                  Settle Fee (৳ {dispatch.request.payment?.amount || 1500})
+                </Button>
+              </div>
+            )}
+
+            {/* Patient Incident & Destination Dossier Card */}
+            {dispatch.request && (
+              <Card className="p-4 bg-surface/80 border-border/70 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <Activity className="h-3.5 w-3.5 text-emergency" />
+                    Incident Details &amp; Destination
+                  </span>
+                  <span className="text-xs font-mono text-muted-foreground">
+                    Priority: {dispatch.request.priority}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-muted-foreground font-semibold block">Pickup Location</span>
+                      <span className="text-foreground font-medium">{dispatch.request.pickupAddress}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-muted-foreground font-semibold block">Destination Hospital</span>
+                      <span className="text-foreground font-medium">
+                        {dispatch.hospital?.name || "Dhaka Medical College Hospital"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {dispatch.request.description && (
+                  <div className="rounded-lg bg-surface p-2.5 border border-border/50 text-xs text-foreground/90">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-0.5">
+                      Symptoms &amp; Clinical Notes
+                    </span>
+                    <p>{dispatch.request.description}</p>
+                  </div>
+                )}
+              </Card>
+            )}
 
             {/* Crew, Vehicle, and Emergency Hotlines */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

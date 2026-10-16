@@ -49,6 +49,7 @@ export function PatientDashboard() {
         isOpen={Boolean(activeRequestId)}
         onClose={handleCloseTracking}
         requestId={activeRequestId}
+        onPay={setPaymentRequest}
       />
 
       <PaymentGatewayModal

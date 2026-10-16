@@ -17,6 +17,7 @@ interface LiveTrackingMapProps {
   stage?: string;
   className?: string;
   showOverlays?: boolean;
+  sidebarOpen?: boolean;
 }
 
 export function LiveTrackingMap({
@@ -27,6 +28,7 @@ export function LiveTrackingMap({
   stage,
   className,
   showOverlays = true,
+  sidebarOpen = true,
 }: LiveTrackingMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -223,7 +225,7 @@ export function LiveTrackingMap({
           padding: {
             top: 70,
             bottom: 70,
-            left: !showOverlays && isDesktop ? 460 : 70,
+            left: !showOverlays && isDesktop && sidebarOpen ? 460 : 70,
             right: 70,
           },
           maxZoom: 15,
@@ -308,7 +310,7 @@ export function LiveTrackingMap({
       center: [effectiveTelemetry.lng, effectiveTelemetry.lat],
       zoom: 14.5,
       essential: true,
-      offset: !showOverlays && isDesktop ? [140, 0] : [0, 0],
+      offset: !showOverlays && isDesktop && sidebarOpen ? [140, 0] : [0, 0],
     });
   };
 
@@ -373,10 +375,12 @@ export function LiveTrackingMap({
           type="button"
           onClick={handleRecenter}
           className={cn(
-            "absolute bg-card/90 hover:bg-card border border-border text-foreground hover:text-primary text-xs font-semibold px-3 py-2 rounded-xl shadow-lg flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md",
+            "absolute bg-card/90 hover:bg-card border border-border text-foreground hover:text-primary text-xs font-semibold px-3 py-2 rounded-xl shadow-lg flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md z-20",
             showOverlays
               ? "bottom-3 left-3"
-              : "bottom-3 left-3 sm:left-[445px]",
+              : sidebarOpen
+                ? "bottom-4 left-4 sm:left-[436px]"
+                : "bottom-4 left-4",
           )}
         >
           <Compass className="h-3.5 w-3.5 text-primary" />

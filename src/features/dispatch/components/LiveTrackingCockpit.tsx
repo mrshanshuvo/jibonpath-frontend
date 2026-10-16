@@ -18,11 +18,14 @@ import {
   Share2,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Button, Badge, Card } from "@/components/ui";
 import { ThemeToggle } from "@/components/shared";
 import { UserMenu } from "@/components/layout";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { DispatchStepper } from "./DispatchStepper";
 import { LiveTrackingMap } from "./LiveTrackingMap";
 import { useDispatchByRequestId } from "../api/dispatch.queries";
@@ -64,6 +67,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
   const accessToken = useAuthStore((s) => s.accessToken);
   const { data: dispatch, isLoading } = useDispatchByRequestId(requestId);
 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [telemetry, setTelemetry] = useState<TelemetryTick | null>(null);
   const [streamConnected, setStreamConnected] = useState(false);
   const [liveStage, setLiveStage] = useState<DispatchStatus | undefined>(
@@ -278,16 +282,20 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
         vehicleNumber={dispatch.ambulance?.vehicleNumber}
         stage={liveStage || dispatch.status}
         showOverlays={false}
+        sidebarOpen={sidebarOpen}
         className="absolute inset-0 w-full h-full rounded-none border-none shadow-none"
       />
 
-      {/* Floating Tactical Cockpit Drawer (Desktop: Left Floating HUD, Mobile: Bottom Sheet) */}
+      {/* Docked Full-Height Tactical Cockpit Sidebar (Google Maps / RapidSOS Style) */}
       <aside
         aria-label="Live Mission Radar Cockpit"
-        className="absolute top-3 left-3 sm:top-5 sm:left-5 z-20 w-[calc(100vw-1.5rem)] sm:w-[420px] max-h-[calc(100vh-5.5rem)] overflow-y-auto rounded-3xl bg-card/95 backdrop-blur-2xl border border-border/90 shadow-2xl p-4 sm:p-5 space-y-4 transition-all"
+        className={cn(
+          "absolute top-0 left-0 bottom-0 z-30 w-full sm:w-[420px] h-full bg-card/95 backdrop-blur-2xl border-r border-border/90 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full",
+        )}
       >
-        {/* Top Navigation & Status Bar */}
-        <div className="flex items-center justify-between border-b border-border/60 pb-3">
+        {/* Fixed Header of the Sidebar (top: 0) */}
+        <div className="shrink-0 flex items-center justify-between border-b border-border/60 p-4 sm:p-5 bg-card/40">
           <Link
             href={ROUTES.patient.root}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
@@ -309,8 +317,22 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
             <Badge variant="emergency" size="sm" pulse>
               {streamConnected ? "LIVE STREAM" : "RADAR CONNECTED"}
             </Badge>
+
+            {/* Collapse toggle button */}
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(false)}
+              className="p-1.5 rounded-lg border border-border bg-surface text-muted-foreground hover:text-foreground hover:bg-surface-raised transition-colors cursor-pointer ml-1"
+              title="Collapse mission panel"
+              aria-label="Collapse mission panel"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
           </div>
         </div>
+
+        {/* Scrollable Mission Dossier Body */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
 
         {/* Hero Dynamic ETA Cockpit Banner */}
         <div className="rounded-2xl border border-emergency/40 bg-emergency/10 p-4 text-foreground flex items-center justify-between gap-3">
@@ -476,7 +498,35 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
             </div>
           </div>
         )}
+        </div>
       </aside>
+
+      {/* Floating Re-open Button when Collapsed */}
+      {!sidebarOpen && (
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          className="absolute top-4 left-4 z-20 flex items-center gap-3 rounded-2xl border border-border/90 bg-card/95 backdrop-blur-2xl px-4 py-2.5 shadow-2xl text-foreground hover:text-primary transition-all cursor-pointer group"
+          title="Open mission cockpit panel"
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emergency text-emergency-foreground shadow-md shadow-emergency/30">
+            <Ambulance className="h-5 w-5 animate-pulse" />
+          </div>
+          <div className="text-left">
+            <span className="text-[10px] font-bold text-emergency uppercase tracking-wider block">
+              {dispatch.ambulance?.vehicleNumber || "AMBULANCE"}
+            </span>
+            <span className="text-xs font-extrabold leading-tight flex items-center gap-1.5">
+              <span>
+                {liveStage === DispatchStatus.COMPLETED
+                  ? "Completed"
+                  : `Arriving in ~${etaMinutes} mins`}
+              </span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+            </span>
+          </div>
+        </button>
+      )}
 
       {/* Payment Gateway Modal */}
       <PaymentGatewayModal

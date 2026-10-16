@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { api } from "@/lib/api-client";
 import { DispatchStatus } from "@/types/entities.types";
 
@@ -54,8 +54,14 @@ export function useDriverLocationBroadcast({
   const baseLat = 23.7516;
   const baseLng = 90.3807;
 
-  const destPickup = pickupCoords || { lat: 23.758, lng: 90.39 };
-  const destHospital = hospitalCoords || { lat: 23.7258, lng: 90.3976 };
+  const destPickup = useMemo(
+    () => pickupCoords || { lat: 23.758, lng: 90.39 },
+    [pickupCoords],
+  );
+  const destHospital = useMemo(
+    () => hospitalCoords || { lat: 23.7258, lng: 90.3976 },
+    [hospitalCoords],
+  );
 
   const [coords, setCoords] = useState<LocationState>({
     lat: baseLat,
@@ -64,13 +70,21 @@ export function useDriverLocationBroadcast({
     speedKmh: 0,
   });
 
-  const [isBroadcasting, setIsBroadcasting] = useState(false);
-  const [isSimulated, setIsSimulated] = useState(false);
+  const [hasBroadcasted, setHasBroadcasted] = useState(false);
+  const [isSimulated, setIsSimulated] = useState(
+    () => typeof window === "undefined" || !("geolocation" in navigator),
+  );
   const [error, setError] = useState<string | null>(null);
 
   const prevCoordsRef = useRef<LocationState | null>(null);
   const simulationStepRef = useRef(0);
-  const isBroadcastingRef = useRef(false);
+
+  const isBroadcasting = Boolean(
+    dispatchId &&
+    isActive &&
+    stage !== DispatchStatus.COMPLETED &&
+    hasBroadcasted,
+  );
 
   // Send coordinates to the backend telemetry store
   const sendLocationTick = useCallback(
@@ -84,7 +98,7 @@ export function useDriverLocationBroadcast({
           speedKmh: location.speedKmh,
           stage,
         });
-        setIsBroadcasting(true);
+        setHasBroadcasted(true);
         setError(null);
       } catch (err: unknown) {
         // Log telemetry error quietly to avoid blocking driver UI
@@ -98,7 +112,6 @@ export function useDriverLocationBroadcast({
 
   useEffect(() => {
     if (!dispatchId || !isActive || stage === DispatchStatus.COMPLETED) {
-      setIsBroadcasting(false);
       return;
     }
 
@@ -133,9 +146,11 @@ export function useDriverLocationBroadcast({
       }
 
       // Smooth interpolation with cycling
-      const progress = ((step % 40) / 40);
-      const curLat = targetStart.lat + (targetEnd.lat - targetStart.lat) * progress;
-      const curLng = targetStart.lng + (targetEnd.lng - targetStart.lng) * progress;
+      const progress = (step % 40) / 40;
+      const curLat =
+        targetStart.lat + (targetEnd.lat - targetStart.lat) * progress;
+      const curLng =
+        targetStart.lng + (targetEnd.lng - targetStart.lng) * progress;
 
       const bearing = calculateBearing(
         targetStart.lat,
@@ -196,8 +211,8 @@ export function useDriverLocationBroadcast({
           maximumAge: 1000,
         },
       );
-    } else {
-      setIsSimulated(true);
+    } else if (!isSimulated) {
+      queueMicrotask(() => setIsSimulated(true));
     }
 
     // If in simulation mode, broadcast every 3 seconds
@@ -218,10 +233,8 @@ export function useDriverLocationBroadcast({
     sendLocationTick,
     baseLat,
     baseLng,
-    destPickup.lat,
-    destPickup.lng,
-    destHospital.lat,
-    destHospital.lng,
+    destPickup,
+    destHospital,
     coords.heading,
   ]);
 

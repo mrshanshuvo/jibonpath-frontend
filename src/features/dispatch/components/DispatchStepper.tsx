@@ -103,8 +103,7 @@ export function DispatchStepper({
                 title={`${step.label}: ${step.desc}`}
                 className={cn(
                   "relative z-10 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
-                  isCompleted &&
-                    "bg-success text-white shadow-xs",
+                  isCompleted && "bg-success text-success-foreground shadow-xs",
                   isCurrent &&
                     "bg-emergency text-emergency-foreground ring-4 ring-emergency/30 shadow-md scale-110",
                   isUpcoming &&

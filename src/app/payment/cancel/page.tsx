@@ -161,13 +161,13 @@ function PaymentCancelContent() {
 
         {/* bKash Sandbox Simulator Credentials - Solid, high-contrast, readable */}
         {failedGateway === PaymentGateway.BKASH && (
-          <div className="rounded-xl border border-sky-500/30 bg-sky-500/10 p-5 text-left space-y-3.5">
+          <div className="rounded-xl border border-info/30 bg-info/10 p-5 text-left space-y-3.5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-sky-400">
+              <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-info">
                 <Info className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                 <span>bKash Sandbox Simulator Credentials</span>
               </div>
-              <span className="text-xs font-mono font-semibold text-sky-300">
+              <span className="text-xs font-mono font-semibold text-info">
                 Sandbox Mode
               </span>
             </div>
@@ -204,7 +204,7 @@ function PaymentCancelContent() {
             <div className="pt-2.5 border-t border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs sm:text-sm">
               <div className="text-muted-foreground">
                 <span>Alternative Wallet: </span>
-                <span className="font-mono text-sky-300 font-bold select-all">
+                <span className="font-mono text-info font-bold select-all">
                   01619777282
                 </span>
               </div>
@@ -232,7 +232,7 @@ function PaymentCancelContent() {
                   className={cn(
                     "px-2.5 py-1 rounded-md text-xs font-semibold transition-all border cursor-pointer",
                     useSandboxFastTest
-                      ? "bg-sky-500 text-white border-sky-500"
+                      ? "bg-info text-info-foreground border-info"
                       : "border-border text-muted-foreground hover:bg-surface-raised",
                   )}
                 >

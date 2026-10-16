@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { DispatchStatus, type Dispatch, type TelemetryTick } from "@/types/entities.types";
+import {
+  DispatchStatus,
+  type Dispatch,
+  type TelemetryTick,
+} from "@/types/entities.types";
 
 export type { TelemetryTick };
 

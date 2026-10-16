@@ -7,9 +7,7 @@ import {
   Building2,
   Ambulance,
   User,
-  Radio,
   Clock,
-  ExternalLink,
   ShieldAlert,
   CheckCircle,
   CreditCard,
@@ -67,27 +65,20 @@ export function LiveTrackingModal({
     requestId || undefined,
   );
 
-  const [telemetry, setTelemetry] = useState<TelemetryTick | null>(null);
+  const [telemetryOverride, setTelemetryOverride] =
+    useState<TelemetryTick | null>(null);
   const [streamConnected, setStreamConnected] = useState(false);
-  const [liveStage, setLiveStage] = useState<DispatchStatus | undefined>(
-    undefined,
-  );
+  const [liveStageOverride, setLiveStageOverride] = useState<
+    DispatchStatus | undefined
+  >(undefined);
 
   const isPaid = dispatch?.request?.payment?.status === PaymentStatus.SUCCESS;
+  const liveStage = liveStageOverride ?? dispatch?.status;
+  const telemetry = telemetryOverride ?? dispatch?.latestTelemetry ?? null;
   const isCompleted =
     liveStage === DispatchStatus.COMPLETED ||
     dispatch?.status === DispatchStatus.COMPLETED;
   const canPay = isCompleted && !isPaid && Boolean(onPay);
-
-  // Sync initial dispatch stage
-  useEffect(() => {
-    if (dispatch?.status) {
-      setLiveStage(dispatch.status);
-    }
-    if (dispatch?.latestTelemetry) {
-      setTelemetry(dispatch.latestTelemetry);
-    }
-  }, [dispatch]);
 
   // Connect to SSE telemetry stream
   useEffect(() => {
@@ -111,7 +102,7 @@ export function LiveTrackingModal({
         try {
           const payload = JSON.parse(event.data);
           if (payload.type === "telemetry") {
-            setTelemetry({
+            setTelemetryOverride({
               dispatchId: payload.dispatchId || dispatch.id,
               lat: payload.lat,
               lng: payload.lng,
@@ -121,10 +112,10 @@ export function LiveTrackingModal({
               updatedAt: payload.updatedAt || new Date().toISOString(),
             });
             if (payload.stage) {
-              setLiveStage(payload.stage as DispatchStatus);
+              setLiveStageOverride(payload.stage as DispatchStatus);
             }
           }
-        } catch (err) {
+        } catch {
           // Ignore JSON parse errors for heartbeats
         }
       };
@@ -141,18 +132,18 @@ export function LiveTrackingModal({
                 `/dispatches/${dispatch.id}/telemetry/latest`,
               );
               if (res.data) {
-                setTelemetry(res.data);
+                setTelemetryOverride(res.data);
                 if (res.data.stage)
-                  setLiveStage(res.data.stage as DispatchStatus);
+                  setLiveStageOverride(res.data.stage as DispatchStatus);
               }
-            } catch (pollErr) {
+            } catch {
               // Silently retry
             }
           }, 3500);
         }
       };
-    } catch (e) {
-      setStreamConnected(false);
+    } catch {
+      queueMicrotask(() => setStreamConnected(false));
     }
 
     return () => {
@@ -180,7 +171,8 @@ export function LiveTrackingModal({
     }
 
     const distKm = calculateDistanceKm(curLat, curLng, targetLat, targetLng);
-    const speed = telemetry.speedKmh && telemetry.speedKmh > 10 ? telemetry.speedKmh : 40;
+    const speed =
+      telemetry.speedKmh && telemetry.speedKmh > 10 ? telemetry.speedKmh : 40;
 
     const mins = Math.round((distKm / speed) * 60);
     return Math.max(1, mins);
@@ -215,7 +207,8 @@ export function LiveTrackingModal({
                 id="live-tracking-title"
                 className="text-lg sm:text-xl font-bold text-foreground mt-0.5"
               >
-                Ambulance {dispatch?.ambulance?.vehicleNumber || "Unit En Route"}
+                Ambulance{" "}
+                {dispatch?.ambulance?.vehicleNumber || "Unit En Route"}
               </h2>
             </div>
           </div>
@@ -223,7 +216,10 @@ export function LiveTrackingModal({
           <div className="flex items-center gap-3">
             {/* Dynamic ETA Pill */}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emergency/10 border border-emergency/30 text-emergency font-bold text-xs sm:text-sm">
-              <Clock className="h-4 w-4 animate-spin text-emergency" style={{ animationDuration: "6s" }} />
+              <Clock
+                className="h-4 w-4 animate-spin text-emergency"
+                style={{ animationDuration: "6s" }}
+              />
               <span>
                 {liveStage === DispatchStatus.COMPLETED
                   ? "Mission Completed"
@@ -258,8 +254,8 @@ export function LiveTrackingModal({
               No Active Dispatch Found
             </h3>
             <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-              This request is currently waiting for central triage pairing or has
-              already concluded.
+              This request is currently waiting for central triage pairing or
+              has already concluded.
             </p>
             <Button variant="outline" size="sm" onClick={onClose}>
               Return to Dashboard
@@ -309,7 +305,8 @@ export function LiveTrackingModal({
                       Mission Handover Finalized
                     </h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Patient has safely arrived at the emergency trauma bay. Please settle the transit fee.
+                      Patient has safely arrived at the emergency trauma bay.
+                      Please settle the transit fee.
                     </p>
                   </div>
                 </div>
@@ -345,17 +342,24 @@ export function LiveTrackingModal({
                   <div className="flex items-start gap-2">
                     <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-muted-foreground font-semibold block">Pickup Location</span>
-                      <span className="text-foreground font-medium">{dispatch.request.pickupAddress}</span>
+                      <span className="text-muted-foreground font-semibold block">
+                        Pickup Location
+                      </span>
+                      <span className="text-foreground font-medium">
+                        {dispatch.request.pickupAddress}
+                      </span>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-2">
                     <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-muted-foreground font-semibold block">Destination Hospital</span>
+                      <span className="text-muted-foreground font-semibold block">
+                        Destination Hospital
+                      </span>
                       <span className="text-foreground font-medium">
-                        {dispatch.hospital?.name || "Dhaka Medical College Hospital"}
+                        {dispatch.hospital?.name ||
+                          "Dhaka Medical College Hospital"}
                       </span>
                     </div>
                   </div>
@@ -409,11 +413,11 @@ export function LiveTrackingModal({
               {/* Destination Hospital Card */}
               <Card className="p-4 bg-surface border-border/80 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 font-bold">
+                  <div className="h-10 w-10 rounded-full bg-success/10 border border-success/20 flex items-center justify-center text-success font-bold">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-success">
                       Destination Emergency Bay
                     </span>
                     <h4 className="text-sm font-bold text-foreground">
@@ -421,7 +425,8 @@ export function LiveTrackingModal({
                         "Dhaka Medical College Hospital (DMCH)"}
                     </h4>
                     <span className="text-xs text-muted-foreground truncate block max-w-48">
-                      {dispatch.hospital?.address || "Central Trauma Department"}
+                      {dispatch.hospital?.address ||
+                        "Central Trauma Department"}
                     </span>
                   </div>
                 </div>

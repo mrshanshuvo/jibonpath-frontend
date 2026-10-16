@@ -2,7 +2,13 @@
 
 import { useDispatches } from "@/features/dispatch";
 import { useConfirmCashPayment } from "@/features/payment";
-import { Skeleton, EmptyState, Pagination, Badge, Button } from "@/components/shared";
+import {
+  Skeleton,
+  EmptyState,
+  Pagination,
+  Badge,
+  Button,
+} from "@/components/shared";
 import {
   Ambulance,
   MapPin,
@@ -90,7 +96,8 @@ export default function DriverHistoryPage() {
                     </Badge>
                     {isPaid ? (
                       <Badge variant="success" size="sm" className="font-mono">
-                        ৳ {fareAmount.toLocaleString()} · {isCash ? "CASH" : "PAID"}
+                        ৳ {fareAmount.toLocaleString()} ·{" "}
+                        {isCash ? "CASH" : "PAID"}
                       </Badge>
                     ) : (
                       <Badge variant="warning" size="sm" className="font-mono">
@@ -125,26 +132,30 @@ export default function DriverHistoryPage() {
                   </span>
                   <div className="flex items-center gap-2">
                     {isPaid ? (
-                      <span className="text-emerald-500 font-semibold flex items-center gap-1 text-[11px]">
+                      <span className="text-success font-semibold flex items-center gap-1 text-[11px]">
                         <CheckCircle className="h-3.5 w-3.5" />
-                        {isCash ? "Cash Collected at Bay" : "Settled via Stripe"}
+                        {isCash
+                          ? "Cash Collected at Bay"
+                          : "Settled via Stripe"}
                       </span>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <span className="text-amber-500 font-medium text-[11px]">
+                        <span className="text-warning font-medium text-[11px]">
                           Invoice Pending
                         </span>
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-7 px-2 text-[11px] font-bold border-emerald-500/40 text-emerald-600 hover:bg-emerald-500/10 cursor-pointer"
+                          className="h-7 px-2 text-[11px] font-bold border-success/40 text-success hover:bg-success/10 cursor-pointer"
                           isLoading={confirmCashMutation.isPending}
                           onClick={() =>
                             confirmCashMutation.mutate({
                               requestId: d.requestId,
                             })
                           }
-                          leftIcon={<Banknote className="h-3 w-3 text-emerald-500" />}
+                          leftIcon={
+                            <Banknote className="h-3 w-3 text-success" />
+                          }
                         >
                           Collect Cash
                         </Button>

@@ -21,7 +21,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { Button, Badge, Card } from "@/components/ui";
+import { Button, Badge } from "@/components/ui";
 import { ThemeToggle } from "@/components/shared";
 import { UserMenu } from "@/components/layout";
 import { toast } from "sonner";
@@ -68,24 +68,19 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
   const { data: dispatch, isLoading } = useDispatchByRequestId(requestId);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [telemetry, setTelemetry] = useState<TelemetryTick | null>(null);
+  const [telemetryOverride, setTelemetryOverride] =
+    useState<TelemetryTick | null>(null);
   const [streamConnected, setStreamConnected] = useState(false);
-  const [liveStage, setLiveStage] = useState<DispatchStatus | undefined>(
-    undefined,
+  const [liveStageOverride, setLiveStageOverride] = useState<
+    DispatchStatus | undefined
+  >(undefined);
+  const [paymentRequest, setPaymentRequest] = useState<EmergencyRequest | null>(
+    null,
   );
-  const [paymentRequest, setPaymentRequest] =
-    useState<EmergencyRequest | null>(null);
   const [detailsExpanded, setDetailsExpanded] = useState(true);
 
-  // Sync initial dispatch stage
-  useEffect(() => {
-    if (dispatch?.status) {
-      setLiveStage(dispatch.status);
-    }
-    if (dispatch?.latestTelemetry) {
-      setTelemetry(dispatch.latestTelemetry);
-    }
-  }, [dispatch]);
+  const liveStage = liveStageOverride ?? dispatch?.status;
+  const telemetry = telemetryOverride ?? dispatch?.latestTelemetry ?? null;
 
   // Connect to SSE telemetry stream
   useEffect(() => {
@@ -109,7 +104,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
         try {
           const payload = JSON.parse(event.data);
           if (payload.type === "telemetry") {
-            setTelemetry({
+            setTelemetryOverride({
               dispatchId: payload.dispatchId || dispatch.id,
               lat: payload.lat,
               lng: payload.lng,
@@ -119,7 +114,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
               updatedAt: payload.updatedAt || new Date().toISOString(),
             });
             if (payload.stage) {
-              setLiveStage(payload.stage as DispatchStatus);
+              setLiveStageOverride(payload.stage as DispatchStatus);
             }
           }
         } catch {
@@ -138,9 +133,9 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
                 `/dispatches/${dispatch.id}/telemetry/latest`,
               );
               if (res.data) {
-                setTelemetry(res.data);
+                setTelemetryOverride(res.data);
                 if (res.data.stage)
-                  setLiveStage(res.data.stage as DispatchStatus);
+                  setLiveStageOverride(res.data.stage as DispatchStatus);
               }
             } catch {
               // Silently retry
@@ -149,7 +144,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
         }
       };
     } catch {
-      setStreamConnected(false);
+      queueMicrotask(() => setStreamConnected(false));
     }
 
     return () => {
@@ -244,7 +239,7 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
       {/* Floating Top-Right Utilities Bar (Glassmorphic Overlay on Map) */}
       <div className="absolute top-3 right-16 sm:top-4 sm:right-16 z-20 flex items-center gap-2">
         <div className="hidden md:flex items-center gap-2 rounded-full border border-border/80 bg-card/90 backdrop-blur-xl px-3.5 py-1.5 text-xs font-semibold shadow-lg">
-          <Radio className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
+          <Radio className="h-3.5 w-3.5 text-success animate-pulse" />
           <span className="text-foreground">DISPATCH TELEMETRY ONLINE</span>
         </div>
 
@@ -336,176 +331,180 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
 
         {/* Scrollable Mission Dossier Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
-
-        {/* Hero Dynamic ETA Cockpit Banner */}
-        <div className="rounded-2xl border border-emergency/40 bg-emergency/10 p-4 text-foreground flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emergency text-emergency-foreground shadow-lg shadow-emergency/30">
-              <Ambulance className="h-6 w-6" />
+          {/* Hero Dynamic ETA Cockpit Banner */}
+          <div className="rounded-2xl border border-emergency/40 bg-emergency/10 p-4 text-foreground flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emergency text-emergency-foreground shadow-lg shadow-emergency/30">
+                <Ambulance className="h-6 w-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emergency block">
+                  {dispatch.ambulance?.vehicleNumber || "AMBULANCE EN ROUTE"}
+                </span>
+                <h2 className="text-base sm:text-lg font-extrabold text-foreground leading-tight">
+                  {liveStage === DispatchStatus.COMPLETED
+                    ? "Mission Completed"
+                    : liveStage === DispatchStatus.PATIENT_PICKUP
+                      ? "Arrived On Scene"
+                      : `Arriving in ~${etaMinutes} mins`}
+                </h2>
+              </div>
             </div>
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emergency block">
-                {dispatch.ambulance?.vehicleNumber || "AMBULANCE EN ROUTE"}
-              </span>
-              <h2 className="text-base sm:text-lg font-extrabold text-foreground leading-tight">
-                {liveStage === DispatchStatus.COMPLETED
-                  ? "Mission Completed"
-                  : liveStage === DispatchStatus.PATIENT_PICKUP
-                    ? "Arrived On Scene"
-                    : `Arriving in ~${etaMinutes} mins`}
-              </h2>
+
+            <div className="flex items-center gap-1 text-xs font-mono font-bold text-emergency">
+              <Clock
+                className="h-4 w-4 animate-spin text-emergency"
+                style={{ animationDuration: "6s" }}
+              />
             </div>
           </div>
 
-          <div className="flex items-center gap-1 text-xs font-mono font-bold text-emergency">
-            <Clock className="h-4 w-4 animate-spin text-emergency" style={{ animationDuration: "6s" }} />
+          {/* Live 6-Stage Mission Stepper */}
+          <div className="rounded-xl border border-border/70 bg-surface/80 p-3 shadow-2xs">
+            <DispatchStepper
+              currentStatus={liveStage || dispatch.status}
+              variant="compact"
+            />
           </div>
-        </div>
 
-        {/* Live 6-Stage Mission Stepper */}
-        <div className="rounded-xl border border-border/70 bg-surface/80 p-3 shadow-2xs">
-          <DispatchStepper
-            currentStatus={liveStage || dispatch.status}
-            variant="compact"
-          />
-        </div>
-
-        {/* 1-Tap Emergency Hotlines */}
-        <div className="grid grid-cols-2 gap-2">
-          {dispatch.driver?.user?.phone ? (
-            <a href={`tel:${dispatch.driver.user.phone}`} className="w-full">
+          {/* 1-Tap Emergency Hotlines */}
+          <div className="grid grid-cols-2 gap-2">
+            {dispatch.driver?.user?.phone ? (
+              <a href={`tel:${dispatch.driver.user.phone}`} className="w-full">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="w-full justify-center text-xs font-bold gap-1.5"
+                  leftIcon={<Phone className="h-3.5 w-3.5" />}
+                >
+                  Call Driver
+                </Button>
+              </a>
+            ) : (
               <Button
-                variant="primary"
+                variant="outline"
+                size="sm"
+                disabled
+                className="w-full text-xs"
+              >
+                Driver Dispatched
+              </Button>
+            )}
+
+            <a href="tel:999" className="w-full">
+              <Button
+                variant="emergency"
                 size="sm"
                 className="w-full justify-center text-xs font-bold gap-1.5"
                 leftIcon={<Phone className="h-3.5 w-3.5" />}
               >
-                Call Driver
+                999 Hotline
               </Button>
             </a>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              disabled
-              className="w-full text-xs"
-            >
-              Driver Dispatched
-            </Button>
-          )}
-
-          <a href="tel:999" className="w-full">
-            <Button
-              variant="emergency"
-              size="sm"
-              className="w-full justify-center text-xs font-bold gap-1.5"
-              leftIcon={<Phone className="h-3.5 w-3.5" />}
-            >
-              999 Hotline
-            </Button>
-          </a>
-        </div>
-
-        {/* Post-Mission / Bay Arrival Payment Settle Fee Banner */}
-        {canPay && (
-          <div className="rounded-2xl border border-success/40 bg-success-tint p-4 space-y-2.5 shadow-lg animate-in fade-in">
-            <div className="flex items-center gap-2 text-success font-bold text-xs uppercase tracking-wider">
-              <CheckCircle className="h-4 w-4" />
-              <span>
-                {isCompleted ? "Handover Finalized" : "Trauma Bay Dock Arrival"}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              {isCompleted
-                ? "Patient safely delivered to the emergency trauma team. Please settle the ambulance transit fee."
-                : "Arrived at hospital trauma bay. You may settle the ambulance transit fee via digital payment."}
-            </p>
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full gap-2 font-bold shadow-md cursor-pointer"
-              onClick={() => setPaymentRequest(dispatch.request || null)}
-              leftIcon={<CreditCard className="h-4 w-4" />}
-            >
-              {dispatch.request?.payment?.amount
-                ? `Settle Trip Fee (৳ ${dispatch.request.payment.amount})`
-                : "Settle Trip Fee & Invoice"}
-            </Button>
           </div>
-        )}
 
-        {/* Collapsible Mission Dossier Toggle */}
-        <button
-          type="button"
-          onClick={() => setDetailsExpanded((prev) => !prev)}
-          className="w-full flex items-center justify-between text-xs font-bold text-muted-foreground hover:text-foreground pt-1 cursor-pointer"
-        >
-          <span className="flex items-center gap-1.5">
-            <Activity className="h-3.5 w-3.5 text-primary" />
-            <span>Incident &amp; Trauma Bay Dossier</span>
-          </span>
-          {detailsExpanded ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
-          )}
-        </button>
-
-        {/* Mission Dossier Content */}
-        {detailsExpanded && (
-          <div className="space-y-3 pt-1 text-xs">
-            {/* Pickup Location */}
-            <div className="rounded-xl border border-border/70 bg-surface/70 p-3 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emergency flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                Pickup Location
-              </span>
-              <p className="font-semibold text-foreground text-xs leading-snug">
-                {dispatch.request?.pickupAddress || "Pickup scene"}
-              </p>
-              {dispatch.request?.description && (
-                <p className="text-[11px] text-muted-foreground pt-1 border-t border-border/40 mt-1 line-clamp-2">
-                  Condition: {dispatch.request.description}
-                </p>
-              )}
-            </div>
-
-            {/* Destination Trauma Bay */}
-            <div className="rounded-xl border border-border/70 bg-surface/70 p-3 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500 flex items-center gap-1">
-                <Building2 className="h-3 w-3" />
-                Receiving Hospital
-              </span>
-              <p className="font-semibold text-foreground text-xs leading-snug">
-                {dispatch.hospital?.name ||
-                  "Dhaka Medical College Hospital (DMCH)"}
-              </p>
-              <p className="text-[11px] text-muted-foreground">
-                {dispatch.hospital?.address || "Central Emergency Ward"}
-              </p>
-            </div>
-
-            {/* Crew Details */}
-            <div className="rounded-xl border border-border/70 bg-surface/70 p-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                  <User className="h-4 w-4" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-foreground block">
-                    {dispatch.driver?.user?.name || "Paramedic Unit"}
-                  </span>
-                  <span className="text-[10px] font-mono text-muted-foreground">
-                    License: {dispatch.driver?.licenseNumber || "CERT-EM"}
-                  </span>
-                </div>
+          {/* Post-Mission / Bay Arrival Payment Settle Fee Banner */}
+          {canPay && (
+            <div className="rounded-2xl border border-success/40 bg-success-tint p-4 space-y-2.5 shadow-lg animate-in fade-in">
+              <div className="flex items-center gap-2 text-success font-bold text-xs uppercase tracking-wider">
+                <CheckCircle className="h-4 w-4" />
+                <span>
+                  {isCompleted
+                    ? "Handover Finalized"
+                    : "Trauma Bay Dock Arrival"}
+                </span>
               </div>
-              <span className="text-[10px] font-mono text-primary font-bold">
-                {dispatch.ambulance?.type || "ALS UNIT"}
-              </span>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {isCompleted
+                  ? "Patient safely delivered to the emergency trauma team. Please settle the ambulance transit fee."
+                  : "Arrived at hospital trauma bay. You may settle the ambulance transit fee via digital payment."}
+              </p>
+              <Button
+                variant="primary"
+                size="sm"
+                className="w-full gap-2 font-bold shadow-md cursor-pointer"
+                onClick={() => setPaymentRequest(dispatch.request || null)}
+                leftIcon={<CreditCard className="h-4 w-4" />}
+              >
+                {dispatch.request?.payment?.amount
+                  ? `Settle Trip Fee (৳ ${dispatch.request.payment.amount})`
+                  : "Settle Trip Fee & Invoice"}
+              </Button>
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Collapsible Mission Dossier Toggle */}
+          <button
+            type="button"
+            onClick={() => setDetailsExpanded((prev) => !prev)}
+            className="w-full flex items-center justify-between text-xs font-bold text-muted-foreground hover:text-foreground pt-1 cursor-pointer"
+          >
+            <span className="flex items-center gap-1.5">
+              <Activity className="h-3.5 w-3.5 text-primary" />
+              <span>Incident &amp; Trauma Bay Dossier</span>
+            </span>
+            {detailsExpanded ? (
+              <ChevronUp className="h-4 w-4" />
+            ) : (
+              <ChevronDown className="h-4 w-4" />
+            )}
+          </button>
+
+          {/* Mission Dossier Content */}
+          {detailsExpanded && (
+            <div className="space-y-3 pt-1 text-xs">
+              {/* Pickup Location */}
+              <div className="rounded-xl border border-border/70 bg-surface/70 p-3 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emergency flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  Pickup Location
+                </span>
+                <p className="font-semibold text-foreground text-xs leading-snug">
+                  {dispatch.request?.pickupAddress || "Pickup scene"}
+                </p>
+                {dispatch.request?.description && (
+                  <p className="text-[11px] text-muted-foreground pt-1 border-t border-border/40 mt-1 line-clamp-2">
+                    Condition: {dispatch.request.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Destination Trauma Bay */}
+              <div className="rounded-xl border border-border/70 bg-surface/70 p-3 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-success flex items-center gap-1">
+                  <Building2 className="h-3 w-3" />
+                  Receiving Hospital
+                </span>
+                <p className="font-semibold text-foreground text-xs leading-snug">
+                  {dispatch.hospital?.name ||
+                    "Dhaka Medical College Hospital (DMCH)"}
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  {dispatch.hospital?.address || "Central Emergency Ward"}
+                </p>
+              </div>
+
+              {/* Crew Details */}
+              <div className="rounded-xl border border-border/70 bg-surface/70 p-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                    <User className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-foreground block">
+                      {dispatch.driver?.user?.name || "Paramedic Unit"}
+                    </span>
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      License: {dispatch.driver?.licenseNumber || "CERT-EM"}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[10px] font-mono text-primary font-bold">
+                  {dispatch.ambulance?.type || "ALS UNIT"}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </aside>
 

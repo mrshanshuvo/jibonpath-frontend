@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { RequestList } from "@/features/emergency";
 import { PaymentGatewayModal } from "@/features/payment";
-import { LiveTrackingModal } from "@/features/dispatch";
 import type { EmergencyRequest } from "@/types/entities.types";
+import { ROUTES } from "@/config/routes";
 
 export function PatientDashboard() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const pathname = usePathname();
 
   const activeRequestId = searchParams.get("active");
 
@@ -18,13 +17,12 @@ export function PatientDashboard() {
     null,
   );
 
-  const handleCloseTracking = () => {
-    // Clear active query parameter cleanly
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("active");
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname);
-  };
+  // If accessed with legacy ?active=..., seamlessly route to the dedicated cockpit
+  useEffect(() => {
+    if (activeRequestId) {
+      router.replace(ROUTES.patient.track(activeRequestId));
+    }
+  }, [activeRequestId, router]);
 
   return (
     <div className="space-y-6">
@@ -44,13 +42,6 @@ export function PatientDashboard() {
       </header>
 
       <RequestList onPay={setPaymentRequest} />
-
-      <LiveTrackingModal
-        isOpen={Boolean(activeRequestId)}
-        onClose={handleCloseTracking}
-        requestId={activeRequestId}
-        onPay={setPaymentRequest}
-      />
 
       <PaymentGatewayModal
         isOpen={Boolean(paymentRequest)}

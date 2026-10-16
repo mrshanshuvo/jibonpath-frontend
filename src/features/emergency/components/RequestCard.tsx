@@ -242,13 +242,30 @@ export function RequestCard({ request, onPay }: RequestCardProps) {
           )}
 
           {isDispatched && (
-            <Link href={`${ROUTES.PATIENT.DASHBOARD}?active=${request.id}`}>
+            <Link href={ROUTES.patient.track(request.id)}>
               <Button
                 variant="emergency"
                 size="sm"
                 leftIcon={<Radio className="h-3.5 w-3.5" aria-hidden="true" />}
               >
                 Track Live
+              </Button>
+            </Link>
+          )}
+
+          {isCompleted && (
+            <Link href={ROUTES.patient.track(request.id)}>
+              <Button
+                variant="outline"
+                size="sm"
+                leftIcon={
+                  <Radio
+                    className="h-3.5 w-3.5 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                }
+              >
+                Trip Route
               </Button>
             </Link>
           )}

@@ -13,7 +13,7 @@ export const ROUTE_PERMISSIONS: {
 }[] = [
   { prefix: "/admin", allowedRoles: [Role.ADMIN] },
   { prefix: "/driver", allowedRoles: [Role.DRIVER] },
-  { prefix: "/patient", allowedRoles: [Role.PATIENT] },
+  { prefix: "/patient", allowedRoles: [Role.PATIENT, Role.ADMIN] },
 ];
 
 export function getAllowedRolesForPath(pathname: string): Role[] | null {

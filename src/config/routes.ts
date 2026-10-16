@@ -12,6 +12,7 @@ export const ROUTES = {
     root: "/patient",
     requests: "/patient",
     book: "/patient/book",
+    track: (id: string) => `/patient/track/${id}`,
     payments: "/patient/payments",
     invoice: (id: string) => `/patient/invoice/${id}`,
     profile: "/patient/profile",
@@ -54,6 +55,7 @@ export const ROUTES = {
   PATIENT: {
     DASHBOARD: "/patient",
     BOOK: "/patient/book",
+    TRACK: (id: string) => `/patient/track/${id}`,
     PAYMENTS: "/patient/payments",
     INVOICE: (id: string) => `/patient/invoice/${id}`,
     PROFILE: "/patient/profile",

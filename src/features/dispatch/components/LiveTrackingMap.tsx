@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Navigation, Compass, ShieldAlert, Building2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { TelemetryTick } from "@/types/entities.types";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
@@ -14,6 +15,8 @@ interface LiveTrackingMapProps {
   hospital?: { lat: number; lng: number; name?: string } | null;
   vehicleNumber?: string;
   stage?: string;
+  className?: string;
+  showOverlays?: boolean;
 }
 
 export function LiveTrackingMap({
@@ -22,6 +25,8 @@ export function LiveTrackingMap({
   hospital,
   vehicleNumber = "AMB-EM-104",
   stage,
+  className,
+  showOverlays = true,
 }: LiveTrackingMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -205,7 +210,18 @@ export function LiveTrackingMap({
       if (pickup?.lng && pickup?.lat) bounds.extend([pickup.lng, pickup.lat]);
       if (hospital?.lng && hospital?.lat) bounds.extend([hospital.lng, hospital.lat]);
       if (!bounds.isEmpty()) {
-        map.fitBounds(bounds, { padding: 75, maxZoom: 15, duration: 1000 });
+        const isDesktop =
+          typeof window !== "undefined" && window.innerWidth >= 640;
+        map.fitBounds(bounds, {
+          padding: {
+            top: 70,
+            bottom: 70,
+            left: !showOverlays && isDesktop ? 460 : 70,
+            right: 70,
+          },
+          maxZoom: 15,
+          duration: 1000,
+        });
       }
     } else {
       // Smoothly update location on existing marker (pure client WebGL translation)
@@ -280,15 +296,22 @@ export function LiveTrackingMap({
 
   const handleRecenter = () => {
     if (!mapRef.current) return;
+    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 640;
     mapRef.current.flyTo({
       center: [effectiveTelemetry.lng, effectiveTelemetry.lat],
       zoom: 14.5,
       essential: true,
+      offset: !showOverlays && isDesktop ? [140, 0] : [0, 0],
     });
   };
 
   return (
-    <div className="relative w-full h-[420px] sm:h-[480px] rounded-2xl overflow-hidden border border-border shadow-2xl bg-surface">
+    <div
+      className={cn(
+        "relative w-full h-[420px] sm:h-[480px] rounded-2xl overflow-hidden border border-border shadow-2xl bg-surface",
+        className,
+      )}
+    >
       <div ref={mapContainer} className="w-full h-full" />
 
       {mapError && (
@@ -304,41 +327,48 @@ export function LiveTrackingMap({
         </div>
       )}
 
-      {/* Floating HUD Badges Overlay */}
-      <div className="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
-        <div className="flex items-center gap-2 bg-card/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-border shadow-lg">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emergency opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emergency" />
-          </span>
-          <span className="text-xs font-bold text-foreground tracking-wide uppercase font-mono">
-            {stage || "EN ROUTE"}
-          </span>
-        </div>
-
-        {telemetry && (
-          <div className="bg-card/90 backdrop-blur-md px-3 py-2 rounded-xl border border-border shadow-lg text-xs space-y-1">
-            <div className="flex items-center gap-1.5 font-bold text-foreground font-mono">
-              <Navigation className="h-3.5 w-3.5 text-info animate-pulse" />
-              <span>{telemetry.speedKmh || 38} km/h</span>
-              <span className="text-muted-foreground text-[10px]">·</span>
-              <span className="text-muted-foreground text-[10px]">
-                Heading {telemetry.heading || 0}°
-              </span>
-            </div>
-            <div className="text-[10px] text-muted-foreground font-mono">
-              {telemetry.lat.toFixed(4)}° N, {telemetry.lng.toFixed(4)}° E
-            </div>
+      {/* Floating HUD Badges Overlay (Shown only when not embedded in full cockpit) */}
+      {showOverlays && (
+        <div className="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
+          <div className="flex items-center gap-2 bg-card/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-border shadow-lg">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emergency opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emergency" />
+            </span>
+            <span className="text-xs font-bold text-foreground tracking-wide uppercase font-mono">
+              {stage || "EN ROUTE"}
+            </span>
           </div>
-        )}
-      </div>
+
+          {telemetry && (
+            <div className="bg-card/90 backdrop-blur-md px-3 py-2 rounded-xl border border-border shadow-lg text-xs space-y-1">
+              <div className="flex items-center gap-1.5 font-bold text-foreground font-mono">
+                <Navigation className="h-3.5 w-3.5 text-info animate-pulse" />
+                <span>{telemetry.speedKmh || 38} km/h</span>
+                <span className="text-muted-foreground text-[10px]">·</span>
+                <span className="text-muted-foreground text-[10px]">
+                  Heading {telemetry.heading || 0}°
+                </span>
+              </div>
+              <div className="text-[10px] text-muted-foreground font-mono">
+                {telemetry.lat.toFixed(4)}° N, {telemetry.lng.toFixed(4)}° E
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Re-center Action Button */}
       {telemetry && (
         <button
           type="button"
           onClick={handleRecenter}
-          className="absolute bottom-3 left-3 bg-card/90 hover:bg-card border border-border text-foreground hover:text-primary text-xs font-semibold px-3 py-2 rounded-xl shadow-lg flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md"
+          className={cn(
+            "absolute bg-card/90 hover:bg-card border border-border text-foreground hover:text-primary text-xs font-semibold px-3 py-2 rounded-xl shadow-lg flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md",
+            showOverlays
+              ? "bottom-3 left-3"
+              : "bottom-3 left-3 sm:left-[445px]",
+          )}
         >
           <Compass className="h-3.5 w-3.5 text-primary" />
           <span>Follow Ambulance</span>

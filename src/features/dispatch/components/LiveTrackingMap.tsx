@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Navigation, Compass, ShieldAlert, Building2 } from "lucide-react";
+import { Navigation, Compass, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TelemetryTick } from "@/types/entities.types";
 
@@ -87,9 +87,12 @@ export function LiveTrackingMap({
         pickupMarkerRef.current = null;
         hospitalMarkerRef.current = null;
       };
-    } catch (err: unknown) {
-      setMapError("Unable to initialize WebGL map canvas");
+    } catch {
+      queueMicrotask(() => {
+        setMapError("Unable to initialize WebGL map canvas");
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update or create Static Pins (Pickup and Hospital)
@@ -105,7 +108,7 @@ export function LiveTrackingMap({
         el.innerHTML = `
           <div class="relative flex items-center justify-center">
             <span class="absolute h-8 w-8 rounded-full bg-emergency/30 animate-ping"></span>
-            <div class="h-8 w-8 rounded-full bg-emergency border-2 border-white shadow-xl flex items-center justify-center text-white">
+            <div class="h-8 w-8 rounded-full bg-emergency border-2 border-surface shadow-xl flex items-center justify-center text-emergency-foreground">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21a9 9 0 0 0 9-9c0-6-9-13-9-13S3 6 3 12a9 9 0 0 0 9 9Z"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
           </div>
@@ -117,7 +120,7 @@ export function LiveTrackingMap({
           .setLngLat([pickup.lng, pickup.lat])
           .setPopup(
             new mapboxgl.Popup({ offset: 25 }).setHTML(
-              `<div class="p-1 font-sans"><div class="font-bold text-xs text-red-600">Patient Pickup</div><div class="text-[11px] text-gray-700">${pickup.address || "Emergency Scene"}</div></div>`,
+              `<div class="p-1 font-sans"><div class="font-bold text-xs text-emergency">Patient Pickup</div><div class="text-[11px] text-muted-foreground">${pickup.address || "Emergency Scene"}</div></div>`,
             ),
           )
           .addTo(map);
@@ -133,7 +136,7 @@ export function LiveTrackingMap({
         el.className = "hospital-marker-beacon";
         el.innerHTML = `
           <div class="relative flex items-center justify-center">
-            <div class="h-8 w-8 rounded-full bg-emerald-600 border-2 border-white shadow-xl flex items-center justify-center text-white">
+            <div class="h-8 w-8 rounded-full bg-success border-2 border-surface shadow-xl flex items-center justify-center text-success-foreground">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21v-8.25M6.75 21v-8.25M17.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5"/></svg>
             </div>
           </div>
@@ -145,7 +148,7 @@ export function LiveTrackingMap({
           .setLngLat([hospital.lng, hospital.lat])
           .setPopup(
             new mapboxgl.Popup({ offset: 25 }).setHTML(
-              `<div class="p-1 font-sans"><div class="font-bold text-xs text-emerald-600">Receiving Trauma Bay</div><div class="text-[11px] text-gray-700">${hospital.name || "Hospital Emergency Dept"}</div></div>`,
+              `<div class="p-1 font-sans"><div class="font-bold text-xs text-success">Receiving Trauma Bay</div><div class="text-[11px] text-muted-foreground">${hospital.name || "Hospital Emergency Dept"}</div></div>`,
             ),
           )
           .addTo(map);
@@ -182,11 +185,11 @@ export function LiveTrackingMap({
       containerEl.innerHTML = `
         <div class="relative flex items-center justify-center" style="width: 44px; height: 44px;">
           <!-- Radar ping wave -->
-          <div class="absolute inset-0 rounded-full bg-red-500/40 animate-ping"></div>
+          <div class="absolute inset-0 rounded-full bg-emergency/40 animate-ping"></div>
           <!-- Direction arrow ring -->
-          <div class="ambulance-rotation-wrapper flex items-center justify-center h-10 w-10 rounded-full bg-slate-900 border-2 border-red-500 shadow-2xl text-white transition-transform duration-700 ease-out" style="transform: rotate(${heading}deg);">
+          <div class="ambulance-rotation-wrapper flex items-center justify-center h-10 w-10 rounded-full bg-surface border-2 border-emergency shadow-2xl text-emergency transition-transform duration-700 ease-out" style="transform: rotate(${heading}deg);">
             <!-- Direction pointer -->
-            <div class="absolute -top-1 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-b-[6px] border-b-red-400"></div>
+            <div class="absolute -top-1 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-b-[6px] border-b-emergency"></div>
             <!-- Ambulance icon -->
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M10 17h4V5H2v12h3m11 0h2m-2-4h4.382a1 1 0 0 0 .894-.553l1.894-3.789A1 1 0 0 0 22 8.211V5h-6v8Z" />
@@ -208,7 +211,7 @@ export function LiveTrackingMap({
         .setLngLat([lng, lat])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }).setHTML(
-            `<div class="p-1 font-sans"><div class="font-bold text-xs text-slate-900">${vehicleNumber}</div><div class="text-[11px] text-gray-600">Speed: ${speedKmh} km/h</div></div>`,
+            `<div class="p-1 font-sans"><div class="font-bold text-xs text-foreground">${vehicleNumber}</div><div class="text-[11px] text-muted-foreground">Speed: ${speedKmh} km/h</div></div>`,
           ),
         )
         .addTo(map);
@@ -217,7 +220,8 @@ export function LiveTrackingMap({
       const bounds = new mapboxgl.LngLatBounds();
       bounds.extend([lng, lat]);
       if (pickup?.lng && pickup?.lat) bounds.extend([pickup.lng, pickup.lat]);
-      if (hospital?.lng && hospital?.lat) bounds.extend([hospital.lng, hospital.lat]);
+      if (hospital?.lng && hospital?.lat)
+        bounds.extend([hospital.lng, hospital.lat]);
       if (!bounds.isEmpty()) {
         const isDesktop =
           typeof window !== "undefined" && window.innerWidth >= 640;
@@ -241,7 +245,15 @@ export function LiveTrackingMap({
         ambulanceIconRef.current.style.transform = `rotate(${heading}deg)`;
       }
     }
-  }, [mapReady, effectiveTelemetry, vehicleNumber, pickup, hospital]);
+  }, [
+    mapReady,
+    effectiveTelemetry,
+    vehicleNumber,
+    pickup,
+    hospital,
+    showOverlays,
+    sidebarOpen,
+  ]);
 
   // Draw GeoJSON transit route line (segmented by mission stage)
   useEffect(() => {
@@ -249,7 +261,10 @@ export function LiveTrackingMap({
     const map = mapRef.current;
 
     const coords: [number, number][] = [];
-    const ambPoint: [number, number] = [effectiveTelemetry.lng, effectiveTelemetry.lat];
+    const ambPoint: [number, number] = [
+      effectiveTelemetry.lng,
+      effectiveTelemetry.lat,
+    ];
     const pickupPoint: [number, number] | null =
       pickup?.lng && pickup?.lat ? [pickup.lng, pickup.lat] : null;
     const hospitalPoint: [number, number] | null =
@@ -395,7 +410,7 @@ export function LiveTrackingMap({
           <span className="text-foreground">Ambulance</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          <span className="h-2 w-2 rounded-full bg-success" />
           <span className="text-foreground">Hospital</span>
         </div>
       </div>

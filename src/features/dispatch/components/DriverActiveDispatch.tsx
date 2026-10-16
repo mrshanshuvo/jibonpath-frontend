@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Ambulance,
   Navigation,
@@ -10,14 +11,27 @@ import {
   Phone,
   ArrowRight,
   CheckCircle,
+  Radio,
+  FileText,
+  X,
+  Compass,
+  MapPin,
+  Clock,
+  ShieldAlert,
+  ArrowLeft,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
-import { Button, Badge, Card } from "@/components/ui";
+import { Button, Badge } from "@/components/ui";
+import { ThemeToggle } from "@/components/shared";
 import { DispatchStepper } from "./DispatchStepper";
 import { TripLogsTimeline } from "./TripLogsTimeline";
 import { LiveTrackingMap } from "./LiveTrackingMap";
 import { DispatchStatus, type Dispatch } from "@/types/entities.types";
 import { useUpdateDispatchStatus } from "../api/dispatch.queries";
 import { useDriverLocationBroadcast } from "../hooks/useDriverLocationBroadcast";
+import { cn } from "@/lib/utils";
+import { ROUTES } from "@/config/routes";
 
 interface DriverActiveDispatchProps {
   dispatch: Dispatch;
@@ -28,32 +42,38 @@ const NEXT_STATUS_MAP: Record<
   {
     next: DispatchStatus;
     actionText: string;
+    actionVerb: string;
     color: "primary" | "emergency" | "secondary";
   } | null
 > = {
   [DispatchStatus.DISPATCHED]: {
     next: DispatchStatus.EN_ROUTE,
     actionText: "Acknowledge & Start Route to Patient",
+    actionVerb: "EN ROUTE TO SCENE",
     color: "primary",
   },
   [DispatchStatus.EN_ROUTE]: {
     next: DispatchStatus.PATIENT_PICKUP,
     actionText: "Arrived On Scene — Secure Patient",
+    actionVerb: "ON SCENE — SECURE PATIENT",
     color: "emergency",
   },
   [DispatchStatus.PATIENT_PICKUP]: {
     next: DispatchStatus.HOSPITAL_SELECTED,
     actionText: "Hospital Confirmed — Begin Transit",
+    actionVerb: "BEGIN TRANSIT TO TRAUMA BAY",
     color: "primary",
   },
   [DispatchStatus.HOSPITAL_SELECTED]: {
     next: DispatchStatus.HOSPITAL_ARRIVAL,
     actionText: "Arrived at Emergency Bay",
+    actionVerb: "ARRIVED AT EMERGENCY BAY",
     color: "emergency",
   },
   [DispatchStatus.HOSPITAL_ARRIVAL]: {
     next: DispatchStatus.COMPLETED,
     actionText: "Handover Complete — Close Trip",
+    actionVerb: "FINALIZE HANDOVER & CLOSE TRIP",
     color: "secondary",
   },
   [DispatchStatus.COMPLETED]: null,
@@ -61,6 +81,7 @@ const NEXT_STATUS_MAP: Record<
 
 export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
   const [note, setNote] = useState("");
+  const [triageOpen, setTriageOpen] = useState(false);
   const updateStatusMutation = useUpdateDispatchStatus();
 
   const pickupCoords =
@@ -84,19 +105,6 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
 
   const nextStep = NEXT_STATUS_MAP[dispatch.status];
 
-  const [swipeStart, setSwipeStart] = useState<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setSwipeStart(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (swipeStart === null) return;
-    const diff = swipeStart - e.changedTouches[0].clientX;
-    if (diff > 60 && nextStep) handleAdvanceStatus(); // swipe left = advance
-    setSwipeStart(null);
-  };
-
   const handleAdvanceStatus = () => {
     if (!nextStep) return;
     updateStatusMutation.mutate({
@@ -109,323 +117,406 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
     setNote("");
   };
 
-  return (
-    <div
-      className="space-y-6"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div aria-live="polite" aria-atomic="true" className="sr-only">
-        {dispatch
-          ? `Status: ${dispatch.status}. Next action: ${nextStep?.actionText || "Complete"}`
-          : "No active dispatch"}
-      </div>
+  const getWaypointHeader = () => {
+    switch (dispatch.status) {
+      case DispatchStatus.DISPATCHED:
+        return {
+          title: "NEW MISSION ASSIGNED",
+          target: dispatch.request?.pickupAddress || "Proceed to Vehicle",
+          stageBadge: "STAGE 1 OF 6",
+          code: "PRIORITY CODE 3",
+        };
+      case DispatchStatus.EN_ROUTE:
+        return {
+          title: "EN ROUTE TO SCENE",
+          target: dispatch.request?.pickupAddress || "Patient Pickup Scene",
+          stageBadge: "STAGE 2 OF 6",
+          code: "CODE 3 · SIRENS ACTIVE",
+        };
+      case DispatchStatus.PATIENT_PICKUP:
+        return {
+          title: "ARRIVED ON SCENE",
+          target: "Securing & Assessing Patient",
+          stageBadge: "STAGE 3 OF 6",
+          code: "SCENE CONTROL",
+        };
+      case DispatchStatus.HOSPITAL_SELECTED:
+        return {
+          title: "TRANSIT TO EMERGENCY TRAUMA BAY",
+          target: dispatch.hospital?.name || "Dhaka Medical College Hospital",
+          stageBadge: "STAGE 4 OF 6",
+          code: "IN-TRANSIT CODE 3",
+        };
+      case DispatchStatus.HOSPITAL_ARRIVAL:
+        return {
+          title: "ARRIVED AT EMERGENCY BAY",
+          target: "Handover to ER Trauma Team",
+          stageBadge: "STAGE 5 OF 6",
+          code: "TRAUMA DOCK",
+        };
+      case DispatchStatus.COMPLETED:
+        return {
+          title: "MISSION COMPLETED",
+          target: "Patient Admitted to Trauma Team",
+          stageBadge: "STAGE 6 OF 6",
+          code: "STANDBY ROTATION",
+        };
+      default:
+        return {
+          title: "ACTIVE EMERGENCY MISSION",
+          target: "Dhaka Central Dispatch",
+          stageBadge: "ACTIVE",
+          code: "TELEMETRY ON",
+        };
+    }
+  };
 
-      {/* Live Telemetry Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Card className="p-4 bg-surface border-border">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Navigation className="h-4 w-4 text-info animate-pulse" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                Live GPS
-              </h3>
-            </div>
-            <button
-              type="button"
-              onClick={toggleSimulated}
-              className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-raised border border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              title="Click to toggle between device GPS and simulated transit"
-            >
+  const waypoint = getWaypointHeader();
+
+  return (
+    <div className="fixed inset-0 z-50 w-screen h-dvh overflow-hidden bg-background flex flex-col select-none">
+      {/* 100% Edge-to-Edge Navigation Map Canvas */}
+      <LiveTrackingMap
+        telemetry={{
+          dispatchId: dispatch.id,
+          lat: coords.lat,
+          lng: coords.lng,
+          heading: coords.heading,
+          speedKmh: coords.speedKmh,
+          stage: dispatch.status,
+          updatedAt: new Date().toISOString(),
+        }}
+        pickup={
+          pickupCoords
+            ? { ...pickupCoords, address: dispatch.request?.pickupAddress }
+            : null
+        }
+        hospital={
+          hospitalCoords
+            ? { ...hospitalCoords, name: dispatch.hospital?.name }
+            : null
+        }
+        vehicleNumber={dispatch.ambulance?.vehicleNumber}
+        stage={dispatch.status}
+        showOverlays={false}
+        sidebarOpen={triageOpen}
+        className="absolute inset-0 w-full h-full rounded-none border-none shadow-none"
+      />
+
+      {/* Floating Top Paramedic Waypoint HUD */}
+      <header className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-20 flex items-center justify-between gap-3 pointer-events-auto">
+        {/* Left: Standby Exit Link & Unit Badge */}
+        <div className="flex items-center gap-2">
+          <Link
+            href={ROUTES.driver.history}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-border/80 bg-card/95 backdrop-blur-2xl text-xs font-bold text-muted-foreground hover:text-foreground shadow-xl transition-all cursor-pointer"
+            title="Exit cockpit to history"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Standby</span>
+          </Link>
+
+          <div className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-emergency/40 bg-emergency/15 text-foreground backdrop-blur-2xl shadow-xl">
+            <Ambulance className="h-4 w-4 text-emergency animate-pulse" />
+            <span className="text-xs font-extrabold uppercase font-mono tracking-wider">
+              {dispatch.ambulance?.vehicleNumber || "AMB-ALS"}
+            </span>
+            <span className="hidden md:inline text-[10px] text-emergency font-bold font-mono">
+              ({dispatch.ambulance?.type?.replace(/_/g, " ") || "ALS"})
+            </span>
+          </div>
+        </div>
+
+        {/* Center: Mission Waypoint Banner (High Contrast) */}
+        <div className="hidden sm:flex flex-1 max-w-xl mx-auto flex-col items-center justify-center px-4 py-2 rounded-2xl border border-border/80 bg-card/95 backdrop-blur-2xl shadow-2xl text-center">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-emergency">
+              {waypoint.code}
+            </span>
+            <span className="text-muted-foreground text-[10px]">·</span>
+            <span className="text-[10px] font-mono font-bold text-muted-foreground">
+              {waypoint.stageBadge}
+            </span>
+          </div>
+          <h2 className="text-xs sm:text-sm font-extrabold text-foreground truncate max-w-md mt-0.5">
+            {waypoint.title}:{" "}
+            <span className="text-muted-foreground font-semibold">
+              {waypoint.target}
+            </span>
+          </h2>
+        </div>
+
+        {/* Right: GPS Transponder, Telemetry Speed & Theme */}
+        <div className="flex items-center gap-2">
+          {/* GPS Simulation Toggle */}
+          <button
+            type="button"
+            onClick={toggleSimulated}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-border/80 bg-card/95 backdrop-blur-2xl text-xs font-mono font-bold text-foreground hover:bg-surface-raised shadow-xl transition-all cursor-pointer"
+            title="Click to toggle GPS broadcast simulation"
+          >
+            <span
+              className={cn(
+                "h-2 w-2 rounded-full",
+                isBroadcasting
+                  ? "bg-emerald-500 animate-ping"
+                  : "bg-amber-500 animate-pulse",
+              )}
+            />
+            <span className="hidden md:inline">
               {isSimulated ? "SIMULATOR" : "DEVICE GPS"}
-            </button>
-          </div>
-          <div className="text-2xl font-extrabold text-foreground font-mono">
-            {coords.lat.toFixed(4)}° N
-          </div>
-          <div className="text-sm text-muted-foreground font-mono">
-            {coords.lng.toFixed(4)}° E · {coords.heading}°
-          </div>
-          <div className="mt-2 flex items-center justify-between text-xs">
-            <span className="text-success font-semibold flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-success animate-ping" />
-              {coords.speedKmh > 0 ? `Moving · ${coords.speedKmh} km/h` : "Stationary"}
             </span>
-            <span className="text-muted-foreground font-mono text-[11px]">
-              {isBroadcasting ? "Broadcasting" : "Connecting..."}
+            <span className="md:hidden">GPS</span>
+          </button>
+
+          {/* Speed Indicator */}
+          <div className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-border/80 bg-card/95 backdrop-blur-2xl text-xs font-mono font-extrabold text-foreground shadow-xl">
+            <Navigation className="h-3.5 w-3.5 text-info animate-pulse" />
+            <span>
+              {coords.speedKmh > 0 ? `${coords.speedKmh} km/h` : "Stationary"}
+            </span>
+            <span className="text-muted-foreground text-[10px]">
+              {coords.heading}°
             </span>
           </div>
-        </Card>
-        <Card className="p-4 bg-surface border-border">
-          <div className="flex items-center gap-2 mb-3">
+
+          <div className="rounded-2xl border border-border/80 bg-card/95 backdrop-blur-2xl p-1.5 shadow-xl">
+            <ThemeToggle />
+          </div>
+        </div>
+      </header>
+
+      {/* Floating Left Slide-Over: Patient Triage & Mission Dossier */}
+      <aside
+        aria-label="Patient Triage Dossier"
+        className={cn(
+          "absolute top-0 left-0 bottom-0 z-40 w-full sm:w-105 h-full bg-card/95 backdrop-blur-2xl border-r border-border/90 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out pointer-events-auto",
+          triageOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        {/* Drawer Fixed Header */}
+        <div className="shrink-0 flex items-center justify-between border-b border-border/60 p-4 sm:p-5 bg-card/50">
+          <div className="flex items-center gap-2">
             <Activity className="h-4 w-4 text-emergency" />
             <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-              Turn-by-Turn
+              Patient Triage &amp; Clinical Dossier
             </h3>
           </div>
-          <div className="text-sm font-medium text-foreground">
-            Turn left onto Dhanmondi Rd
-          </div>
-          <div className="text-xs text-muted-foreground mt-1">
-            0.8 km · 2 min
-          </div>
-          <div className="mt-2 text-xs text-info">
-            Next: Hospital Emergency Bay
-          </div>
-        </Card>
-        <Card className="p-4 bg-surface border-border">
-          <div className="flex items-center gap-2 mb-3">
-            <HeartPulse className="h-4 w-4 text-success" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-              Patient Vitals
-            </h3>
-          </div>
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div>
-              <div className="text-lg font-bold text-foreground">72</div>
-              <div className="text-xs font-semibold text-muted-foreground">
-                HR
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-foreground">120/80</div>
-              <div className="text-xs font-semibold text-muted-foreground">
-                BP
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-foreground">98%</div>
-              <div className="text-xs font-semibold text-muted-foreground">
-                SpO2
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
+          <button
+            type="button"
+            onClick={() => setTriageOpen(false)}
+            className="p-1.5 rounded-lg border border-border bg-surface text-muted-foreground hover:text-foreground hover:bg-surface-raised transition-colors cursor-pointer"
+            title="Close triage panel"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
 
-      {/* Top Cockpit Header */}
-      <div className="rounded-2xl border border-emergency/40 bg-emergency/10 p-5 sm:p-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-emergency-foreground shadow-lg shadow-emergency/30">
-            <Ambulance className="h-6 w-6" />
+        {/* Drawer Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+          {/* Mission Stepper */}
+          <div className="rounded-2xl border border-border/70 bg-surface/80 p-3.5 shadow-2xs">
+            <DispatchStepper currentStatus={dispatch.status} variant="compact" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-emergency">
-                Active Paramedic Mission
+
+          {/* Caller / Patient Contact Card */}
+          <div className="rounded-2xl border border-border/70 bg-surface/70 p-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Caller &amp; Emergency Contact
               </span>
-              <Badge variant="emergency" size="sm" pulse>
-                LIVE DISPATCH
+              <Badge variant="primary" size="sm">
+                VERIFIED
               </Badge>
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground mt-0.5">
-              Trip #{dispatch.id.slice(0, 8)}
-            </h1>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {dispatch.request?.caller?.phone && (
-            <a href={`tel:${dispatch.request.caller.phone}`}>
-              <Button
-                variant="outline"
-                size="sm"
-                leftIcon={<Phone className="h-4 w-4 text-success" />}
+            <p className="text-sm font-bold text-foreground">
+              {dispatch.request?.caller?.name || "Emergency Caller"}
+            </p>
+            {dispatch.request?.caller?.phone ? (
+              <a
+                href={`tel:${dispatch.request.caller.phone}`}
+                className="inline-flex items-center gap-2 text-xs font-bold text-success hover:underline pt-1"
               >
-                Call Patient: {dispatch.request.caller.phone}
-              </Button>
-            </a>
-          )}
-        </div>
-      </div>
-
-      {/* Visual Live Stepper */}
-      <Card className="p-6">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
-          Telemetry Mission Progress
-        </h2>
-        <DispatchStepper currentStatus={dispatch.status} />
-      </Card>
-
-      {/* Live Driver Navigation & Route Radar */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Navigation className="h-4 w-4 text-emergency animate-pulse" />
-            <h2 className="text-xs font-bold uppercase tracking-wider text-foreground">
-              Live Mission Route Radar
-            </h2>
+                <Phone className="h-3.5 w-3.5" />
+                <span>Call Caller: {dispatch.request.caller.phone}</span>
+              </a>
+            ) : (
+              <span className="text-xs text-muted-foreground">
+                No phone recorded
+              </span>
+            )}
           </div>
-          <span className="text-xs font-mono text-muted-foreground">
-            {coords.speedKmh > 0 ? `${coords.speedKmh} km/h · Heading ${coords.heading}°` : "Stationary"}
-          </span>
-        </div>
-        <LiveTrackingMap
-          telemetry={{
-            dispatchId: dispatch.id,
-            lat: coords.lat,
-            lng: coords.lng,
-            heading: coords.heading,
-            speedKmh: coords.speedKmh,
-            stage: dispatch.status,
-            updatedAt: new Date().toISOString(),
-          }}
-          pickup={
-            pickupCoords
-              ? { ...pickupCoords, address: dispatch.request?.pickupAddress }
-              : null
-          }
-          hospital={
-            hospitalCoords
-              ? { ...hospitalCoords, name: dispatch.hospital?.name }
-              : null
-          }
-          vehicleNumber={dispatch.ambulance?.vehicleNumber}
-          stage={dispatch.status}
-        />
-      </div>
 
-      {/* Grid: Patient Details & Ambulance Telemetry */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Pickup & Destination Locations */}
-        <Card className="p-6 space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            Location Route Coordinates
-          </h3>
-
-          <div className="space-y-3">
-            <div className="flex items-start gap-3 rounded-xl bg-surface p-3.5 border border-border/60">
-              <Navigation className="h-5 w-5 shrink-0 text-emergency mt-0.5" />
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-emergency">
-                  Patient Pickup Location
-                </span>
-                <p className="text-sm font-bold text-foreground mt-0.5">
-                  {dispatch.request?.pickupAddress ||
-                    "Pickup location not provided"}
+          {/* Pickup & Destination Routing Cards */}
+          <div className="space-y-2.5">
+            <div className="rounded-2xl border border-emergency/30 bg-emergency/5 p-4 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emergency flex items-center gap-1">
+                <MapPin className="h-3 w-3" />
+                Patient Pickup Location
+              </span>
+              <p className="text-xs font-bold text-foreground leading-snug">
+                {dispatch.request?.pickupAddress || "Pickup scene"}
+              </p>
+              {dispatch.request?.description && (
+                <p className="text-[11px] text-muted-foreground pt-1.5 border-t border-border/40 mt-1.5">
+                  <span className="font-semibold text-foreground">
+                    Condition:{" "}
+                  </span>
+                  {dispatch.request.description}
                 </p>
-                {dispatch.request?.description && (
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Condition: {dispatch.request.description}
-                  </p>
-                )}
-              </div>
+              )}
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl bg-surface p-3.5 border border-border/60">
-              <Building2 className="h-5 w-5 shrink-0 text-primary mt-0.5" />
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                  Destination Emergency Department
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500 flex items-center gap-1">
+                <Building2 className="h-3 w-3" />
+                Destination Trauma Bay
+              </span>
+              <p className="text-xs font-bold text-foreground leading-snug">
+                {dispatch.hospital?.name || "Dhaka Medical College Hospital"}
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                {dispatch.hospital?.address || "Central Emergency Trauma Bay"}
+              </p>
+            </div>
+          </div>
+
+          {/* Triage Live Telemetry Vitals Simulation */}
+          <div className="rounded-2xl border border-border/70 bg-surface/70 p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
+                <HeartPulse className="h-4 w-4 text-emergency animate-pulse" />
+                <span>Patient Triage Vitals Monitor</span>
+              </div>
+              <span className="text-[10px] font-mono text-success font-bold">
+                TELEMETRY ACTIVE
+              </span>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-center font-mono">
+              <div className="bg-background/80 p-2.5 rounded-xl border border-border">
+                <span className="text-[10px] text-muted-foreground block uppercase font-medium">
+                  Heart Rate
                 </span>
-                <p className="text-sm font-bold text-foreground mt-0.5">
-                  {dispatch.hospital?.name ||
-                    "Dhaka Medical College Hospital (DMCH)"}
-                </p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {dispatch.hospital?.address || "Emergency Bay Room 104"}
-                </p>
+                <span className="text-base font-extrabold text-foreground mt-0.5 block">
+                  78{" "}
+                  <span className="text-[10px] text-muted-foreground">bpm</span>
+                </span>
+              </div>
+              <div className="bg-background/80 p-2.5 rounded-xl border border-border">
+                <span className="text-[10px] text-muted-foreground block uppercase font-medium">
+                  Blood Press
+                </span>
+                <span className="text-base font-extrabold text-foreground mt-0.5 block">
+                  120/80
+                </span>
+              </div>
+              <div className="bg-background/80 p-2.5 rounded-xl border border-border">
+                <span className="text-[10px] text-muted-foreground block uppercase font-medium">
+                  SpO2 Sat
+                </span>
+                <span className="text-base font-extrabold text-emerald-500 mt-0.5 block">
+                  98%
+                </span>
               </div>
             </div>
           </div>
-        </Card>
 
-        {/* Assigned Unit & Crew */}
-        <Card className="p-6 space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            Assigned Vehicle & Paramedic Unit
-          </h3>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-surface p-3.5 border border-border/60">
-              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Ambulance Reg
-              </span>
-              <p className="text-sm font-bold text-foreground mt-1">
-                {dispatch.ambulance?.vehicleNumber || "DHAKA-EM-104"}
-              </p>
-              <span className="text-xs text-primary font-mono mt-0.5 block">
-                {dispatch.ambulance?.type || "ADVANCED_LIFE_SUPPORT"}
-              </span>
-            </div>
-
-            <div className="rounded-xl bg-surface p-3.5 border border-border/60">
-              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Assigned Driver
-              </span>
-              <p className="text-sm font-bold text-foreground mt-1">
-                {dispatch.driver?.user?.name || "Paramedic Crew"}
-              </p>
-              <span className="text-xs text-success font-mono mt-0.5 block">
-                License: {dispatch.driver?.licenseNumber || "N/A"}
-              </span>
-            </div>
-          </div>
-
-          {/* Quick Note Input */}
+          {/* Optional Telemetry Transition Note */}
           {nextStep && (
-            <div className="space-y-1.5 pt-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Telemetry Log / Note for this transition (optional):
+            <div className="rounded-2xl border border-border/70 bg-surface/70 p-4 space-y-2">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Telemetry Log / Note for Next Checkpoint:
               </label>
               <input
                 type="text"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="e.g. Vitals stable, SpO2 98%, starting IV access..."
-                className="w-full h-9 rounded-md border border-border bg-surface px-3 text-xs text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                placeholder="e.g. Vitals stable, oxygen administered, IV open..."
+                className="w-full h-10 rounded-xl border border-border bg-background px-3 text-xs text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary font-medium"
               />
             </div>
           )}
-        </Card>
-      </div>
 
-      {/* Advance Stage Control Card */}
-      {nextStep ? (
-        <Card className="p-6 bg-surface-raised border-primary/30">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                Next Operational Checkpoint
-              </span>
-              <h4 className="text-lg font-bold text-foreground mt-0.5">
-                Advance Status to: {nextStep.next}
-              </h4>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Clicking will immediately broadcast telemetry to the central
-                dispatch control room and the receiving hospital.
-              </p>
-            </div>
+          {/* Trip Status Logs Timeline */}
+          {dispatch.tripStatusLogs && dispatch.tripStatusLogs.length > 0 && (
+            <TripLogsTimeline logs={dispatch.tripStatusLogs} />
+          )}
+        </div>
+      </aside>
 
+      {/* Sticky Bottom Emergency Action Deck (Zero-Scroll & Glove-Friendly) */}
+      <footer className="absolute bottom-4 left-3 right-3 sm:left-6 sm:right-6 z-30 pointer-events-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-card/95 backdrop-blur-2xl p-3 sm:p-4 rounded-3xl border border-border/90 shadow-2xl">
+          {/* Left: Quick Actions Deck */}
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
             <Button
-              variant={nextStep.color}
+              variant="outline"
               size="lg"
-              className="py-6 px-8 text-base font-bold shadow-xl cursor-pointer"
-              isLoading={updateStatusMutation.isPending}
-              onClick={handleAdvanceStatus}
-              rightIcon={<ArrowRight className="h-5 w-5" />}
+              className={cn(
+                "h-13 sm:h-14 px-4 text-xs font-bold rounded-2xl gap-2 cursor-pointer shadow-md",
+                triageOpen && "bg-surface-raised border-primary text-primary",
+              )}
+              onClick={() => setTriageOpen((prev) => !prev)}
+              leftIcon={<Activity className="h-4 w-4 text-emergency" />}
             >
-              {nextStep.actionText}
+              <span>{triageOpen ? "Close Dossier" : "Patient Triage"}</span>
             </Button>
-          </div>
-        </Card>
-      ) : (
-        <Card className="p-6 bg-success-tint border-success/30 text-center space-y-2">
-          <CheckCircle className="h-10 w-10 text-success-ink dark:text-success mx-auto" />
-          <h4 className="text-lg font-bold text-foreground">
-            Trip Completed Successfully
-          </h4>
-          <p className="text-xs text-muted-foreground">
-            Patient handed over to emergency trauma team. Vehicle is returning
-            to available rotation.
-          </p>
-        </Card>
-      )}
 
-      {/* Real-time Trip Logs Timeline */}
-      {dispatch.tripStatusLogs && dispatch.tripStatusLogs.length > 0 && (
-        <TripLogsTimeline logs={dispatch.tripStatusLogs} />
-      )}
+            {dispatch.request?.caller?.phone && (
+              <a href={`tel:${dispatch.request.caller.phone}`}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-13 sm:h-14 px-4 text-xs font-bold rounded-2xl gap-2 cursor-pointer shadow-md"
+                  leftIcon={<Phone className="h-4 w-4 text-emerald-500" />}
+                >
+                  <span className="hidden sm:inline">Call Caller</span>
+                  <span className="sm:hidden">Call</span>
+                </Button>
+              </a>
+            )}
+
+            <a href="tel:999">
+              <Button
+                variant="emergency"
+                size="lg"
+                className="h-13 sm:h-14 px-4 text-xs font-bold rounded-2xl gap-2 cursor-pointer shadow-md"
+                leftIcon={<Phone className="h-4 w-4" />}
+              >
+                <span>999</span>
+              </Button>
+            </a>
+          </div>
+
+          {/* Right: Massive Glove-Friendly Next Action Trigger */}
+          <div className="w-full sm:w-auto flex-1 max-w-xl">
+            {nextStep ? (
+              <Button
+                variant={nextStep.color}
+                size="lg"
+                className="w-full h-14 sm:h-16 px-6 sm:px-8 text-sm sm:text-base font-black uppercase tracking-wider rounded-2xl shadow-xl justify-center cursor-pointer gap-3 ring-4 ring-emergency/25 animate-in fade-in"
+                isLoading={updateStatusMutation.isPending}
+                onClick={handleAdvanceStatus}
+              >
+                <span>{nextStep.actionVerb}</span>
+                <ArrowRight className="h-5 w-5 stroke-3" />
+              </Button>
+            ) : (
+              <Link href={ROUTES.driver.history} className="w-full block">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full h-14 sm:h-16 px-6 sm:px-8 text-sm sm:text-base font-extrabold rounded-2xl shadow-xl justify-center cursor-pointer gap-2"
+                >
+                  <CheckCircle className="h-5 w-5" />
+                  <span>Mission Finalized · View Trip Logs</span>
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -120,7 +120,8 @@ export function AmbulanceUnitSelector({
     ambulances.filter((a) => a.type === AmbulanceType.INTENSIVE_CARE).length;
   const aclsCount =
     customAclsCount ??
-    ambulances.filter((a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT).length;
+    ambulances.filter((a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT)
+      .length;
   const blsCount =
     customBlsCount ??
     ambulances.filter((a) => a.type === AmbulanceType.BASIC).length;
@@ -129,8 +130,7 @@ export function AmbulanceUnitSelector({
   const displayedAmbulances = useMemo(() => {
     if (isControlledSearch && isControlledFilter) return ambulances;
     return ambulances.filter((a) => {
-      const matchesFilter =
-        currentFilter === "ALL" || a.type === currentFilter;
+      const matchesFilter = currentFilter === "ALL" || a.type === currentFilter;
       if (!matchesFilter) return false;
       if (!currentSearch.trim()) return true;
       const q = currentSearch.toLowerCase().trim();
@@ -140,7 +140,13 @@ export function AmbulanceUnitSelector({
         a.type?.toLowerCase().includes(q)
       );
     });
-  }, [ambulances, currentFilter, currentSearch, isControlledFilter, isControlledSearch]);
+  }, [
+    ambulances,
+    currentFilter,
+    currentSearch,
+    isControlledFilter,
+    isControlledSearch,
+  ]);
 
   const gridColsClass =
     columns === 3
@@ -185,7 +191,10 @@ export function AmbulanceUnitSelector({
                 : "bg-surface border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised",
             )}
           >
-            All {pagination && currentFilter === "ALL" ? `(${totalCount})` : `(${ambulances.length})`}
+            All{" "}
+            {pagination && currentFilter === "ALL"
+              ? `(${totalCount})`
+              : `(${ambulances.length})`}
           </button>
           <button
             type="button"
@@ -201,7 +210,9 @@ export function AmbulanceUnitSelector({
           </button>
           <button
             type="button"
-            onClick={() => handleFilterChange(AmbulanceType.ADVANCED_LIFE_SUPPORT)}
+            onClick={() =>
+              handleFilterChange(AmbulanceType.ADVANCED_LIFE_SUPPORT)
+            }
             className={cn(
               "px-3 py-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer whitespace-nowrap",
               currentFilter === AmbulanceType.ADVANCED_LIFE_SUPPORT
@@ -253,12 +264,15 @@ export function AmbulanceUnitSelector({
         <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-primary/10 border border-primary/30 text-xs">
           <div className="flex items-center gap-2 min-w-0">
             <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
-            <span className="text-muted-foreground">Selected from other page:</span>
+            <span className="text-muted-foreground">
+              Selected from other page:
+            </span>
             <span className="font-mono font-bold text-foreground">
               {selectedAmbulance.vehicleNumber}
             </span>
             <span className="text-xs text-primary bg-primary/15 px-2 py-0.5 rounded font-medium">
-              {AMBULANCE_TYPE_LABELS[selectedAmbulance.type]?.label || selectedAmbulance.type}
+              {AMBULANCE_TYPE_LABELS[selectedAmbulance.type]?.label ||
+                selectedAmbulance.type}
             </span>
           </div>
           <button

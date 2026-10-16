@@ -91,9 +91,7 @@ export function UserMenu() {
           <p className="text-sm font-semibold text-foreground truncate">
             {user.name}
           </p>
-          <p className="text-xs text-muted-foreground truncate">
-            {user.email}
-          </p>
+          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
           <div className="mt-1.5">
             <Badge
               variant={

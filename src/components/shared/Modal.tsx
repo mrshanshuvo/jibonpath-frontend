@@ -17,7 +17,8 @@ export interface ModalProps {
   description?: string;
   children: ReactNode;
   className?: string;
-  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "full";
+  size?:
+    "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "full";
   titleClassName?: string;
   descriptionClassName?: string;
   /** Prevents backdrop click from closing the modal. */

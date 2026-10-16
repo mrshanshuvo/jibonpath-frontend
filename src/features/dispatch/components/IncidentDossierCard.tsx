@@ -17,7 +17,12 @@ export function IncidentDossierCard({
   const contactPhone = parsed.phone || request.caller?.phone;
 
   return (
-    <div className={className || "rounded-2xl border border-border/80 bg-card p-5 space-y-4 shadow-sm"}>
+    <div
+      className={
+        className ||
+        "rounded-2xl border border-border/80 bg-card p-5 space-y-4 shadow-sm"
+      }
+    >
       <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
         <FileText className="h-4 w-4 text-primary" />
         <span>Patient & Incident Dossier</span>

@@ -15,11 +15,7 @@ export default function MobilizeDispatchPage({ params }: PageProps) {
   const resolvedParams = use(params);
   const requestId = resolvedParams.id;
 
-  const {
-    data: request,
-    isLoading,
-    isError,
-  } = useRequest(requestId);
+  const { data: request, isLoading, isError } = useRequest(requestId);
 
   if (isLoading) {
     return (
@@ -40,10 +36,12 @@ export default function MobilizeDispatchPage({ params }: PageProps) {
     return (
       <div className="p-8 text-center space-y-4 max-w-lg mx-auto bg-card rounded-2xl border border-border shadow-xl mt-12">
         <AlertTriangle className="h-10 w-10 text-emergency mx-auto" />
-        <h2 className="text-xl font-bold text-foreground">Incident Not Found</h2>
+        <h2 className="text-xl font-bold text-foreground">
+          Incident Not Found
+        </h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          The requested emergency incident does not exist, has already been mobilized,
-          or you do not have permission to access it.
+          The requested emergency incident does not exist, has already been
+          mobilized, or you do not have permission to access it.
         </p>
         <Link href="/admin/dispatches?tab=queue">
           <Button variant="outline" className="gap-2">

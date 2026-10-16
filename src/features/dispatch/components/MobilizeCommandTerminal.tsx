@@ -2,10 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  Navigation,
-} from "lucide-react";
+import { ArrowLeft, Navigation } from "lucide-react";
 import {
   AmbulanceStatus,
   AmbulanceType,
@@ -59,13 +56,17 @@ export const PRIORITY_CONFIG: Record<
   },
 };
 
-export function MobilizeCommandTerminal({ request }: MobilizeCommandTerminalProps) {
+export function MobilizeCommandTerminal({
+  request,
+}: MobilizeCommandTerminalProps) {
   const router = useRouter();
 
   // Ambulance search and pagination state
   const [ambulancePage, setAmbulancePage] = useState(1);
   const [ambulanceSearch, setAmbulanceSearch] = useState("");
-  const [ambulanceFilter, setAmbulanceFilter] = useState<"ALL" | AmbulanceType>("ALL");
+  const [ambulanceFilter, setAmbulanceFilter] = useState<"ALL" | AmbulanceType>(
+    "ALL",
+  );
   const debouncedAmbulanceSearch = useDebounce(ambulanceSearch, 300);
 
   // Driver search and pagination state
@@ -74,8 +75,11 @@ export function MobilizeCommandTerminal({ request }: MobilizeCommandTerminalProp
   const debouncedDriverSearch = useDebounce(driverSearch, 300);
 
   // Explicit user selection state
-  const [userSelectedAmbulance, setUserSelectedAmbulance] = useState<Ambulance | null>(null);
-  const [userSelectedDriver, setUserSelectedDriver] = useState<Driver | null>(null);
+  const [userSelectedAmbulance, setUserSelectedAmbulance] =
+    useState<Ambulance | null>(null);
+  const [userSelectedDriver, setUserSelectedDriver] = useState<Driver | null>(
+    null,
+  );
 
   // Queries
   const { data: fleetData, isLoading: loadingAmbulances } = useAmbulances({
@@ -110,13 +114,17 @@ export function MobilizeCommandTerminal({ request }: MobilizeCommandTerminalProp
     if (request.priority === Priority.CRITICAL) {
       return (
         ambulances.find((a) => a.type === AmbulanceType.INTENSIVE_CARE) ||
-        ambulances.find((a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT) ||
+        ambulances.find(
+          (a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT,
+        ) ||
         ambulances[0]
       );
     }
     if (request.priority === Priority.HIGH) {
       return (
-        ambulances.find((a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT) ||
+        ambulances.find(
+          (a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT,
+        ) ||
         ambulances.find((a) => a.type === AmbulanceType.INTENSIVE_CARE) ||
         ambulances[0]
       );
@@ -172,23 +180,27 @@ export function MobilizeCommandTerminal({ request }: MobilizeCommandTerminalProp
 
   const isCritical = request.priority === Priority.CRITICAL;
   const isHigh = request.priority === Priority.HIGH;
-  const priorityInfo = PRIORITY_CONFIG[request.priority] || PRIORITY_CONFIG[Priority.LOW];
+  const priorityInfo =
+    PRIORITY_CONFIG[request.priority] || PRIORITY_CONFIG[Priority.LOW];
 
   // Map markers
-  const pickupPoint = request.pickupLat && request.pickupLng ? {
-    lat: Number(request.pickupLat),
-    lng: Number(request.pickupLng),
-    label: request.pickupAddress,
-  } : {
-    lat: 23.8103,
-    lng: 90.4125,
-    label: request.pickupAddress || "Dhaka Central Pickup",
-  };
+  const pickupPoint =
+    request.pickupLat && request.pickupLng
+      ? {
+          lat: Number(request.pickupLat),
+          lng: Number(request.pickupLng),
+          label: request.pickupAddress,
+        }
+      : {
+          lat: 23.8103,
+          lng: 90.4125,
+          label: request.pickupAddress || "Dhaka Central Pickup",
+        };
 
   const mapAmbulanceMarkers = ambulances.slice(0, 15).map((a, idx) => ({
     id: a.vehicleNumber,
-    lat: pickupPoint.lat + (Math.sin(idx + 1) * 0.025),
-    lng: pickupPoint.lng + (Math.cos(idx + 1) * 0.025),
+    lat: pickupPoint.lat + Math.sin(idx + 1) * 0.025,
+    lng: pickupPoint.lng + Math.cos(idx + 1) * 0.025,
     label: `${a.vehicleNumber} (${a.type})`,
     type: "ambulance" as const,
     status: a.status,
@@ -243,7 +255,9 @@ export function MobilizeCommandTerminal({ request }: MobilizeCommandTerminalProp
           <div
             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs sm:text-sm font-black shadow-xs ${priorityInfo.badgeClass}`}
           >
-            <span className={`h-2.5 w-2.5 rounded-full ${priorityInfo.dotClass}`} />
+            <span
+              className={`h-2.5 w-2.5 rounded-full ${priorityInfo.dotClass}`}
+            />
             <span>{priorityInfo.label}</span>
           </div>
         </div>

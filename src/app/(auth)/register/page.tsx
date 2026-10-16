@@ -44,7 +44,8 @@ function RegisterContent() {
         </h1>
         <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
           Register to quickly request ambulances, track arrivals in real-time,
-          and access Jibon<span className="text-primary font-bold">Path</span> emergency services.
+          and access Jibon<span className="text-primary font-bold">Path</span>{" "}
+          emergency services.
         </p>
       </div>
 

@@ -79,7 +79,8 @@ export function MobilizationPairSummary({
         <span>{buttonLabel}</span>
       </Button>
       <p className="text-xs text-center text-muted-foreground">
-        Automated traffic siren corridor and hospital telemetry handshake trigger instantly.
+        Automated traffic siren corridor and hospital telemetry handshake
+        trigger instantly.
       </p>
     </div>
   );

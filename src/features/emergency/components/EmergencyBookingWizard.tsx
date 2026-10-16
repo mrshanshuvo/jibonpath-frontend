@@ -271,7 +271,9 @@ export function EmergencyBookingWizard({
                 }`}
               />
               {i < 3 && (
-                <span className="text-xs text-muted-foreground font-bold">→</span>
+                <span className="text-xs text-muted-foreground font-bold">
+                  →
+                </span>
               )}
             </div>
           ))}

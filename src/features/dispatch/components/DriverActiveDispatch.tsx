@@ -146,15 +146,21 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
           <div className="grid grid-cols-3 gap-2 text-center">
             <div>
               <div className="text-lg font-bold text-foreground">72</div>
-              <div className="text-xs font-semibold text-muted-foreground">HR</div>
+              <div className="text-xs font-semibold text-muted-foreground">
+                HR
+              </div>
             </div>
             <div>
               <div className="text-lg font-bold text-foreground">120/80</div>
-              <div className="text-xs font-semibold text-muted-foreground">BP</div>
+              <div className="text-xs font-semibold text-muted-foreground">
+                BP
+              </div>
             </div>
             <div>
               <div className="text-lg font-bold text-foreground">98%</div>
-              <div className="text-xs font-semibold text-muted-foreground">SpO2</div>
+              <div className="text-xs font-semibold text-muted-foreground">
+                SpO2
+              </div>
             </div>
           </div>
         </Card>

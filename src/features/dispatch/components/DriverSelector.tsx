@@ -2,7 +2,15 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { User, Users, Search, X, CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
+import {
+  User,
+  Users,
+  Search,
+  X,
+  CheckCircle2,
+  AlertTriangle,
+  ShieldCheck,
+} from "lucide-react";
 import { type Driver } from "@/types/entities.types";
 import { Skeleton, Pagination } from "@/components/shared";
 import { ROUTES } from "@/config/routes";
@@ -130,7 +138,9 @@ export function DriverSelector({
         <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-primary/10 border border-primary/30 text-xs">
           <div className="flex items-center gap-2 min-w-0">
             <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
-            <span className="text-muted-foreground">Selected from other page:</span>
+            <span className="text-muted-foreground">
+              Selected from other page:
+            </span>
             <span className="font-bold text-foreground truncate">
               {selectedDriver.user?.name || "Selected Driver"}
             </span>
@@ -211,7 +221,10 @@ export function DriverSelector({
                     <div className="flex flex-col text-xs font-mono text-muted-foreground">
                       <span>BRTA: {drv.licenseNumber}</span>
                       {drv.user?.email && (
-                        <span className="text-xs text-muted-foreground/80 truncate" title={drv.user.email}>
+                        <span
+                          className="text-xs text-muted-foreground/80 truncate"
+                          title={drv.user.email}
+                        >
                           {drv.user.email}
                         </span>
                       )}

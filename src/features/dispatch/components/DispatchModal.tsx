@@ -1,10 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  Siren,
-  Sparkles,
-} from "lucide-react";
+import { Siren, Sparkles } from "lucide-react";
 import {
   AmbulanceStatus,
   AmbulanceType,
@@ -31,13 +28,19 @@ export interface DispatchModalProps {
   onClose: () => void;
 }
 
-export function DispatchModal({ request, isOpen, onClose }: DispatchModalProps) {
+export function DispatchModal({
+  request,
+  isOpen,
+  onClose,
+}: DispatchModalProps) {
   const isModalActive = Boolean(isOpen && request);
 
   // Ambulance search and pagination state
   const [ambulancePage, setAmbulancePage] = useState(1);
   const [ambulanceSearch, setAmbulanceSearch] = useState("");
-  const [ambulanceFilter, setAmbulanceFilter] = useState<"ALL" | AmbulanceType>("ALL");
+  const [ambulanceFilter, setAmbulanceFilter] = useState<"ALL" | AmbulanceType>(
+    "ALL",
+  );
   const debouncedAmbulanceSearch = useDebounce(ambulanceSearch, 300);
 
   // Driver search and pagination state
@@ -46,8 +49,11 @@ export function DispatchModal({ request, isOpen, onClose }: DispatchModalProps) 
   const debouncedDriverSearch = useDebounce(driverSearch, 300);
 
   // Explicit user selection state
-  const [userSelectedAmbulance, setUserSelectedAmbulance] = useState<Ambulance | null>(null);
-  const [userSelectedDriver, setUserSelectedDriver] = useState<Driver | null>(null);
+  const [userSelectedAmbulance, setUserSelectedAmbulance] =
+    useState<Ambulance | null>(null);
+  const [userSelectedDriver, setUserSelectedDriver] = useState<Driver | null>(
+    null,
+  );
 
   const { data: fleetData, isLoading: loadingAmbulances } = useAmbulances(
     {
@@ -87,13 +93,17 @@ export function DispatchModal({ request, isOpen, onClose }: DispatchModalProps) 
     if (request.priority === Priority.CRITICAL) {
       return (
         ambulances.find((a) => a.type === AmbulanceType.INTENSIVE_CARE) ||
-        ambulances.find((a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT) ||
+        ambulances.find(
+          (a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT,
+        ) ||
         ambulances[0]
       );
     }
     if (request.priority === Priority.HIGH) {
       return (
-        ambulances.find((a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT) ||
+        ambulances.find(
+          (a) => a.type === AmbulanceType.ADVANCED_LIFE_SUPPORT,
+        ) ||
         ambulances.find((a) => a.type === AmbulanceType.INTENSIVE_CARE) ||
         ambulances[0]
       );

@@ -63,7 +63,14 @@ export function useFareEstimate(requestId?: string) {
       const res = await api.get<ApiResponse<FareEstimate>>(
         `/payments/fare/${requestId}`,
       );
-      return res.data;
+      const payload = res.data;
+      if (payload && "fare" in payload && payload.fare) {
+        return {
+          ...payload.fare,
+          request: payload.request,
+        };
+      }
+      return payload as unknown as import("../types").FareBreakdown;
     },
     enabled: Boolean(requestId),
   });

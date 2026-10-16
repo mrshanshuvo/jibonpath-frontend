@@ -421,7 +421,9 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
               onClick={() => setPaymentRequest(dispatch.request || null)}
               leftIcon={<CreditCard className="h-4 w-4" />}
             >
-              Settle Trip Fee (৳ {dispatch.request?.payment?.amount || 1500})
+              {dispatch.request?.payment?.amount
+                ? `Settle Trip Fee (৳ ${dispatch.request.payment.amount})`
+                : "Settle Trip Fee & Invoice"}
             </Button>
           </div>
         )}

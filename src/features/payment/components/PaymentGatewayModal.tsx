@@ -64,20 +64,25 @@ export function PaymentGatewayModal({
 
   if (!request) return null;
 
-  const estimatedTotal = fareData?.totalFare || 2500;
-  const baseFare = fareData?.baseFare || 1500;
-  const distanceKm = fareData?.estimatedDistanceKm || 12;
-  const perKmRate = fareData?.perKmRate || 55;
+  // Use authoritative fare breakdown from backend
+  const baseFare = fareData?.baseFare ?? request.payment?.amount ?? 2000;
+  const distanceKm = fareData?.distanceKm ?? 2;
+  const perKmRate = fareData?.ratePerKm ?? 40;
+  const distanceFare =
+    fareData?.distanceFare ?? Math.round(distanceKm * perKmRate);
+  const prioritySurcharge = fareData?.prioritySurcharge ?? 0;
+  const calculatedTotal =
+    fareData?.totalFare ?? (baseFare + distanceFare + prioritySurcharge);
 
   const isFastTest =
     selectedGateway === PaymentGateway.BKASH && useSandboxFastTest;
-  const payableAmount = isFastTest ? 10 : estimatedTotal;
+  const payableAmount = isFastTest ? 10 : calculatedTotal;
 
   const handlePay = () => {
     initiateMutation.mutate({
       requestId: request.id,
       gateway: selectedGateway,
-      amount: isFastTest ? 10 : undefined,
+      amount: isFastTest ? 10 : payableAmount,
     });
   };
 
@@ -263,9 +268,14 @@ export function PaymentGatewayModal({
 
             <div className="space-y-2 text-xs sm:text-sm text-muted-foreground">
               <div className="flex justify-between">
-                <span>Base Activation:</span>
+                <span>
+                  Base Activation
+                  {fareData?.ambulanceType
+                    ? ` (${fareData.ambulanceType.replace(/_/g, " ")})`
+                    : ""}:
+                </span>
                 <span className="font-mono font-medium text-foreground">
-                  {formatCurrency(baseFare)}
+                  {fareLoading ? "..." : formatCurrency(baseFare)}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -273,11 +283,21 @@ export function PaymentGatewayModal({
                   Transit ({distanceKm} km × {formatCurrency(perKmRate)}):
                 </span>
                 <span className="font-mono font-medium text-foreground">
-                  {formatCurrency(distanceKm * perKmRate)}
+                  {fareLoading ? "..." : formatCurrency(distanceFare)}
                 </span>
               </div>
+              {prioritySurcharge > 0 && (
+                <div className="flex justify-between text-warning">
+                  <span>
+                    Priority Surcharge ({fareData?.priority || "Urgent"}):
+                  </span>
+                  <span className="font-mono font-semibold">
+                    {formatCurrency(prioritySurcharge)}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-success">
-                <span>Paramedic & Oxygen:</span>
+                <span>Paramedic &amp; Oxygen:</span>
                 <span className="font-mono font-semibold">Included (৳ 0)</span>
               </div>
             </div>

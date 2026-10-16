@@ -35,14 +35,33 @@ export interface PaymentsApiResponse {
   links?: import("@/types/api.types").PaginationLinks;
 }
 
-export interface FareEstimate {
-  requestId: string;
+export interface FareBreakdown {
   ambulanceType: string;
   baseFare: number;
-  estimatedDistanceKm: number;
-  perKmRate: number;
+  priority: string;
+  prioritySurcharge: number;
+  distanceKm: number;
+  ratePerKm: number;
+  distanceFare: number;
   totalFare: number;
-  currency: string;
+}
+
+export interface FareEstimate {
+  request?: {
+    id: string;
+    priority: string;
+    status: string;
+    pickupAddress?: string;
+    ambulance?: { vehicleNumber: string; type: string } | null;
+    hospital?: { name: string; address: string } | null;
+  };
+  fare: FareBreakdown;
+  // Compatibility fallbacks
+  baseFare?: number;
+  distanceKm?: number;
+  ratePerKm?: number;
+  distanceFare?: number;
+  totalFare?: number;
 }
 
 export interface CheckoutResponse {

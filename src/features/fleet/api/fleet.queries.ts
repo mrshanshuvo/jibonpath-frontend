@@ -24,7 +24,10 @@ export const fleetKeys = {
  * useAmbulances:
  * Fetches paginated ambulance fleet vehicles with status/type filters
  */
-export function useAmbulances(params?: FleetQueryParams) {
+export function useAmbulances(
+  params?: FleetQueryParams,
+  options?: { enabled?: boolean },
+) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
@@ -32,6 +35,7 @@ export function useAmbulances(params?: FleetQueryParams) {
   if (params?.status && params.status !== "ALL")
     queryParams.status = params.status;
   if (params?.type && params.type !== "ALL") queryParams.type = params.type;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: fleetKeys.list(params),
@@ -41,7 +45,7 @@ export function useAmbulances(params?: FleetQueryParams) {
       });
       return res.data;
     },
-    enabled: isAuthenticated,
+    enabled: Boolean(isAuthenticated && (options?.enabled ?? true)),
     refetchInterval: 10000,
   });
 }

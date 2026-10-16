@@ -18,6 +18,7 @@ export function usePublicAmbulances() {
         "/ambulances",
         {
           params: { limit: 50 },
+          skipAuth: true,
         },
       );
       return res.data;

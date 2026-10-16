@@ -75,7 +75,7 @@ export function InteractiveMap({
         .setLngLat([amb.lng, amb.lat])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }).setHTML(
-            `<div class="text-xs font-semibold">Ambulance ${amb.id}</div><div class="text-3xs text-muted-foreground">${amb.status || "Active"}</div>`,
+            `<div class="text-sm font-bold">Ambulance ${amb.id}</div><div class="text-xs text-muted-foreground font-medium">${amb.status || "Active"}</div>`,
           ),
         )
         .addTo(map);
@@ -89,7 +89,7 @@ export function InteractiveMap({
         .setLngLat([h.lng, h.lat])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }).setHTML(
-            `<div class="text-xs font-semibold">${h.label}</div><div class="text-3xs text-muted-foreground">Capacity: ${h.capacity || "N/A"}</div>`,
+            `<div class="text-sm font-bold">${h.label}</div><div class="text-xs text-muted-foreground font-medium">Capacity: ${h.capacity || "N/A"}</div>`,
           ),
         )
         .addTo(map);
@@ -152,12 +152,12 @@ export function InteractiveMap({
         </div>
       </div>
       <div className="absolute bottom-3 right-3 flex gap-2">
-        <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-sm rounded-md px-2.5 py-1.5 border border-border shadow-lg text-3xs">
-          <span className="w-2 h-2 rounded-full bg-emergency" />
+        <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-sm rounded-md px-3 py-1.5 border border-border shadow-lg text-xs font-semibold">
+          <span className="w-2.5 h-2.5 rounded-full bg-emergency" />
           <span>Ambulance</span>
         </div>
-        <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-sm rounded-md px-2.5 py-1.5 border border-border shadow-lg text-3xs">
-          <span className="w-2 h-2 rounded-full bg-success" />
+        <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-sm rounded-md px-3 py-1.5 border border-border shadow-lg text-xs font-semibold">
+          <span className="w-2.5 h-2.5 rounded-full bg-success" />
           <span>Hospital</span>
         </div>
       </div>

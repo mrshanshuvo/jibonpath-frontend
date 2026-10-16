@@ -91,7 +91,7 @@ export default function AdminDriversPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Driver & Contact</th>
                   <th className="px-5 py-3.5">Role Authorization</th>
@@ -115,7 +115,7 @@ export default function AdminDriversPage() {
                           <span className="font-bold text-sm text-foreground block">
                             {driver.name}
                           </span>
-                          <span className="text-3xs font-mono text-muted-foreground">
+                          <span className="text-xs font-mono text-muted-foreground">
                             {driver.email}
                           </span>
                         </div>
@@ -129,13 +129,13 @@ export default function AdminDriversPage() {
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold bg-success-tint text-success-ink dark:text-success border border-success/20">
-                        <CheckCircle className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-success-tint text-success-ink dark:text-success border border-success/20">
+                        <CheckCircle className="h-3.5 w-3.5" />
                         Active on Patrol
                       </span>
                     </td>
 
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground whitespace-nowrap">
+                    <td className="px-5 py-4 font-mono text-xs text-muted-foreground whitespace-nowrap">
                       {formatDateTime(driver.createdAt)}
                     </td>
 
@@ -149,7 +149,7 @@ export default function AdminDriversPage() {
                           <span>{driver.phone}</span>
                         </a>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           No phone
                         </span>
                       )}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   User as UserIcon,
@@ -30,8 +30,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<RegisterInput>({
+    mode: "onChange",
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
@@ -41,6 +43,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       address: "",
     },
   });
+
+  const emailValue = useWatch({ control, name: "email" });
+  const phoneValue = useWatch({ control, name: "phone" });
 
   const onSubmit = (data: RegisterInput) => {
     registerMutation.mutate(data, {
@@ -72,6 +77,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         required
         leftIcon={<Mail className="h-4 w-4" />}
         error={errors.email?.message}
+        helperText={
+          !errors.email &&
+          emailValue &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
+            ? "✓ Valid email format"
+            : undefined
+        }
         disabled={registerMutation.isPending}
         {...register("email")}
       />
@@ -102,7 +114,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           disabled={registerMutation.isPending}
           {...register("password")}
         />
-        <p className="text-3xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Must include at least 1 uppercase letter, 1 lowercase letter, and 1
           number.
         </p>
@@ -116,6 +128,15 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           autoComplete="tel"
           leftIcon={<Phone className="h-4 w-4" />}
           error={errors.phone?.message}
+          helperText={
+            !errors.phone &&
+            phoneValue &&
+            /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(
+              phoneValue,
+            )
+              ? "✓ Valid contact number"
+              : undefined
+          }
           disabled={registerMutation.isPending}
           {...register("phone")}
         />
@@ -143,7 +164,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         Complete Registration
       </Button>
 
-      <div className="pt-2 text-center text-xs text-muted-foreground">
+      <div className="pt-2 text-center text-sm text-muted-foreground">
         <span>Already registered? </span>
         <Link
           href={ROUTES.AUTH.LOGIN}

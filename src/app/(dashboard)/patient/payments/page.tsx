@@ -7,7 +7,7 @@ export default function PatientPaymentsPage() {
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
           Trip Payment History & Invoices
         </h1>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Review settled ambulance transportation fees, verify gateway
           transaction references, and download official medical tax receipts.
         </p>

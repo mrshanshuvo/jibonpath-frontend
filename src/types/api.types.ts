@@ -4,6 +4,7 @@ import type {
   Hospital,
   Driver,
   Dispatch,
+  Payment,
   User,
   AuditLog,
 } from "./entities.types";
@@ -19,49 +20,82 @@ export interface PaginationMeta {
   limit: number;
   total: number;
   totalPages: number;
+  hasNextPage?: boolean;
+  hasPrevPage?: boolean;
+  hasMore?: boolean;
+}
+
+export interface PaginationLinks {
+  self: string;
+  first: string;
+  prev: string | null;
+  next: string | null;
+  last: string;
 }
 
 export interface PaginatedData<T> {
   data: T[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export type PaginatedResponse<T> = ApiResponse<PaginatedData<T>>;
 
-// Exact backend response shapes (matching L2B7A6 service returns)
+// Standardized collection response shapes (JSON:API / RFC-8288 + legacy backward-compatibility)
 export interface AmbulancesResponseData {
+  data: Ambulance[];
   ambulances: Ambulance[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface RequestsResponseData {
+  data: EmergencyRequest[];
   requests: EmergencyRequest[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface HospitalsResponseData {
+  data: Hospital[];
   hospitals: Hospital[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface DriversResponseData {
+  data: Driver[];
   drivers: Driver[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface DispatchesResponseData {
+  data: Dispatch[];
   dispatches: Dispatch[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
+}
+
+export interface PaymentsResponseData {
+  data: Payment[];
+  payments: Payment[];
+  meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface UsersResponseData {
+  data: User[];
   users: User[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface AuditLogsResponseData {
+  data: AuditLog[];
   logs: AuditLog[];
   meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
 export interface ApiErrorResponse {

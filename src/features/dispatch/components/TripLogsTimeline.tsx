@@ -21,7 +21,7 @@ export function TripLogsTimeline({ logs }: TripLogsTimelineProps) {
           <Clock className="h-4 w-4 text-primary" />
           <span>Trip Status Audit Trail ({logs.length} checkpoints)</span>
         </h3>
-        <span className="text-3xs font-mono text-muted-foreground">
+        <span className="text-xs font-mono text-muted-foreground">
           Real-Time Log
         </span>
       </div>
@@ -36,10 +36,10 @@ export function TripLogsTimeline({ logs }: TripLogsTimelineProps) {
 
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-bold text-foreground">
+                <span className="text-sm font-bold text-foreground">
                   {log.status}
                 </span>
-                <span className="text-3xs font-mono text-muted-foreground">
+                <span className="text-xs font-mono text-muted-foreground">
                   {formatDateTime(log.createdAt)}
                 </span>
               </div>

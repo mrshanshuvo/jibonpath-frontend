@@ -16,14 +16,49 @@ import { toast } from "sonner";
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const nameError =
+    touched.name && name.trim().length === 0
+      ? "Your name is required"
+      : touched.name && name.trim().length < 2
+        ? "Name must be at least 2 characters"
+        : "";
+
+  const phoneError =
+    touched.phone &&
+    (!phone ||
+      !/^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone))
+      ? "Enter a valid phone number (e.g. 017XXXXXXXX)"
+      : "";
+
+  const emailError =
+    touched.email && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      ? "Enter a valid email address (e.g. you@domain.com)"
+      : "";
+
+  const isFormValid =
+    name.trim().length >= 2 &&
+    /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone) &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setTouched({ name: true, phone: true, email: true });
+    if (!isFormValid) return;
+
     setIsSubmitting(true);
 
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
+      setName("");
+      setPhone("");
+      setEmail("");
+      setTouched({});
       toast.success(
         "Inquiry received. Our dispatch liaison will respond promptly.",
       );
@@ -35,8 +70,8 @@ export default function ContactPage() {
       {/* Hero Header */}
       <section className="py-16 sm:py-20 border-b border-border/60 bg-surface">
         <div className="w-full px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-2xs font-semibold text-primary mb-4">
-            <ShieldAlert className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
+            <ShieldAlert className="h-4 w-4" />
             <span>24/7 Central Command & Control</span>
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
@@ -71,7 +106,7 @@ export default function ContactPage() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emergency text-emergency-foreground">
                     <PhoneCall className="h-6 w-6" />
                   </div>
-                  <span className="text-3xs font-mono font-bold uppercase rounded-full bg-emergency text-emergency-foreground px-3 py-1">
+                  <span className="text-xs font-mono font-bold uppercase rounded-full bg-emergency text-emergency-foreground px-3 py-1">
                     Zero Delay
                   </span>
                 </div>
@@ -108,7 +143,7 @@ export default function ContactPage() {
                   <div className="font-mono text-xs text-primary font-medium">
                     +880 1700-000999
                   </div>
-                  <p className="text-3xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     Direct dispatcher switchboard
                   </p>
                 </div>
@@ -123,7 +158,7 @@ export default function ContactPage() {
                   <div className="font-mono text-xs text-primary font-medium">
                     liaison@jibonpath.dev
                   </div>
-                  <p className="text-3xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     Inter-facility transfer desk
                   </p>
                 </div>
@@ -142,7 +177,7 @@ export default function ContactPage() {
                     Level 4, Medical Telematics Tower, Mohakhali C/A, Dhaka
                     1212, Bangladesh
                   </p>
-                  <div className="flex items-center gap-2 mt-2 text-3xs text-muted-foreground">
+                  <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3 text-success-ink dark:text-success" />
                     <span>
                       Control Room: 24 Hours / 7 Days / 365 Days continuous
@@ -188,12 +223,35 @@ export default function ContactPage() {
                     <Input
                       label="Your Name"
                       placeholder="e.g. Dr. Kazi Rahman"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        setTouched((t) => ({ ...t, name: true }));
+                      }}
+                      onBlur={() => setTouched((t) => ({ ...t, name: true }))}
+                      error={nameError || undefined}
                       required
                     />
                     <Input
                       label="Contact Phone"
                       type="tel"
                       placeholder="017XXXXXXXX"
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        setTouched((t) => ({ ...t, phone: true }));
+                      }}
+                      onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+                      error={phoneError || undefined}
+                      helperText={
+                        !phoneError &&
+                        phone &&
+                        /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(
+                          phone,
+                        )
+                          ? "✓ Valid phone number"
+                          : undefined
+                      }
                       required
                     />
                   </div>
@@ -202,6 +260,20 @@ export default function ContactPage() {
                     label="Email Address"
                     type="email"
                     placeholder="you@domain.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setTouched((t) => ({ ...t, email: true }));
+                    }}
+                    onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                    error={emailError || undefined}
+                    helperText={
+                      !emailError &&
+                      email &&
+                      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                        ? "✓ Valid email format"
+                        : undefined
+                    }
                     required
                   />
 

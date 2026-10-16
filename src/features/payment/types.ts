@@ -8,6 +8,7 @@ import {
 export const initiatePaymentSchema = z.object({
   requestId: z.string().min(1, "Request ID is required"),
   gateway: z.nativeEnum(PaymentGateway),
+  amount: z.number().positive().optional(),
 });
 
 export type InitiatePaymentInput = z.infer<typeof initiatePaymentSchema>;
@@ -16,9 +17,11 @@ export interface PaymentQueryParams {
   page?: number;
   limit?: number;
   status?: PaymentStatus | "ALL";
+  search?: string;
 }
 
 export interface PaymentsApiResponse {
+  data: Payment[];
   payments: Payment[];
   meta: {
     page: number;
@@ -26,7 +29,10 @@ export interface PaymentsApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
 }
 
 export interface FareEstimate {
@@ -40,9 +46,13 @@ export interface FareEstimate {
 }
 
 export interface CheckoutResponse {
-  url?: string; // Stripe checkout URL
+  url?: string; // Stripe or generic checkout URL
   bkashURL?: string; // bKash payment URL
   paymentID?: string;
   GatewayPageURL?: string; // SSLCommerz gateway URL
+  gatewayUrl?: string; // SSLCommerz camelCase gateway URL
+  gatewayPageURL?: string;
+  checkoutUrl?: string;
+  redirectUrl?: string;
   sessionId?: string;
 }

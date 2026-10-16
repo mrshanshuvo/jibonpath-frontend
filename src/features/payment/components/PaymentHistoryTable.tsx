@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { CreditCard, FileText, AlertCircle, ExternalLink } from "lucide-react";
+import { CreditCard, FileText, AlertCircle, ExternalLink, Search, X } from "lucide-react";
 import {
   Button,
   Skeleton,
@@ -11,10 +11,12 @@ import {
   StatusBadge,
 } from "@/components/shared";
 import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import { InvoiceReceipt } from "./InvoiceReceipt";
 import { PaymentStatus, type Payment } from "@/types/entities.types";
 import { useMyPayments } from "../api/payment.queries";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
+import { ROUTES } from "@/config/routes";
 
 export function PaymentHistoryTable() {
   const { params, setParams } = useUrlParams();
@@ -26,8 +28,22 @@ export function PaymentHistoryTable() {
       ? (rawStatus as PaymentStatus)
       : "ALL";
 
+  const rawSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(rawSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
   const parsedPage = Number(params.get("page") ?? "1");
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+        page: "1",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
+
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [receiptOpen, setReceiptOpen] = useState(false);
 
@@ -35,6 +51,7 @@ export function PaymentHistoryTable() {
     page,
     limit: 8,
     status: statusFilter,
+    search: debouncedSearch.trim() || undefined,
   });
 
   const handleViewReceipt = (payment: Payment) => {
@@ -48,7 +65,7 @@ export function PaymentHistoryTable() {
 
   const getGatewayBadge = (gateway: string) => {
     return (
-      <span className="text-3xs font-medium px-2 py-0.5 rounded-full border border-border bg-surface-raised text-foreground">
+      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full border border-border bg-surface-raised text-foreground">
         {gateway}
       </span>
     );
@@ -56,37 +73,59 @@ export function PaymentHistoryTable() {
 
   return (
     <div className="space-y-6">
-      {/* Top Filter Buttons */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
-        {[
-          "ALL",
-          PaymentStatus.SUCCESS,
-          PaymentStatus.PENDING,
-          PaymentStatus.FAILED,
-        ].map((status) => (
-          <button
-            key={status}
-            onClick={() => {
-              setParams({
-                status: status === "ALL" ? "" : status,
-                page: "1",
-              });
-            }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
-              statusFilter === status
-                ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
-            }`}
-          >
-            {status === "ALL"
-              ? "All Payments"
-              : status === PaymentStatus.SUCCESS
-                ? "Successful"
-                : status === PaymentStatus.PENDING
-                  ? "Pending"
-                  : "Failed"}
-          </button>
-        ))}
+      {/* Top Filter Buttons & Search */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+          {[
+            "ALL",
+            PaymentStatus.SUCCESS,
+            PaymentStatus.PENDING,
+            PaymentStatus.FAILED,
+          ].map((status) => (
+            <button
+              key={status}
+              onClick={() => {
+                setParams({
+                  status: status === "ALL" ? "" : status,
+                  page: "1",
+                });
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                statusFilter === status
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                  : "bg-surface border border-border text-muted-foreground hover:text-foreground hover:bg-surface-raised"
+              }`}
+            >
+              {status === "ALL"
+                ? "All Payments"
+                : status === PaymentStatus.SUCCESS
+                  ? "Successful"
+                  : status === PaymentStatus.PENDING
+                    ? "Pending"
+                    : "Failed"}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full sm:w-64 shrink-0">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search txn, session, address..."
+            className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-border bg-surface text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Table Card */}
@@ -126,7 +165,7 @@ export function PaymentHistoryTable() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Transaction Date</th>
                   <th className="px-5 py-3.5">Request Reference</th>
@@ -142,7 +181,7 @@ export function PaymentHistoryTable() {
                     key={p.id}
                     className="hover:bg-surface-raised/40 transition-colors"
                   >
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground">
+                    <td className="px-5 py-4 font-mono text-xs text-muted-foreground">
                       {formatDateTime(p.createdAt)}
                     </td>
 
@@ -172,7 +211,7 @@ export function PaymentHistoryTable() {
                             Invoice
                           </Button>
                           <Link
-                            href={`/patient/invoice/${p.id}`}
+                            href={ROUTES.PATIENT.INVOICE(p.requestId || p.id)}
                             title="Open standalone invoice page"
                           >
                             <Button
@@ -186,7 +225,7 @@ export function PaymentHistoryTable() {
                           </Link>
                         </div>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           No receipt
                         </span>
                       )}

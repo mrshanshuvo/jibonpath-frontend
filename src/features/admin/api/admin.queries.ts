@@ -251,6 +251,7 @@ export function useAuditLogs(params?: AdminAuditLogsQueryParams) {
   if (params?.limit) queryParams.limit = params.limit;
   if (params?.action) queryParams.action = params.action;
   if (params?.entityType) queryParams.entityType = params.entityType;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: adminKeys.auditLogs(params),

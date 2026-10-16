@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Ambulance,
   Plus,
@@ -9,6 +9,8 @@ import {
   Wrench,
   CheckCircle,
   AlertCircle,
+  Search,
+  X,
 } from "lucide-react";
 import {
   Button,
@@ -19,6 +21,7 @@ import {
 } from "@/components/shared";
 import { AmbulanceFormModal } from "./AmbulanceFormModal";
 import { useUrlParams } from "@/hooks/useUrlParams";
+import { useDebounce } from "@/hooks/useDebounce";
 import {
   AmbulanceStatus,
   AmbulanceType,
@@ -47,8 +50,21 @@ export function FleetTable() {
       ? (rawType as AmbulanceType)
       : "ALL";
 
+  const rawSearch = params.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(rawSearch);
+  const debouncedSearch = useDebounce(searchTerm, 350);
+
   const parsedPage = Number(params.get("page") ?? "1");
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+  useEffect(() => {
+    if (debouncedSearch !== (params.get("search") ?? "")) {
+      setParams({
+        search: debouncedSearch.trim() || "",
+        page: "1",
+      });
+    }
+  }, [debouncedSearch, params, setParams]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingAmbulance, setEditingAmbulance] =
@@ -59,6 +75,7 @@ export function FleetTable() {
     limit: 8,
     status: statusFilter,
     type: typeFilter,
+    search: debouncedSearch.trim() || undefined,
   });
 
   const handleStatusFilterChange = (status: AmbulanceStatus | "ALL") => {
@@ -117,19 +134,19 @@ export function FleetTable() {
     switch (type) {
       case AmbulanceType.BASIC:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20 whitespace-nowrap">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-info/10 text-info-ink border border-info-ink/20 whitespace-nowrap">
             BLS (Basic)
           </span>
         );
       case AmbulanceType.ADVANCED_LIFE_SUPPORT:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
             ACLS (Cardiac)
           </span>
         );
       case AmbulanceType.INTENSIVE_CARE:
         return (
-          <span className="text-3xs font-medium px-2 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20 whitespace-nowrap">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-danger/10 text-danger-ink border border-danger-ink/20 whitespace-nowrap">
             ICU (Ventilator)
           </span>
         );
@@ -177,9 +194,9 @@ export function FleetTable() {
               onClick={() =>
                 handleTypeFilterChange(type as AmbulanceType | "ALL")
               }
-              className={`px-2.5 py-1 rounded-md text-3xs font-medium transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                 typeFilter === type
-                  ? "bg-foreground text-background font-bold"
+                  ? "bg-foreground text-background font-bold shadow-xs"
                   : "bg-surface/50 border border-border/60 text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -194,14 +211,36 @@ export function FleetTable() {
           ))}
         </div>
 
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={handleCreate}
-          leftIcon={<Plus className="h-4 w-4" />}
-        >
-          Add Ambulance
-        </Button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search plate or vehicle..."
+              className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-border bg-surface text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={handleCreate}
+            leftIcon={<Plus className="h-4 w-4" />}
+          >
+            Add Ambulance
+          </Button>
+        </div>
       </div>
 
       {/* Table Card */}
@@ -243,7 +282,7 @@ export function FleetTable() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Registration & Vehicle</th>
                   <th className="px-5 py-3.5">Equipment Tier</th>
@@ -268,7 +307,7 @@ export function FleetTable() {
                           <span className="font-bold text-xs sm:text-sm font-mono block text-foreground">
                             {amb.vehicleNumber}
                           </span>
-                          <span className="text-3xs text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {amb.make || "Toyota HiAce Emergency"}
                           </span>
                         </div>
@@ -285,18 +324,18 @@ export function FleetTable() {
                           <span className="font-medium text-foreground block">
                             {amb.driver.user.name}
                           </span>
-                          <span className="text-3xs font-mono text-muted-foreground">
+                          <span className="text-xs font-mono text-muted-foreground">
                             Lic: {amb.driver.licenseNumber}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-3xs text-muted-foreground italic">
+                        <span className="text-xs text-muted-foreground italic">
                           Unassigned
                         </span>
                       )}
                     </td>
 
-                    <td className="px-5 py-4 text-3xs font-mono text-muted-foreground whitespace-nowrap">
+                    <td className="px-5 py-4 text-xs font-mono text-muted-foreground whitespace-nowrap">
                       {formatDateTime(amb.updatedAt)}
                     </td>
 

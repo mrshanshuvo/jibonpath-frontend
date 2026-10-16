@@ -31,6 +31,7 @@ export interface AdminUsersQueryParams {
 }
 
 export interface AdminUsersApiResponse {
+  data: User[];
   users: User[];
   meta: {
     page: number;
@@ -38,7 +39,10 @@ export interface AdminUsersApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
 }
 
 export interface AdminAuditLogsQueryParams {
@@ -46,9 +50,11 @@ export interface AdminAuditLogsQueryParams {
   limit?: number;
   action?: string;
   entityType?: string;
+  search?: string;
 }
 
 export interface AdminAuditLogsApiResponse {
+  data: AuditLog[];
   logs: AuditLog[];
   meta: {
     page: number;
@@ -56,7 +62,10 @@ export interface AdminAuditLogsApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
 }
 
 export const createDriverSchema = z.object({
@@ -66,7 +75,16 @@ export const createDriverSchema = z.object({
   licenseNumber: z
     .string()
     .min(5, "Valid BRTA driver license number is required"),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .trim()
+    .optional()
+    .refine(
+      (val) =>
+        !val ||
+        /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(val),
+      "Enter a valid phone number (e.g. 017XXXXXXXX or +8801XXXXXXXXX)",
+    ),
   ambulanceId: z.string().optional(),
 });
 

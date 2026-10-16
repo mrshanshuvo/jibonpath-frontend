@@ -120,8 +120,8 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© 2026 JibonPath Operations. All rights reserved.</p>
-          <div className="flex items-center gap-2 text-2xs">
-            <ShieldCheck className="h-3.5 w-3.5 text-success-ink dark:text-success" />
+          <div className="flex items-center gap-2 text-xs font-medium">
+            <ShieldCheck className="h-4 w-4 text-success-ink dark:text-success" />
             <span>ISO 9001:2015 Emergency Healthcare Certified</span>
           </div>
         </div>

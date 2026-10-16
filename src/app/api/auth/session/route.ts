@@ -78,8 +78,13 @@ export async function GET() {
 
     if (!refreshToken) {
       return NextResponse.json(
-        { success: false, message: "No active session cookie found" },
-        { status: 401 },
+        {
+          success: true,
+          authenticated: false,
+          accessToken: null,
+          message: "No active session cookie found",
+        },
+        { status: 200 },
       );
     }
 
@@ -95,8 +100,13 @@ export async function GET() {
       cookieStore.delete(REFRESH_COOKIE_NAME);
       cookieStore.delete(ROLE_COOKIE_NAME);
       return NextResponse.json(
-        { success: false, message: "Session expired. Please log in again." },
-        { status: 401 },
+        {
+          success: true,
+          authenticated: false,
+          accessToken: null,
+          message: "Session expired or revoked",
+        },
+        { status: 200 },
       );
     }
 

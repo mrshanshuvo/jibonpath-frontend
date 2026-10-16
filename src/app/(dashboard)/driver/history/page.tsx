@@ -72,28 +72,28 @@ export default function DriverHistoryPage() {
                     {d.status}
                   </Badge>
                 </div>
-                <span className="text-3xs font-mono text-muted-foreground flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
+                <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5" />
                   {formatDateTime(d.dispatchedAt)}
                 </span>
               </div>
 
-              <div className="space-y-1.5 text-xs text-muted-foreground pt-1">
+              <div className="space-y-1.5 text-sm text-muted-foreground pt-1">
                 <div className="flex items-start gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-emergency shrink-0 mt-0.5" />
+                  <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
                   <span className="text-foreground font-medium truncate">
                     {d.request?.pickupAddress || "Dhaka pickup location"}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Building2 className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                  <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                   <span className="text-foreground font-medium truncate">
                     {d.hospital?.name || "Dhaka Medical College Hospital"}
                   </span>
                 </div>
               </div>
 
-              <div className="border-t border-border/60 pt-3 flex items-center justify-between text-3xs text-muted-foreground">
+              <div className="border-t border-border/60 pt-3 flex items-center justify-between text-xs text-muted-foreground">
                 <span>
                   Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-101"}
                 </span>

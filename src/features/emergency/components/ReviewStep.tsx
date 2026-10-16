@@ -49,6 +49,8 @@ export function ReviewStep({
     <Modal
       isOpen={isOpen}
       onClose={onCancel}
+      size="xl"
+      className="p-6 sm:p-7"
       title="Confirm emergency dispatch"
       description="An ambulance will be dispatched immediately. Review before confirming."
       preventBackdropClose

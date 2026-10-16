@@ -226,7 +226,7 @@ function HospitalsContent() {
                 <div>
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div>
-                      <span className="text-3xs font-semibold uppercase tracking-wider text-primary">
+                      <span className="text-xs font-bold uppercase tracking-wider text-primary">
                         {hospital.zone}
                       </span>
                       <h3 className="text-lg font-bold text-foreground mt-0.5">
@@ -251,15 +251,15 @@ function HospitalsContent() {
                     </div>
 
                     {hospital.hasCathLab && (
-                      <div className="flex items-center gap-1 rounded-md bg-danger-tint text-danger-ink dark:text-danger px-2.5 py-1 text-3xs font-medium border border-danger/20">
-                        <CheckCircle className="h-3 w-3" />
+                      <div className="flex items-center gap-1.5 rounded-md bg-danger-tint text-danger-ink dark:text-danger px-2.5 py-1 text-xs font-semibold border border-danger/20">
+                        <CheckCircle className="h-3.5 w-3.5" />
                         <span>24/7 Cath Lab (Cardiac)</span>
                       </div>
                     )}
 
                     {hospital.hasBurnUnit && (
-                      <div className="flex items-center gap-1 rounded-md bg-warning-tint text-warning-ink dark:text-warning px-2.5 py-1 text-3xs font-medium border border-warning/20">
-                        <CheckCircle className="h-3 w-3" />
+                      <div className="flex items-center gap-1.5 rounded-md bg-warning-tint text-warning-ink dark:text-warning px-2.5 py-1 text-xs font-semibold border border-warning/20">
+                        <CheckCircle className="h-3.5 w-3.5" />
                         <span>Burn & Plastic Trauma Unit</span>
                       </div>
                     )}

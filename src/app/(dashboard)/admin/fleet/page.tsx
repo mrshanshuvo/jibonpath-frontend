@@ -7,7 +7,7 @@ export default function AdminFleetPage() {
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
           Ambulance Fleet Management
         </h1>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Monitor response units, equipment specifications, maintenance
           scheduling, and metropolitan deployment readiness.
         </p>

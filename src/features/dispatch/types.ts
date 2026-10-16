@@ -24,9 +24,11 @@ export interface DispatchQueryParams {
   page?: number;
   limit?: number;
   status?: DispatchStatus | "ALL";
+  search?: string;
 }
 
 export interface DispatchesApiResponse {
+  data: Dispatch[];
   dispatches: Dispatch[];
   meta: {
     page: number;
@@ -34,5 +36,23 @@ export interface DispatchesApiResponse {
     total: number;
     totalPages: number;
     hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
   };
+  links?: import("@/types/api.types").PaginationLinks;
+}
+
+export interface DriversApiResponse {
+  data: import("@/types/entities.types").Driver[];
+  drivers: import("@/types/entities.types").Driver[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasMore: boolean;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
+  };
+  links?: import("@/types/api.types").PaginationLinks;
 }

@@ -72,14 +72,14 @@ export function UserMenu() {
         className="flex items-center gap-2.5 p-1.5 pl-2.5 rounded-full border border-border bg-surface-raised hover:border-border-hover transition-all select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label="User navigation menu"
       >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
           {getInitials(user.name)}
         </div>
         <div className="hidden sm:flex flex-col text-left">
-          <span className="text-xs font-semibold leading-tight text-foreground max-w-28 truncate">
+          <span className="text-sm font-semibold leading-tight text-foreground max-w-32 truncate">
             {user.name}
           </span>
-          <span className="text-3xs text-muted-foreground leading-tight">
+          <span className="text-xs font-medium text-muted-foreground leading-tight">
             {user.role}
           </span>
         </div>
@@ -88,10 +88,10 @@ export function UserMenu() {
 
       <DropdownMenuContent align="end" className="w-56 p-1.5 shadow-xl">
         <DropdownMenuLabel className="px-3 py-2 border-b border-border/70 mb-1">
-          <p className="text-xs font-semibold text-foreground truncate">
+          <p className="text-sm font-semibold text-foreground truncate">
             {user.name}
           </p>
-          <p className="text-2xs text-muted-foreground truncate">
+          <p className="text-xs text-muted-foreground truncate">
             {user.email}
           </p>
           <div className="mt-1.5">

@@ -34,6 +34,7 @@ export function useMyRequests(params?: RequestQueryParams) {
     queryParams.status = params.status;
   if (params?.priority && params.priority !== "ALL")
     queryParams.priority = params.priority;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: emergencyKeys.myRequests(params),
@@ -55,13 +56,22 @@ export function useMyRequests(params?: RequestQueryParams) {
  * useAdminRequests:
  * Fetches all requests across the system for administrator dispatch control
  */
-export function useAdminRequests(params?: RequestQueryParams) {
+export function useAdminRequests(
+  params?: RequestQueryParams,
+  options?: { enabled?: boolean },
+) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.role === "ADMIN";
+
   const queryParams: Record<string, string | number | undefined> = {};
   if (params?.page) queryParams.page = params.page;
   if (params?.limit) queryParams.limit = params.limit;
   if (params?.status && params.status !== "ALL")
     queryParams.status = params.status;
+  if (params?.priority && params.priority !== "ALL")
+    queryParams.priority = params.priority;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: emergencyKeys.adminRequests(params),
@@ -71,7 +81,7 @@ export function useAdminRequests(params?: RequestQueryParams) {
       });
       return res.data;
     },
-    enabled: isAuthenticated,
+    enabled: Boolean(isAuthenticated && isAdmin && (options?.enabled ?? true)),
     refetchInterval: 10000,
   });
 }

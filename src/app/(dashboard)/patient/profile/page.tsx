@@ -18,15 +18,33 @@ export default function PatientProfilePage() {
   const [phone, setPhone] = useState(user?.phone || "");
   const [address, setAddress] = useState(user?.address || "");
   const [isSaving, setIsSaving] = useState(false);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const nameError =
+    touched.name && name.trim().length === 0
+      ? "Full legal name is required"
+      : touched.name && name.trim().length < 2
+        ? "Name must be at least 2 characters"
+        : "";
+
+  const phoneError =
+    phone && !/^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone)
+      ? "Enter a valid phone number (e.g. 017XXXXXXXX or +8801XXXXXXXXX)"
+      : "";
+
+  const isFormValid = name.trim().length >= 2 && !phoneError;
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setTouched({ name: true, phone: true });
+    if (!isFormValid) return;
+
     setIsSaving(true);
     try {
       const res = await api.patch<ApiResponse<UserModel>>("/users/me", {
-        name,
-        phone,
-        address,
+        name: name.trim(),
+        phone: phone.trim() || null,
+        address: address.trim() || null,
       });
       if (res.data) {
         updateUser(res.data);
@@ -68,10 +86,10 @@ export default function PatientProfilePage() {
                 {user.role}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground font-mono mt-0.5">
+            <p className="text-sm text-muted-foreground font-mono mt-0.5">
               {user.email}
             </p>
-            <span className="text-3xs text-muted-foreground mt-1 block">
+            <span className="text-xs text-muted-foreground font-medium mt-1 block">
               Member since: {formatDateTime(user.createdAt)}
             </span>
           </div>
@@ -82,8 +100,13 @@ export default function PatientProfilePage() {
           <Input
             label="Full Legal Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setTouched((t) => ({ ...t, name: true }));
+            }}
+            onBlur={() => setTouched((t) => ({ ...t, name: true }))}
             leftIcon={<User className="h-4 w-4" />}
+            error={nameError || undefined}
             required
             disabled={isSaving}
           />
@@ -100,9 +123,20 @@ export default function PatientProfilePage() {
             label="Primary Emergency Contact Phone"
             type="tel"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              setTouched((t) => ({ ...t, phone: true }));
+            }}
             placeholder="017XXXXXXXX"
             leftIcon={<Phone className="h-4 w-4" />}
+            error={phoneError || undefined}
+            helperText={
+              !phoneError &&
+              phone &&
+              /^(?:\+?880\s?|0)1[3-9]\d{8}$|^[+\d][\d\s\-()]{7,16}$/.test(phone)
+                ? "✓ Valid contact number"
+                : "11-digit Bangladesh phone or international format"
+            }
             disabled={isSaving}
           />
 
@@ -119,6 +153,7 @@ export default function PatientProfilePage() {
             <Button
               type="submit"
               variant="primary"
+              disabled={!isFormValid || isSaving}
               isLoading={isSaving}
               leftIcon={<Save className="h-4 w-4" />}
             >

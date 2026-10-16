@@ -34,6 +34,7 @@ export function useMyPayments(params?: PaymentQueryParams) {
   if (params?.limit) queryParams.limit = params.limit;
   if (params?.status && params.status !== "ALL")
     queryParams.status = params.status;
+  if (params?.search) queryParams.search = params.search;
 
   return useQuery({
     queryKey: paymentKeys.myPayments(params),
@@ -116,6 +117,7 @@ export function useInitiatePayment() {
     mutationFn: async ({
       requestId,
       gateway,
+      amount,
     }: InitiatePaymentInput): Promise<CheckoutResponse> => {
       let endpoint = "/payments/stripe/checkout";
       if (gateway === PaymentGateway.BKASH) {
@@ -126,20 +128,28 @@ export function useInitiatePayment() {
 
       const res = await api.post<ApiResponse<CheckoutResponse>>(endpoint, {
         requestId,
+        ...(amount ? { amount } : {}),
       });
       return res.data;
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: paymentKeys.all });
 
-      // Handle redirect to external payment page
-      const redirectTarget = data.url || data.bkashURL || data.GatewayPageURL;
+      // Handle redirect to external payment page (Stripe, bKash, or SSLCommerz)
+      const redirectTarget =
+        data.url ||
+        data.bkashURL ||
+        data.gatewayUrl ||
+        data.gatewayPageURL ||
+        data.GatewayPageURL ||
+        data.checkoutUrl ||
+        data.redirectUrl;
 
       if (redirectTarget) {
         toast.info(`Redirecting to secure ${variables.gateway} portal...`);
         window.location.href = redirectTarget;
       } else {
-        toast.success("Payment session generated successfully");
+        toast.error("Payment session created, but gateway URL was not found.");
       }
     },
     onError: (error) => {

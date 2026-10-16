@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
 import { Button, Input } from "@/components/ui";
@@ -21,14 +21,18 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<LoginInput>({
+    mode: "onChange",
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
+
+  const emailValue = useWatch({ control, name: "email" });
 
   const onSubmit = (data: LoginInput) => {
     loginMutation.mutate(data, {
@@ -47,7 +51,15 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         autoComplete="email"
         leftIcon={<Mail className="h-4 w-4" />}
         error={errors.email?.message}
+        helperText={
+          !errors.email &&
+          emailValue &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
+            ? "✓ Valid email format"
+            : undefined
+        }
         disabled={loginMutation.isPending}
+        required
         {...register("email")}
       />
 
@@ -58,6 +70,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           placeholder="••••••••"
           autoComplete="current-password"
           leftIcon={<Lock className="h-4 w-4" />}
+          error={errors.password?.message}
+          disabled={loginMutation.isPending}
+          required
           rightIcon={
             <button
               type="button"
@@ -72,8 +87,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
               )}
             </button>
           }
-          error={errors.password?.message}
-          disabled={loginMutation.isPending}
           {...register("password")}
         />
       </div>
@@ -89,7 +102,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         Sign In to Portal
       </Button>
 
-      <div className="pt-2 text-center text-xs text-muted-foreground">
+      <div className="pt-2 text-center text-sm text-muted-foreground">
         <span>Need an emergency response account? </span>
         <Link
           href={ROUTES.AUTH.REGISTER}

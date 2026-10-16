@@ -14,14 +14,14 @@ function BookingContent() {
   return (
     <div className="w-full space-y-6">
       <div className="border-b border-border/60 pb-5">
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-emergency/30 bg-emergency/10 px-3 py-0.5 text-3xs font-bold text-destructive-ink dark:text-emergency mb-2">
-          <HeartPulse className="h-3 w-3" />
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-emergency/30 bg-emergency/10 px-3.5 py-1 text-xs font-bold text-destructive-ink dark:text-emergency mb-2">
+          <HeartPulse className="h-3.5 w-3.5" />
           <span>Priority Emergency Dispatch</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Book Emergency Medical Transport
         </h1>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-1.5">
           Complete the triage assessment below to mobilize the nearest matching
           BLS, ACLS, or ICU unit.
         </p>
@@ -31,7 +31,7 @@ function BookingContent() {
 
       {/* Interactive Map Section */}
       <section className="pt-4">
-        <h2 className="text-sm font-bold text-foreground mb-3">
+        <h2 className="text-base font-bold text-foreground mb-3">
           Live Dispatch Area
         </h2>
         <InteractiveMap

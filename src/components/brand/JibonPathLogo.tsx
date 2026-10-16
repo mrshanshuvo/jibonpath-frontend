@@ -162,9 +162,9 @@ export function JibonPathLogo({
   };
 
   const taglineSizes = {
-    sm: "text-3xs",
-    md: "text-3xs sm:text-2xs",
-    lg: "text-xs",
+    sm: "text-xs",
+    md: "text-xs",
+    lg: "text-sm",
   };
 
   const content = (

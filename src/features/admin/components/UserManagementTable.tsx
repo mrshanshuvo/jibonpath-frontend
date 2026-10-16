@@ -88,22 +88,22 @@ export function UserManagementTable() {
     switch (role) {
       case Role.ADMIN:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-3xs font-bold text-primary border border-primary/20">
-            <Shield className="h-3 w-3" />
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary border border-primary/20">
+            <Shield className="h-3.5 w-3.5" />
             ADMIN
           </span>
         );
       case Role.DRIVER:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-3xs font-bold text-success-ink border border-success-ink/20">
-            <Ambulance className="h-3 w-3" />
+          <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-0.5 text-xs font-bold text-success-ink border border-success-ink/20">
+            <Ambulance className="h-3.5 w-3.5" />
             DRIVER
           </span>
         );
       case Role.PATIENT:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-info/10 px-2 py-0.5 text-3xs font-bold text-info-ink border border-info-ink/20">
-            <HeartPulse className="h-3 w-3" />
+          <span className="inline-flex items-center gap-1 rounded-full bg-info/10 px-2.5 py-0.5 text-xs font-bold text-info-ink border border-info-ink/20">
+            <HeartPulse className="h-3.5 w-3.5" />
             PATIENT
           </span>
         );
@@ -194,7 +194,7 @@ export function UserManagementTable() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-border/70 bg-surface/50 text-3xs uppercase tracking-wider text-muted-foreground font-semibold">
+              <thead className="border-b border-border/70 bg-surface/50 text-xs uppercase tracking-wider text-muted-foreground font-bold">
                 <tr>
                   <th className="px-5 py-3.5">User Identity</th>
                   <th className="px-5 py-3.5">Role</th>
@@ -214,11 +214,11 @@ export function UserManagementTable() {
                         <span className="font-bold text-sm text-foreground block">
                           {u.name}
                         </span>
-                        <span className="text-3xs font-mono text-muted-foreground">
+                        <span className="text-xs font-mono text-muted-foreground">
                           {u.email}
                         </span>
                         {u.phone && (
-                          <span className="text-3xs text-muted-foreground ml-2">
+                          <span className="text-xs text-muted-foreground ml-2">
                             • {u.phone}
                           </span>
                         )}
@@ -234,7 +234,7 @@ export function UserManagementTable() {
                           onChange={(e) =>
                             handleRoleChange(u.id, e.target.value as Role)
                           }
-                          className="h-6 rounded-md border border-border bg-surface/60 px-1.5 text-3xs text-muted-foreground hover:text-foreground focus-visible:outline-none cursor-pointer"
+                          className="h-7 rounded-md border border-border bg-surface/60 px-2 text-xs text-foreground focus-visible:outline-none cursor-pointer"
                         >
                           <option value={Role.PATIENT}>Patient</option>
                           <option value={Role.DRIVER}>Driver</option>
@@ -246,7 +246,7 @@ export function UserManagementTable() {
                     <td className="px-5 py-4">
                       <button
                         onClick={() => handleToggleStatus(u.id, u.isActive)}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-semibold cursor-pointer border transition-colors ${
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold cursor-pointer border transition-colors ${
                           u.isActive
                             ? "bg-success/10 text-success-ink border-success-ink/20 hover:bg-success/20"
                             : "bg-danger/10 text-danger-ink border-danger-ink/20 hover:bg-danger/20"
@@ -254,19 +254,19 @@ export function UserManagementTable() {
                       >
                         {u.isActive ? (
                           <>
-                            <UserCheck className="h-3 w-3" />
+                            <UserCheck className="h-3.5 w-3.5" />
                             <span>Active</span>
                           </>
                         ) : (
                           <>
-                            <UserX className="h-3 w-3" />
+                            <UserX className="h-3.5 w-3.5" />
                             <span>Suspended</span>
                           </>
                         )}
                       </button>
                     </td>
 
-                    <td className="px-5 py-4 font-mono text-3xs text-muted-foreground whitespace-nowrap">
+                    <td className="px-5 py-4 font-mono text-xs text-muted-foreground whitespace-nowrap">
                       {formatDateTime(u.createdAt)}
                     </td>
 

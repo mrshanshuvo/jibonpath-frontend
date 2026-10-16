@@ -20,7 +20,7 @@ export function PatientDashboard() {
             </h1>
             <span aria-hidden="true" />
           </div>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Track active ambulance dispatches, monitor arrival telemetry, and
             manage past medical transit history.
           </p>

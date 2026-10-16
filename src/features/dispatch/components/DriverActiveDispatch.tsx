@@ -14,6 +14,7 @@ import {
 import { Button, Badge, Card } from "@/components/ui";
 import { DispatchStepper } from "./DispatchStepper";
 import { TripLogsTimeline } from "./TripLogsTimeline";
+import { LiveTrackingMap } from "./LiveTrackingMap";
 import { DispatchStatus, type Dispatch } from "@/types/entities.types";
 import { useUpdateDispatchStatus } from "../api/dispatch.queries";
 import { useDriverLocationBroadcast } from "../hooks/useDriverLocationBroadcast";
@@ -245,6 +246,44 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
         </h2>
         <DispatchStepper currentStatus={dispatch.status} />
       </Card>
+
+      {/* Live Driver Navigation & Route Radar */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Navigation className="h-4 w-4 text-emergency animate-pulse" />
+            <h2 className="text-xs font-bold uppercase tracking-wider text-foreground">
+              Live Mission Route Radar
+            </h2>
+          </div>
+          <span className="text-xs font-mono text-muted-foreground">
+            {coords.speedKmh > 0 ? `${coords.speedKmh} km/h · Heading ${coords.heading}°` : "Stationary"}
+          </span>
+        </div>
+        <LiveTrackingMap
+          telemetry={{
+            dispatchId: dispatch.id,
+            lat: coords.lat,
+            lng: coords.lng,
+            heading: coords.heading,
+            speedKmh: coords.speedKmh,
+            stage: dispatch.status,
+            updatedAt: new Date().toISOString(),
+          }}
+          pickup={
+            pickupCoords
+              ? { ...pickupCoords, address: dispatch.request?.pickupAddress }
+              : null
+          }
+          hospital={
+            hospitalCoords
+              ? { ...hospitalCoords, name: dispatch.hospital?.name }
+              : null
+          }
+          vehicleNumber={dispatch.ambulance?.vehicleNumber}
+          stage={dispatch.status}
+        />
+      </div>
 
       {/* Grid: Patient Details & Ambulance Telemetry */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

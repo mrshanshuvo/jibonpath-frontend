@@ -1,7 +1,11 @@
 "use client";
 
-import { useDispatches } from "@/features/dispatch";
-import { DispatchStepper } from "@/features/dispatch";
+import { useState } from "react";
+import {
+  useDispatches,
+  DispatchStepper,
+  LiveTrackingModal,
+} from "@/features/dispatch";
 import { PendingRequestsTriage } from "@/features/emergency";
 import { useAdminRequests } from "@/features/emergency";
 import {
@@ -9,6 +13,7 @@ import {
   EmptyState,
   Pagination,
   StatusBadge,
+  Button,
 } from "@/components/shared";
 import {
   Radio,
@@ -26,6 +31,8 @@ import { DispatchStatus, RequestStatus } from "@/types/entities.types";
 
 export default function AdminDispatchesPage() {
   const { params, setParams } = useUrlParams();
+  const [selectedTrackingRequestId, setSelectedTrackingRequestId] =
+    useState<string | null>(null);
 
   // Tab state: "queue" (default) or "telemetry"
   const activeTab = params.get("tab") === "telemetry" ? "telemetry" : "queue";
@@ -293,6 +300,20 @@ export default function AdminDispatchesPage() {
                       </div>
                     </div>
                   </div>
+
+                  <div className="flex items-center justify-between border-t border-border/60 pt-3">
+                    <span className="text-xs font-mono text-muted-foreground">
+                      Dispatch ID: #{d.id.slice(0, 8)}
+                    </span>
+                    <Button
+                      variant="emergency"
+                      size="sm"
+                      onClick={() => setSelectedTrackingRequestId(d.requestId)}
+                      leftIcon={<Radio className="h-3.5 w-3.5" />}
+                    >
+                      Track Live Radar
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -311,6 +332,12 @@ export default function AdminDispatchesPage() {
           )}
         </div>
       )}
+
+      <LiveTrackingModal
+        isOpen={Boolean(selectedTrackingRequestId)}
+        onClose={() => setSelectedTrackingRequestId(null)}
+        requestId={selectedTrackingRequestId}
+      />
     </div>
   );
 }

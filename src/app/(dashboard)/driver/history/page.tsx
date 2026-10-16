@@ -1,15 +1,26 @@
 "use client";
 
 import { useDispatches } from "@/features/dispatch";
-import { Skeleton, EmptyState, Pagination, Badge } from "@/components/shared";
-import { Ambulance, MapPin, Building2, Clock, AlertCircle } from "lucide-react";
+import { useConfirmCashPayment } from "@/features/payment";
+import { Skeleton, EmptyState, Pagination, Badge, Button } from "@/components/shared";
+import {
+  Ambulance,
+  MapPin,
+  Building2,
+  Clock,
+  AlertCircle,
+  Banknote,
+  CheckCircle,
+} from "lucide-react";
 import { useUrlParams } from "@/hooks/useUrlParams";
 import { formatDateTime } from "@/lib/utils";
+import { PaymentStatus } from "@/types/entities.types";
 
 export default function DriverHistoryPage() {
   const { params, setParams } = useUrlParams();
   const parsedPage = Number(params.get("page") ?? "1");
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+  const confirmCashMutation = useConfirmCashPayment();
 
   const { data, isLoading, isError } = useDispatches({
     page,
@@ -20,7 +31,7 @@ export default function DriverHistoryPage() {
     <div className="space-y-6">
       <div className="border-b border-border/60 pb-5">
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-          Trip & Mission History
+          Trip &amp; Mission History
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
           Review completed patient transport assignments, emergency checkpoints,
@@ -58,49 +69,92 @@ export default function DriverHistoryPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {data.dispatches.map((d) => (
-            <div
-              key={d.id}
-              className="rounded-2xl border border-border/80 bg-card p-5 sm:p-6 shadow-sm space-y-3"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-foreground">
-                    #{d.id.slice(0, 8)}
-                  </span>
-                  <Badge variant="success" size="sm">
-                    {d.status}
-                  </Badge>
-                </div>
-                <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
-                  <Clock className="h-3.5 w-3.5" />
-                  {formatDateTime(d.dispatchedAt)}
-                </span>
-              </div>
+          {data.dispatches.map((d) => {
+            const payment = d.request?.payment;
+            const isPaid = payment?.status === PaymentStatus.SUCCESS;
+            const fareAmount = payment?.amount || 2080;
+            const isCash = Boolean(payment?.gatewayTxnId?.startsWith("CASH"));
 
-              <div className="space-y-1.5 text-sm text-muted-foreground pt-1">
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
-                  <span className="text-foreground font-medium truncate">
-                    {d.request?.pickupAddress || "Dhaka pickup location"}
+            return (
+              <div
+                key={d.id}
+                className="rounded-2xl border border-border/80 bg-card p-5 sm:p-6 shadow-sm space-y-3.5 hover:border-border transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-mono text-xs font-bold text-foreground">
+                      #{d.id.slice(0, 8)}
+                    </span>
+                    <Badge variant="success" size="sm">
+                      {d.status}
+                    </Badge>
+                    {isPaid ? (
+                      <Badge variant="success" size="sm" className="font-mono">
+                        ৳ {fareAmount.toLocaleString()} · {isCash ? "CASH" : "PAID"}
+                      </Badge>
+                    ) : (
+                      <Badge variant="warning" size="sm" className="font-mono">
+                        ৳ {fareAmount.toLocaleString()} · INVOICE PENDING
+                      </Badge>
+                    )}
+                  </div>
+                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5 shrink-0">
+                    <Clock className="h-3.5 w-3.5" />
+                    {formatDateTime(d.dispatchedAt)}
                   </span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <span className="text-foreground font-medium truncate">
-                    {d.hospital?.name || "Dhaka Medical College Hospital"}
-                  </span>
-                </div>
-              </div>
 
-              <div className="border-t border-border/60 pt-3 flex items-center justify-between text-xs text-muted-foreground">
-                <span>
-                  Unit: {d.ambulance?.vehicleNumber || "DHAKA-EM-101"}
-                </span>
-                <span>Checkpoints: {d.tripStatusLogs?.length || 0} logged</span>
+                <div className="space-y-1.5 text-sm text-muted-foreground pt-1">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-emergency shrink-0 mt-0.5" />
+                    <span className="text-foreground font-medium truncate">
+                      {d.request?.pickupAddress || "Dhaka pickup location"}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    <span className="text-foreground font-medium truncate">
+                      {d.hospital?.name || "Dhaka Medical College Hospital"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="border-t border-border/60 pt-3 flex items-center justify-between text-xs text-muted-foreground flex-wrap gap-2">
+                  <span className="font-mono">
+                    Unit: {d.ambulance?.vehicleNumber || "AMB-ALS"}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    {isPaid ? (
+                      <span className="text-emerald-500 font-semibold flex items-center gap-1 text-[11px]">
+                        <CheckCircle className="h-3.5 w-3.5" />
+                        {isCash ? "Cash Collected at Bay" : "Settled via Stripe"}
+                      </span>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span className="text-amber-500 font-medium text-[11px]">
+                          Invoice Pending
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-7 px-2 text-[11px] font-bold border-emerald-500/40 text-emerald-600 hover:bg-emerald-500/10 cursor-pointer"
+                          isLoading={confirmCashMutation.isPending}
+                          onClick={() =>
+                            confirmCashMutation.mutate({
+                              requestId: d.requestId,
+                            })
+                          }
+                          leftIcon={<Banknote className="h-3 w-3 text-emerald-500" />}
+                        >
+                          Collect Cash
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

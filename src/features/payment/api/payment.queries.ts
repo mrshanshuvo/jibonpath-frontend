@@ -164,3 +164,37 @@ export function useInitiatePayment() {
     },
   });
 }
+
+/**
+ * useConfirmCashPayment:
+ * Paramedic driver confirms cash collection at hospital emergency bay
+ */
+export function useConfirmCashPayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      requestId,
+    }: {
+      requestId: string;
+    }): Promise<Payment> => {
+      const res = await api.post<ApiResponse<Payment>>(
+        "/payments/cash-confirm",
+        {
+          requestId,
+        },
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: paymentKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["dispatch"] });
+      toast.success(
+        "Cash payment verified & logged in trauma bay audit trail.",
+      );
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to log cash settlement.");
+    },
+  });
+}

@@ -11,25 +11,29 @@ import {
   Phone,
   ArrowRight,
   CheckCircle,
-  Radio,
-  FileText,
   X,
-  Compass,
   MapPin,
-  Clock,
-  ShieldAlert,
   ArrowLeft,
-  Maximize2,
-  Minimize2,
+  Banknote,
+  Receipt,
+  CreditCard,
 } from "lucide-react";
 import { Button, Badge } from "@/components/ui";
 import { ThemeToggle } from "@/components/shared";
 import { DispatchStepper } from "./DispatchStepper";
 import { TripLogsTimeline } from "./TripLogsTimeline";
 import { LiveTrackingMap } from "./LiveTrackingMap";
-import { DispatchStatus, type Dispatch } from "@/types/entities.types";
+import {
+  DispatchStatus,
+  PaymentStatus,
+  type Dispatch,
+} from "@/types/entities.types";
 import { useUpdateDispatchStatus } from "../api/dispatch.queries";
 import { useDriverLocationBroadcast } from "../hooks/useDriverLocationBroadcast";
+import {
+  useConfirmCashPayment,
+  usePaymentStatus,
+} from "@/features/payment";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/config/routes";
 
@@ -83,6 +87,13 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
   const [note, setNote] = useState("");
   const [triageOpen, setTriageOpen] = useState(false);
   const updateStatusMutation = useUpdateDispatchStatus();
+  const confirmCashMutation = useConfirmCashPayment();
+  const { data: livePayment } = usePaymentStatus(dispatch.requestId);
+
+  const activePayment = livePayment || dispatch.request?.payment;
+  const isPaid = activePayment?.status === PaymentStatus.SUCCESS;
+  const fareAmount = activePayment?.amount || 2080;
+  const isCash = Boolean(activePayment?.gatewayTxnId?.startsWith("CASH"));
 
   const pickupCoords =
     dispatch.request?.pickupLat && dispatch.request?.pickupLng
@@ -105,13 +116,13 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
 
   const nextStep = NEXT_STATUS_MAP[dispatch.status];
 
-  const handleAdvanceStatus = () => {
+  const handleAdvanceStatus = (overrideNote?: string) => {
     if (!nextStep) return;
     updateStatusMutation.mutate({
       id: dispatch.id,
       input: {
         status: nextStep.next,
-        note: note.trim() || undefined,
+        note: (overrideNote || note).trim() || undefined,
       },
     });
     setNote("");
@@ -316,7 +327,10 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
           {/* Mission Stepper */}
           <div className="rounded-2xl border border-border/70 bg-surface/80 p-3.5 shadow-2xs">
-            <DispatchStepper currentStatus={dispatch.status} variant="compact" />
+            <DispatchStepper
+              currentStatus={dispatch.status}
+              variant="compact"
+            />
           </div>
 
           {/* Caller / Patient Contact Card */}
@@ -378,6 +392,43 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
               <p className="text-[11px] text-muted-foreground">
                 {dispatch.hospital?.address || "Central Emergency Trauma Bay"}
               </p>
+            </div>
+          </div>
+
+          {/* Trip Billing & Settlement Dossier */}
+          <div className="rounded-2xl border border-border/70 bg-surface/70 p-4 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Receipt className="h-3.5 w-3.5 text-primary" />
+                Trip Billing &amp; Settlement
+              </span>
+              {isPaid ? (
+                <Badge variant="success" size="sm">
+                  PAID
+                </Badge>
+              ) : (
+                <Badge variant="warning" size="sm">
+                  PENDING SETTLEMENT
+                </Badge>
+              )}
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-xs text-muted-foreground font-medium">Authoritative Fare</span>
+              <span className="text-base font-extrabold text-foreground font-mono">
+                ৳ {fareAmount.toLocaleString()}
+              </span>
+            </div>
+            <div className="text-[11px] text-muted-foreground pt-1.5 border-t border-border/40">
+              {isPaid ? (
+                <span className="text-emerald-500 font-semibold flex items-center gap-1.5">
+                  <CheckCircle className="h-3.5 w-3.5" />
+                  Settled via {isCash ? "Cash at Hospital Bay" : "Stripe Digital Checkout"}
+                </span>
+              ) : (
+                <span className="text-amber-500 font-medium">
+                  Awaiting patient digital checkout or cash collection at ER bay
+                </span>
+              )}
             </div>
           </div>
 
@@ -489,15 +540,93 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
             </a>
           </div>
 
-          {/* Right: Massive Glove-Friendly Next Action Trigger */}
+          {/* Right: Massive Glove-Friendly Next Action Trigger & Settlement Terminal */}
           <div className="w-full sm:w-auto flex-1 max-w-xl">
-            {nextStep ? (
+            {dispatch.status === DispatchStatus.HOSPITAL_ARRIVAL ? (
+              <div className="flex flex-col gap-2.5 w-full">
+                {/* Live Bay Settlement Status Banner */}
+                {isPaid ? (
+                  <div className="flex items-center justify-between bg-emerald-500/15 border border-emerald-500/35 px-4 py-2 rounded-2xl shadow-sm">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-500 shrink-0" />
+                      <span className="text-xs font-bold text-foreground">
+                        Payment Settled: ৳ {fareAmount.toLocaleString()}{" "}
+                        <span className="text-[11px] font-mono text-emerald-500 font-normal">
+                          ({isCash ? "CASH COLLECTED AT BAY" : "PAID ONLINE VIA STRIPE"})
+                        </span>
+                      </span>
+                    </div>
+                    <Badge variant="success" size="sm">
+                      SETTLED
+                    </Badge>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-center justify-between bg-amber-500/10 border border-amber-500/35 p-2.5 sm:px-4 sm:py-2 rounded-2xl gap-2 shadow-sm">
+                    <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+                      <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                      <span>
+                        Fare Due: <span className="font-mono text-amber-500 font-extrabold">৳ {fareAmount.toLocaleString()}</span> · Awaiting Settlement
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8.5 px-3 text-xs font-bold bg-card border-emerald-500/40 text-emerald-600 hover:bg-emerald-500/10 cursor-pointer shadow-xs"
+                        isLoading={confirmCashMutation.isPending}
+                        onClick={() =>
+                          confirmCashMutation.mutate({
+                            requestId: dispatch.requestId,
+                          })
+                        }
+                        leftIcon={<Banknote className="h-3.5 w-3.5 text-emerald-500" />}
+                      >
+                        Confirm Cash (৳{fareAmount})
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8.5 px-2.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+                        onClick={() =>
+                          handleAdvanceStatus(
+                            "Patient unaccompanied / deferred — Invoiced to caller account",
+                          )
+                        }
+                        title="Defer billing to patient account and return ambulance to rotation immediately"
+                      >
+                        Invoice Later
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Primary Action Button */}
+                <Button
+                  variant={isPaid ? "primary" : "secondary"}
+                  size="lg"
+                  className="w-full h-14 sm:h-16 px-6 sm:px-8 text-sm sm:text-base font-black uppercase tracking-wider rounded-2xl shadow-xl justify-center cursor-pointer gap-3 ring-4 ring-emergency/25 animate-in fade-in"
+                  isLoading={updateStatusMutation.isPending}
+                  onClick={() =>
+                    handleAdvanceStatus(
+                      isPaid ? "Payment verified and trip closed" : undefined,
+                    )
+                  }
+                >
+                  <span>
+                    {isPaid
+                      ? "FINALIZE RUN & RETURN TO STANDBY"
+                      : "FINALIZE HANDOVER (DEFER INVOICE) & CLOSE"}
+                  </span>
+                  <ArrowRight className="h-5 w-5 stroke-3" />
+                </Button>
+              </div>
+            ) : nextStep ? (
               <Button
                 variant={nextStep.color}
                 size="lg"
                 className="w-full h-14 sm:h-16 px-6 sm:px-8 text-sm sm:text-base font-black uppercase tracking-wider rounded-2xl shadow-xl justify-center cursor-pointer gap-3 ring-4 ring-emergency/25 animate-in fade-in"
                 isLoading={updateStatusMutation.isPending}
-                onClick={handleAdvanceStatus}
+                onClick={() => handleAdvanceStatus()}
               >
                 <span>{nextStep.actionVerb}</span>
                 <ArrowRight className="h-5 w-5 stroke-3" />

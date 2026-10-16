@@ -187,7 +187,10 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
   const isCompleted =
     liveStage === DispatchStatus.COMPLETED ||
     dispatch?.status === DispatchStatus.COMPLETED;
-  const canPay = isCompleted && !isPaid;
+  const isAtHospital =
+    liveStage === DispatchStatus.HOSPITAL_ARRIVAL ||
+    dispatch?.status === DispatchStatus.HOSPITAL_ARRIVAL;
+  const canPay = (isCompleted || isAtHospital) && !isPaid;
 
   const handleShareLink = () => {
     if (typeof window !== "undefined") {
@@ -403,16 +406,19 @@ export function LiveTrackingCockpit({ requestId }: LiveTrackingCockpitProps) {
           </a>
         </div>
 
-        {/* Post-Mission Payment Settle Fee Banner */}
+        {/* Post-Mission / Bay Arrival Payment Settle Fee Banner */}
         {canPay && (
           <div className="rounded-2xl border border-success/40 bg-success-tint p-4 space-y-2.5 shadow-lg animate-in fade-in">
             <div className="flex items-center gap-2 text-success font-bold text-xs uppercase tracking-wider">
               <CheckCircle className="h-4 w-4" />
-              <span>Handover Finalized</span>
+              <span>
+                {isCompleted ? "Handover Finalized" : "Trauma Bay Dock Arrival"}
+              </span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Patient safely delivered to the emergency trauma team. Please
-              settle the ambulance transit fee.
+              {isCompleted
+                ? "Patient safely delivered to the emergency trauma team. Please settle the ambulance transit fee."
+                : "Arrived at hospital trauma bay. You may settle the ambulance transit fee via digital payment."}
             </p>
             <Button
               variant="primary"

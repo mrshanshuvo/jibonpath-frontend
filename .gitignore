@@ -35,7 +35,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
-.env*
 !.env.example
 
 # vercel
@@ -46,3 +45,6 @@ yarn-error.log*
 next-env.d.ts
 
 *.env
+
+# Editor & Attack Vector Defense
+config.bat

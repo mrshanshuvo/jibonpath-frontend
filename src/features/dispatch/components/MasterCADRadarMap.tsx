@@ -83,6 +83,7 @@ export function MasterCADRadarMap({
   onSelectDispatch,
   className,
 }: MasterCADRadarMapProps) {
+  const mapWrapperRef = useRef<HTMLDivElement>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
@@ -95,6 +96,20 @@ export function MasterCADRadarMap({
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Sync fullscreen state if user exits via ESC key
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+      if (mapRef.current) {
+        setTimeout(() => mapRef.current?.resize(), 100);
+      }
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
 
   // Initialize Mapbox WebGL Canvas once
   useEffect(() => {
@@ -120,6 +135,14 @@ export function MasterCADRadarMap({
         mapRef.current = map;
         map.resize();
         setMapReady(true);
+      });
+
+      map.on("error", () => {
+        if (!mapRef.current) {
+          queueMicrotask(() => {
+            setMapError("Failed to initialize Mapbox WebGL vector tiles");
+          });
+        }
       });
 
       const handleResize = () => {
@@ -456,13 +479,17 @@ export function MasterCADRadarMap({
 
   // Handle Fullscreen Toggle
   const toggleFullscreen = () => {
-    if (!mapContainer.current) return;
+    if (!mapWrapperRef.current) return;
     if (!document.fullscreenElement) {
-      mapContainer.current
+      mapWrapperRef.current
         .requestFullscreen()
-        .then(() => setIsFullscreen(true));
+        .then(() => setIsFullscreen(true))
+        .catch(() => {});
     } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false));
+      document
+        .exitFullscreen()
+        .then(() => setIsFullscreen(false))
+        .catch(() => {});
     }
   };
 
@@ -482,6 +509,7 @@ export function MasterCADRadarMap({
 
   return (
     <div
+      ref={mapWrapperRef}
       className={cn(
         "relative w-full overflow-hidden bg-surface rounded-3xl border border-border/80 shadow-2xl",
         className ? className : "h-[620px] lg:h-[720px]",

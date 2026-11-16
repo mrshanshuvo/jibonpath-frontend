@@ -28,7 +28,7 @@ type ViewMode = "split" | "map" | "grid";
 
 export function MasterCADConsole() {
   const accessToken = useAuthStore((s) => s.accessToken);
-  const { data: dispatchesData } = useDispatches({
+  const { data: dispatchesData, refetch } = useDispatches({
     limit: 100, // Fetch all current dispatches for the fleet radar
   });
 
@@ -77,19 +77,28 @@ export function MasterCADConsole() {
               return updated;
             });
           } else if (payload.type === "telemetry" && payload.dispatchId) {
-            setTelemetryFeed((prev) => {
-              const updated = new Map(prev);
-              updated.set(payload.dispatchId, {
-                dispatchId: payload.dispatchId,
-                lat: payload.lat,
-                lng: payload.lng,
-                heading: payload.heading,
-                speedKmh: payload.speedKmh,
-                stage: payload.stage,
-                updatedAt: payload.updatedAt || new Date().toISOString(),
+            if (payload.stage === "COMPLETED") {
+              setTelemetryFeed((prev) => {
+                const updated = new Map(prev);
+                updated.delete(payload.dispatchId);
+                return updated;
               });
-              return updated;
-            });
+              refetch();
+            } else {
+              setTelemetryFeed((prev) => {
+                const updated = new Map(prev);
+                updated.set(payload.dispatchId, {
+                  dispatchId: payload.dispatchId,
+                  lat: payload.lat,
+                  lng: payload.lng,
+                  heading: payload.heading,
+                  speedKmh: payload.speedKmh,
+                  stage: payload.stage,
+                  updatedAt: payload.updatedAt || new Date().toISOString(),
+                });
+                return updated;
+              });
+            }
           }
         } catch {
           // Ignore JSON parse heartbeats
@@ -106,7 +115,7 @@ export function MasterCADConsole() {
     return () => {
       if (eventSource) eventSource.close();
     };
-  }, [accessToken]);
+  }, [accessToken, refetch]);
 
   // Filter only active / open dispatches for the radar
   const activeDispatches = useMemo(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Ambulance,
@@ -91,15 +91,23 @@ export function DriverActiveDispatch({ dispatch }: DriverActiveDispatchProps) {
   const fareAmount = activePayment?.amount || 2080;
   const isCash = Boolean(activePayment?.gatewayTxnId?.startsWith("CASH"));
 
-  const pickupCoords =
-    dispatch.request?.pickupLat && dispatch.request?.pickupLng
-      ? { lat: dispatch.request.pickupLat, lng: dispatch.request.pickupLng }
-      : null;
+  const pickupLat = dispatch.request?.pickupLat;
+  const pickupLng = dispatch.request?.pickupLng;
+  const hospitalLat = dispatch.hospital?.lat;
+  const hospitalLng = dispatch.hospital?.lng;
 
-  const hospitalCoords =
-    dispatch.hospital?.lat && dispatch.hospital?.lng
-      ? { lat: dispatch.hospital.lat, lng: dispatch.hospital.lng }
-      : null;
+  const pickupCoords = useMemo(
+    () => (pickupLat && pickupLng ? { lat: pickupLat, lng: pickupLng } : null),
+    [pickupLat, pickupLng],
+  );
+
+  const hospitalCoords = useMemo(
+    () =>
+      hospitalLat && hospitalLng
+        ? { lat: hospitalLat, lng: hospitalLng }
+        : null,
+    [hospitalLat, hospitalLng],
+  );
 
   const { coords, isBroadcasting, isSimulated, toggleSimulated } =
     useDriverLocationBroadcast({
